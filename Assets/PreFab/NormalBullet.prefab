@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4148767117351906673}
   - component: {fileID: 2966141172555166474}
   - component: {fileID: 9075869889509880382}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: NormalBullet
   m_TagString: Bullet
   m_Icon: {fileID: 0}
@@ -76,7 +76,7 @@ SpriteRenderer:
   m_SortingLayerID: -1421202195
   m_SortingLayer: 5
   m_SortingOrder: 0
-  m_Sprite: {fileID: 1843700212, guid: 3690089c477a29b408cb7a1f7e55c43d, type: 3}
+  m_Sprite: {fileID: -1494571969, guid: 3690089c477a29b408cb7a1f7e55c43d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -97,14 +97,14 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.9375, y: 0.4375}
+    oldSize: {x: 1, y: 1}
     newSize: {x: 0.9375, y: 0.4375}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -146,3 +146,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b885c12b3f4f104fa034a152c990716, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hitEffect: {fileID: 1392023173537689047, guid: fabdbfa778749b448943ae3fb7d144f9, type: 3}
+  piercing: 1

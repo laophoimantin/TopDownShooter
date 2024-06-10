@@ -7,9 +7,11 @@ public class MainPlayerMovement : MonoBehaviour
 {
     //Move
     [Header("Move")]
-    [SerializeField] private float speed = 1;
+    public float moveSpeed = 1;
     private Rigidbody2D rb;
     private Vector2 playerInput;
+    private Vector2 forceToApply;
+    [SerializeField] private float forceDamping = 1.2f;
 
     void Start()
     {
@@ -30,7 +32,14 @@ public class MainPlayerMovement : MonoBehaviour
 
     private void Move()
     {
-        rb.velocity = playerInput * speed;
+        Vector2 moveForce = playerInput * moveSpeed;
+        moveForce += forceToApply;
+        forceToApply /= forceDamping;
+        if (Mathf.Abs(forceToApply.x) <= 0.01f && Mathf.Abs(forceToApply.y) <= 0.01f)
+        {
+            forceToApply = Vector2.zero;
+        }
+        rb.velocity = moveForce;
     }
 
     private void GetInput()
@@ -39,5 +48,13 @@ public class MainPlayerMovement : MonoBehaviour
         float verticalInput = Input.GetAxisRaw("Vertical");
 
         playerInput = new Vector2(horizontalInput, verticalInput).normalized;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.collider.CompareTag("Mob"))
+        {
+            forceToApply += new Vector2(-20, 0);
+        }
     }
 }
