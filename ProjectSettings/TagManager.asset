@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Bullet
   layers:
   - Default
   - TransparentFX
@@ -52,4 +53,7 @@ TagManager:
     locked: 0
   - name: Mob
     uniqueID: 1839379281
+    locked: 0
+  - name: Projectile
+    uniqueID: 2873765101
     locked: 0
