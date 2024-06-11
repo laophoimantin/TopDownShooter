@@ -15,6 +15,10 @@ public class PlayerStats : MonoBehaviour
 
     void Update()
     {
+        if(playerHealth <= 0)
+        {
+            Debug.Log("Dead!");
+        }
         
     }
 

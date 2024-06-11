@@ -291,8 +291,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1839379281
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 1286407379, guid: 6caaa0ea0f8e3364492137c1779c3b6e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -698,6 +698,8 @@ GameObject:
   - component: {fileID: 1304983341}
   - component: {fileID: 1304983340}
   - component: {fileID: 1304983339}
+  - component: {fileID: 1304983342}
+  - component: {fileID: 1304983343}
   m_Layer: 0
   m_Name: Dummy
   m_TagString: Mob
@@ -769,8 +771,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1839379281
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 1286407379, guid: 6caaa0ea0f8e3364492137c1779c3b6e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -798,6 +800,32 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1304983342
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1304983338}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff838f816e954744c96263bc209f1dce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  modSpeed: 0.5
+--- !u!114 &1304983343
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1304983338}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a119112724859da4d83f0e6c07f6a821, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mobHealth: 3
 --- !u!1 &1349240412
 GameObject:
   m_ObjectHideFlags: 0
@@ -23116,7 +23144,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gunDistance: 1.5
   bulletPf: {fileID: 1547565591595670275, guid: f9510047fa8131543a60fb70c70eba32, type: 3}
-  gunType: 2
+  gunType: 1
   handGunFirePoints:
   - {fileID: 1357797584}
   handGunBulletSpeed: 20
@@ -23445,8 +23473,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1839379281
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 1286407379, guid: 6caaa0ea0f8e3364492137c1779c3b6e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
