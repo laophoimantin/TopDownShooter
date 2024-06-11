@@ -15,6 +15,5 @@ public class CustomCursor : MonoBehaviour
     void Update()
     {
         mCursorVisual.position = Input.mousePosition + mDisplacement;
-
     }
 }

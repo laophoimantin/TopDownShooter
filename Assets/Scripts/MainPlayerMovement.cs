@@ -5,17 +5,20 @@ using UnityEngine;
 
 public class MainPlayerMovement : MonoBehaviour
 {
+    private PlayerStats playerStats;
+
     //Move
     [Header("Move")]
     public float moveSpeed = 1;
     private Rigidbody2D rb;
     private Vector2 playerInput;
-    private Vector2 forceToApply;
+    public Vector2 forceToApply;
     [SerializeField] private float forceDamping = 1.2f;
 
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();    
+        rb = GetComponent<Rigidbody2D>();
+        playerStats = rb.GetComponent<PlayerStats>();
     }
 
     void Update()
@@ -50,11 +53,4 @@ public class MainPlayerMovement : MonoBehaviour
         playerInput = new Vector2(horizontalInput, verticalInput).normalized;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.collider.CompareTag("Mob"))
-        {
-            forceToApply += new Vector2(-20, 0);
-        }
-    }
 }

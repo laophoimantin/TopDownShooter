@@ -23,7 +23,7 @@ public class GunController : MonoBehaviour
     [SerializeField] private Transform[] handGunFirePoints;
     [SerializeField] private float handGunBulletSpeed = 20f;
     [SerializeField] private float handGunFireRate = 0.5f;
-    [SerializeField] private float handGunDamamge = 2;
+    [SerializeField] private float handGunDamage = 2;
     [SerializeField] private float handGunBulletLifeTime = 2f;
     [SerializeField] private int handGunPierceCount = 0;
 
@@ -48,46 +48,35 @@ public class GunController : MonoBehaviour
     private float fireRateCooldown;
 
     //Reduce player speed while shooting
+    [Header ("Slow")]
     private MainPlayerMovement playerMovement;
     private float originalMoveSpeed;
+    [SerializeField] private float slowDownDuration = 0.5f;
+    private float slowDownTimer;
+
+    // Gun Sprire
+    [Header ("Gun Sprite")]
+    [SerializeField] private SpriteRenderer handPos;
+    [SerializeField] private Sprite handGun;
+    [SerializeField] private Sprite shotGun;
 
     private void Awake()
     {
-        if (gunType == 1)
-        {
-            activeFirePoints = handGunFirePoints;
-            bulletSpeed = handGunBulletSpeed;
-            fireRate = handGunFireRate;
-            damage = handGunDamamge;
-            bulletLifeTime = handGunBulletLifeTime;
-            pierceCount = handGunPierceCount;
-        }
-        else if (gunType == 2)
-        {
-            activeFirePoints = shotGunFirePoints;
-            bulletSpeed = shotGunBulletSpeed;
-            fireRate = shotGunFireRate;
-            damage = shotGunDamamge;
-            bulletLifeTime = shotGunBulletLifeTime;
-            pierceCount = shotGunPierceCount;
-        }
-        else
-        {
-            Debug.LogError("Invalid gun type!");
-        }
+        GetGunType();
     }
+
 
     void Start()
     {
         hand = transform.Find("Hand");
         fireRateCooldown = fireRate;
-
         playerMovement = GetComponent<MainPlayerMovement>();
         originalMoveSpeed = playerMovement.moveSpeed;
     }
 
     void Update()
     {
+        slowDownTimer -= Time.deltaTime;
         // Update the fire rate cooldown
         if (fireRateCooldown > 0)
         {
@@ -98,21 +87,53 @@ public class GunController : MonoBehaviour
 
         if (Input.GetKey(KeyCode.Mouse0))
         {
-            playerMovement.moveSpeed = originalMoveSpeed * 0.7f;
             if (fireRateCooldown <= 0)
             {
-                HandGunShoot();
+                Shoot();
                 fireRateCooldown = fireRate;
+                slowDownTimer = slowDownDuration;
             }
+        }
+        if (slowDownTimer > 0)
+        {
+            playerMovement.moveSpeed = originalMoveSpeed * 0.7f;
         }
         else
         {
             playerMovement.moveSpeed = originalMoveSpeed;
         }
+
+    }
+    private void GetGunType()
+    {
+        if (gunType == 1)
+        {
+            activeFirePoints = handGunFirePoints;
+            bulletSpeed = handGunBulletSpeed;
+            fireRate = handGunFireRate;
+            damage = handGunDamage;
+            bulletLifeTime = handGunBulletLifeTime;
+            pierceCount = handGunPierceCount;
+            handPos.sprite = handGun;
+        }
+        else if (gunType == 2)
+        {
+            activeFirePoints = shotGunFirePoints;
+            bulletSpeed = shotGunBulletSpeed;
+            fireRate = shotGunFireRate;
+            damage = shotGunDamamge;
+            bulletLifeTime = shotGunBulletLifeTime;
+            pierceCount = shotGunPierceCount;
+            handPos.sprite = shotGun;
+        }
+        else
+        {
+            Debug.LogError("Invalid gun type!");
+        }
     }
 
 
-    private void HandGunShoot()
+    private void Shoot()
     {
         foreach (Transform firePoint in activeFirePoints)
         {

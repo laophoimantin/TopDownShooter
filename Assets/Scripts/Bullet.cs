@@ -10,6 +10,8 @@ public class Bullet : MonoBehaviour
     private float bulletLifeTime;
     private float bulletDamage;
 
+    private bool mobFound;
+
     //GunController script
     private GunController gunControl;
     void Start()
@@ -17,10 +19,11 @@ public class Bullet : MonoBehaviour
         gunControl = GameObject.FindGameObjectWithTag("Player").GetComponent<GunController>();
 
         bulletLifeTime = gunControl.bulletLifeTime;
-        bulletDamage = gunControl.damage;
         bulletPierceAmount = gunControl.pierceCount;
-
-        Destroy(gameObject, bulletLifeTime);
+        if (!mobFound)
+        {
+            Destroy(gameObject, bulletLifeTime);
+        }
         Physics2D.IgnoreLayerCollision(6, 6);
     }
 
@@ -30,13 +33,11 @@ public class Bullet : MonoBehaviour
         {
             if (bulletPierceAmount > 0)
             {
-                Debug.Log("Deals " + bulletDamage + " damage to mob");
                 bulletPierceAmount -= 1;
-                Debug.Log("Hit!");
             }
             else if (bulletPierceAmount <= 0)
             {
-                Debug.Log("Deals " + bulletDamage + " damage to mob");
+                mobFound = false;
                 GameObject effect = Instantiate(hitEffect, transform.position, Quaternion.identity);
                 Destroy(gameObject);
                 Destroy(effect, 1);

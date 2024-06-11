@@ -4,30 +4,39 @@ using UnityEngine;
 
 public class PlayerStats : MonoBehaviour
 {
+    private MainPlayerMovement MainPlayerMovement;
 
-    public int playerHealth = 3;
-
+    public int playerMaxHealth = 3;
+    public int playerCurrentHealth;
+    public float invincibilityTimer;
+    [SerializeField] private float invincibilityDuration = 3f;
 
     void Start()
     {
-        
+        invincibilityTimer = 0f;
+        playerCurrentHealth = playerMaxHealth;
+        MainPlayerMovement = GetComponent<MainPlayerMovement>();    
     }
 
     void Update()
     {
-        if(playerHealth <= 0)
+        invincibilityTimer -= Time.deltaTime;
+        if(playerCurrentHealth <= 0)
         {
-            Debug.Log("Dead!");
-        }
-        
+            Debug.Log("player Dead!");
+        }     
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.collider.CompareTag("Mob"))
+        if (collision.CompareTag("Mob") && playerCurrentHealth > 0 && invincibilityTimer <= 0)
         {
-            playerHealth -= 1;
-            Debug.Log(playerHealth);
+            playerCurrentHealth -= 1;
+            Debug.Log("Get Hit! Health remain: " + playerCurrentHealth);
+            invincibilityTimer = invincibilityDuration;
+            Vector2 knockbackDirection = (transform.position - collision.transform.position).normalized;
+            MainPlayerMovement.forceToApply += new Vector2(knockbackDirection.x * 20f, knockbackDirection.y * 20f);
         }
     }
+
 }
