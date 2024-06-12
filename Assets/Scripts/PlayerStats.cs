@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerStats : MonoBehaviour
 {
     private MainPlayerMovement MainPlayerMovement;
+    private Animator anim;
 
     public int playerMaxHealth = 3;
     public int playerCurrentHealth;
@@ -15,7 +16,8 @@ public class PlayerStats : MonoBehaviour
     {
         invincibilityTimer = 0f;
         playerCurrentHealth = playerMaxHealth;
-        MainPlayerMovement = GetComponent<MainPlayerMovement>();    
+        MainPlayerMovement = GetComponent<MainPlayerMovement>();
+        anim = GetComponent<Animator>();
     }
 
     void Update()
@@ -24,12 +26,27 @@ public class PlayerStats : MonoBehaviour
         if(playerCurrentHealth <= 0)
         {
             Debug.Log("player Dead!");
-        }     
+            if(GetComponent<Rigidbody2D>() != null)
+            {
+                Destroy(GetComponent<Rigidbody2D>());
+            } 
+        }
+        anim.SetFloat("CurrentHealth", playerCurrentHealth);
+
+        if(invincibilityTimer < 0)
+        {
+            anim.SetBool("Hurt", false);
+        }
+        else
+        {
+            anim.SetBool("Hurt", true);
+        }
     }
+
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.CompareTag("Mob") && playerCurrentHealth > 0 && invincibilityTimer <= 0)
+        if ((collision.CompareTag("Mob") || collision.CompareTag("MobBullet")) && playerCurrentHealth > 0 && invincibilityTimer <= 0)
         {
             playerCurrentHealth -= 1;
             Debug.Log("Get Hit! Health remain: " + playerCurrentHealth);

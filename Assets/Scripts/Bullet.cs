@@ -8,15 +8,19 @@ public class Bullet : MonoBehaviour
     [SerializeField] private GameObject hitEffect;
     private int bulletPierceAmount;
     private float bulletLifeTime;
-    private float bulletDamage;
 
     private bool mobFound;
 
     //GunController script
-    private GunController gunControl;
+    private AdvancedGunController gunControl;
+
+    private SpriteRenderer spriteRenderer;
+
     void Start()
     {
-        gunControl = GameObject.FindGameObjectWithTag("Player").GetComponent<GunController>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        gunControl = GameObject.FindGameObjectWithTag("Player").GetComponent<AdvancedGunController>();
+        spriteRenderer.sprite = gunControl.gunData.bulletSP;
 
         bulletLifeTime = gunControl.bulletLifeTime;
         bulletPierceAmount = gunControl.pierceCount;

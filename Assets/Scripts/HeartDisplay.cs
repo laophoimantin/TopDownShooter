@@ -19,12 +19,13 @@ public class HeartDisplay : MonoBehaviour
     void Start()
     {
         playerStats = GetComponent<PlayerStats>();
-        maxHealth = playerStats.playerMaxHealth;
     }
 
     void Update()
     {
+        maxHealth = playerStats.playerMaxHealth;
         currentHealth = playerStats.playerCurrentHealth;
+
         for (int i = 0; i < hearts.Length; i++)
         {
             if (i < currentHealth)
@@ -35,6 +36,7 @@ public class HeartDisplay : MonoBehaviour
             {
                 hearts[i].sprite = emptyHeart;
             }
+
             if(i < maxHealth)
             {
                 hearts[i].enabled = true;

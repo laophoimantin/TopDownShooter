@@ -5,7 +5,8 @@ using UnityEngine;
 
 public class MainPlayerMovement : MonoBehaviour
 {
-    private PlayerStats playerStats;
+    [Header("Animator")]
+    private Animator anim;
 
     //Move
     [Header("Move")]
@@ -14,22 +15,34 @@ public class MainPlayerMovement : MonoBehaviour
     private Vector2 playerInput;
     public Vector2 forceToApply;
     [SerializeField] private float forceDamping = 1.2f;
+    private SpriteRenderer sprite;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        playerStats = rb.GetComponent<PlayerStats>();
+        anim = GetComponent<Animator>();
+        sprite = GetComponent<SpriteRenderer>();
     }
 
     void Update()
     {
         GetInput();
+
+        if (rb.velocity.x < 0)
+        {
+            sprite.flipX = true;
+        }
+        else
+        {
+            sprite.flipX = false;
+        }
     }
 
     // Used for physics calculations(No Idea)
     private void FixedUpdate()
     {
         Move();
+
     }
 
 
@@ -49,8 +62,15 @@ public class MainPlayerMovement : MonoBehaviour
     {
         float horizontalInput = Input.GetAxisRaw("Horizontal");
         float verticalInput = Input.GetAxisRaw("Vertical");
-
         playerInput = new Vector2(horizontalInput, verticalInput).normalized;
-    }
+        if (playerInput != Vector2.zero)
+        {
+            anim.SetBool("IsWalking", true);
+        }
+        else
+        {
+            anim.SetBool("IsWalking", false);
+        }
 
+    }
 }
