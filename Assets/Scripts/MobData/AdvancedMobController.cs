@@ -51,6 +51,7 @@ public class AdvancedMobController : MonoBehaviour
             {
                 Kill();
             }
+
             if (Vector2.Distance(transform.position, player.transform.position) >= MobDta.despawnDistance)
             {
                 ReturnEnemy();

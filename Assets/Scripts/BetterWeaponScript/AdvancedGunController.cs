@@ -28,7 +28,7 @@ public class AdvancedGunController : MonoBehaviour
     [Header("GunStats")]
     private Transform[] activeFirePoints;
     private float bulletSpeed;
-    private float fireRate;
+    public float fireRate;
     [HideInInspector] public float damage;
     [HideInInspector] public float bulletLifeTime;
     [HideInInspector] public int pierceCount;
@@ -38,7 +38,7 @@ public class AdvancedGunController : MonoBehaviour
     [Header("Slow")]
     [SerializeField] private float slowDownDuration = 0.5f;
     private float slowDownTimer;
-    private float originalMoveSpeed;
+    [HideInInspector] public float originalMoveSpeed;
 
     // Gun Sprire
     [Header("Gun Sprite")]
@@ -153,7 +153,7 @@ public class AdvancedGunController : MonoBehaviour
         hand.position = transform.position + Quaternion.Euler(0, 0, angle) * new Vector3(gunDistance, 0, 0);
 
         GunFlipHandle();
-    }
+    }   
 
     private void GunFlipHandle()
     {

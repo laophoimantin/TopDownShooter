@@ -1,0 +1,13 @@
+damage
+range
+move speed
+bullet speed
+max health
+penetrate 
+knockback
+fire rate
+
+shield?
+auto turret
+pickup range
+drop rate?
