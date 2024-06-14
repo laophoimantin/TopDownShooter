@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletSpeed: 18
   fireRate: 0.4
-  damage: 6
+  damage: 2
   bulletLifeTime: 0.7
   pierceCount: 1
   Image: {fileID: 21300000, guid: 6c238ae0f0d37fe4db533a5e2c9f692b, type: 3}
   bulletSP: {fileID: 21300000, guid: 76b27ea8d98ea564fa88db83427dc60b, type: 3}
+  knockbackForce: 10

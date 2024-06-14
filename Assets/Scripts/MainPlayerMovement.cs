@@ -13,21 +13,30 @@ public class MainPlayerMovement : MonoBehaviour
     public float moveSpeed = 1;
     private Rigidbody2D rb;
     private Vector2 playerInput;
-    public Vector2 forceToApply;
+    [HideInInspector] public Vector2 forceToApply;
     [SerializeField] private float forceDamping = 1.2f;
     private SpriteRenderer sprite;
+
+    [Header("Player's Stats")]
+    private PlayerStats playerStats;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
+        playerStats = GetComponent<PlayerStats>();
     }
 
     void Update()
     {
         GetInput();
 
+        Flip();
+    }
+
+    private void Flip()
+    {
         if (rb.velocity.x < 0)
         {
             sprite.flipX = true;
@@ -38,13 +47,10 @@ public class MainPlayerMovement : MonoBehaviour
         }
     }
 
-    // Used for physics calculations(No Idea)
     private void FixedUpdate()
     {
         Move();
-
     }
-
 
     private void Move()
     {
@@ -57,6 +63,7 @@ public class MainPlayerMovement : MonoBehaviour
         }
         rb.velocity = moveForce;
     }
+
 
     private void GetInput()
     {
@@ -71,6 +78,26 @@ public class MainPlayerMovement : MonoBehaviour
         {
             anim.SetBool("IsWalking", false);
         }
+    }
 
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        Hit(collision.collider);
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        Hit(collision);
+    }
+
+    private void Hit(Collider2D collider)
+    {
+        if ((collider.CompareTag("Mob") || collider.CompareTag("MobBullet")) && playerStats.playerCurrentHealth > 0 && playerStats.invincibilityTimer <= 0)
+        {
+            playerStats.GetHit();
+
+            Vector2 knockbackDirection = (transform.position - collider.transform.position).normalized;
+            forceToApply += new Vector2(knockbackDirection.x * 20f, knockbackDirection.y * 20f);
+        }
     }
 }

@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8737536a85a094e42821801391f53478, type: 3}
+  m_Name: RangedMonster
+  m_EditorClassIdentifier: 
+  mobSpeed: 0.5
+  mobHealth: 10
+  ranger: 1
+  knockbackResistance: 1.5
+  bulletPf: {fileID: 630221923625131633, guid: e7ec5f2ed8bc4c84a966899da7a244d8, type: 3}
+  bulletSpeed: 10
+  fireRate: 2
+  Image: {fileID: -2008047059, guid: 6caaa0ea0f8e3364492137c1779c3b6e, type: 3}
+  deathAnim: {fileID: 486592481115028674, guid: b60c1f63d4f951b41beeb87b1efd83d2, type: 3}

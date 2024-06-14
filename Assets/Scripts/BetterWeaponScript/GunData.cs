@@ -1,13 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "GunData", menuName = "Gun/Gun Data", order = 1)]
 public class GunData : ScriptableObject
 {
-
-    //HandGun value
-    [Header("Handgun")]
+    [Header("Gun's Values")]
     public float bulletSpeed;
     public float fireRate;
     public float damage;
@@ -15,4 +11,5 @@ public class GunData : ScriptableObject
     public int pierceCount;
     public Sprite Image;
     public Sprite bulletSP;
+    public float knockbackForce;
 }

@@ -37,7 +37,7 @@ public class HeartDisplay : MonoBehaviour
                 hearts[i].sprite = emptyHeart;
             }
 
-            if(i < maxHealth)
+            if (i < maxHealth)
             {
                 hearts[i].enabled = true;
             }

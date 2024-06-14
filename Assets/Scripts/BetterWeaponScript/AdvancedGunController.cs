@@ -8,29 +8,30 @@ public class AdvancedGunController : MonoBehaviour
 
     //Gun handle
     [Header("Gun")]
-    private Transform hand;
     [SerializeField] private float gunDistance = 1.5f;
+    private Transform hand;
     private bool gunFacingRight = true;
     private Vector3 mousePos;
     private Vector3 mouseDirection;
 
     [Header("GunSelection")]
+    [SerializeField] private GunTypeSelection getGunType;
     [SerializeField] private int gunType = 1;
     [SerializeField] private GameObject bulletPf;
     [SerializeField] private GunData handGunData;
     [SerializeField] private GunData shotGunData;
     [SerializeField] private Transform[] handGunFirePoint;
     [SerializeField] private Transform[] shotGunFirePoint;
-    public GunData gunData;
+    [HideInInspector] public GunData gunData;
 
     //Weapon stats
     [Header("GunStats")]
     private Transform[] activeFirePoints;
     private float bulletSpeed;
     private float fireRate;
-    public float damage;
-    public float bulletLifeTime;
-    public int pierceCount;
+    [HideInInspector] public float damage;
+    [HideInInspector] public float bulletLifeTime;
+    [HideInInspector] public int pierceCount;
     private float fireRateTimer;
 
     //Reduce player speed while shooting
@@ -45,6 +46,15 @@ public class AdvancedGunController : MonoBehaviour
 
     private void Awake()
     {
+        if (GunSelector.instance != null)
+        {
+            getGunType = GunSelector.GetCurrentGunType();
+            GunSelector.instance.DestroySingleton();
+        }
+        if (getGunType != null)
+        {
+            gunType = getGunType.gunNumber;
+        }
         GetGunType();
     }
 
@@ -59,6 +69,12 @@ public class AdvancedGunController : MonoBehaviour
 
     void Update()
     {
+
+        if (Time.timeScale == 0f)
+        {
+            return;
+        }
+
         GunPositionHandle();
 
         slowDownTimer -= Time.deltaTime;
@@ -92,7 +108,7 @@ public class AdvancedGunController : MonoBehaviour
         if (gunType == 1)
         {
             gunData = handGunData;
-            activeFirePoints = handGunFirePoint; 
+            activeFirePoints = handGunFirePoint;
         }
         else if (gunType == 2)
         {

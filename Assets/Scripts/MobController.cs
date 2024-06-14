@@ -23,7 +23,6 @@ public class MobController : MonoBehaviour
     [SerializeField] private float bulletSpeed = 10f;
     [SerializeField] private float fireRate = 2f;
     private float fireRateTimer;
-    // Start is called before the first frame update
     void Start()
     {
         fireRateTimer = 0f;
@@ -32,7 +31,6 @@ public class MobController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (mobHealth  > 0)

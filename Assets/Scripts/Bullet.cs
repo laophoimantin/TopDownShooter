@@ -28,7 +28,23 @@ public class Bullet : MonoBehaviour
         {
             Destroy(gameObject, bulletLifeTime);
         }
-        Physics2D.IgnoreLayerCollision(6, 6);
+    }
+
+    private void Update()
+    {
+        Flip();
+    }
+
+    private void Flip()
+    {
+        if (transform.position.x < GameObject.FindGameObjectWithTag("Player").transform.position.x)
+        {
+            spriteRenderer.flipY = true;
+        }
+        else if (transform.position.x > GameObject.FindGameObjectWithTag("Player").transform.position.x)
+        {
+            spriteRenderer.flipY = false;
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -41,12 +57,12 @@ public class Bullet : MonoBehaviour
             }
             else if (bulletPierceAmount <= 0)
             {
-                mobFound = false;
+                mobFound = true;
                 GameObject effect = Instantiate(hitEffect, transform.position, Quaternion.identity);
                 Destroy(gameObject);
                 Destroy(effect, 1);
             }
-
+            collision.GetComponent<AdvancedMobController>().GetHit();
         }
     }
 

@@ -19,3 +19,4 @@ MonoBehaviour:
   pierceCount: 0
   Image: {fileID: 21300000, guid: d41851ba7c779ea4a904e925f6b196b6, type: 3}
   bulletSP: {fileID: 21300000, guid: 7990ac14bb283c742a68bf159c6fb544, type: 3}
+  knockbackForce: 20

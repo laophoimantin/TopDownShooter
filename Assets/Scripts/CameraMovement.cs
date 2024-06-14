@@ -14,9 +14,13 @@ public class CameraMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        Vector2 targetPosition = player.position;
-        Vector3 smoothedPosition = Vector3.Lerp(transform.position, targetPosition, smoothing); //Create smooth movements
-        smoothedPosition.z = transform.position.z; //Lock z position
-        transform.position = smoothedPosition; //Update the camera's position
+        if (player != null)
+        {
+            Vector2 targetPosition = player.position;
+            Vector3 smoothedPosition = Vector3.Lerp(transform.position, targetPosition, smoothing); //Create smooth movements
+            smoothedPosition.z = transform.position.z; //Lock z position
+            transform.position = smoothedPosition; //Update the camera's position
+            transform.position = targetPosition;
+        }
     }
 }
