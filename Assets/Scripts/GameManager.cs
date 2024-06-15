@@ -70,7 +70,6 @@ public class GameManager : MonoBehaviour
                     isGameOver = true;
                     Time.timeScale = 0f;
                     DisplayResults();
-                    Debug.Log("Game is over");
                 }
                 break;
             case GameState.LevelUp:
@@ -139,11 +138,23 @@ public class GameManager : MonoBehaviour
         levelUpScreen.SetActive(false);
     }
 
+    //public IEnumerator GameOver()
+    //{
+    //    Debug.Log("GameOver");
+    //    yield return new WaitForSeconds(2f);
+    //    Debug.Log("GameOver");
+    //    timeSurvivedDisplay.text = stopwatchDisplay.text;
+    //    yield return new WaitForSeconds(2f);
+    //    ChangeState(GameState.GameOver);
+    //}
+
     public void GameOver()
     {
         timeSurvivedDisplay.text = stopwatchDisplay.text;
         ChangeState(GameState.GameOver);
     }
+
+
 
     void DisplayResults()
     {
@@ -180,6 +191,21 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1f;
         levelUpScreen.SetActive(false);
         ChangeState(GameState.Gameplay);
+    }
+
+    public void DestroyEverything()
+    {
+        GameObject[] allObjects = FindObjectsOfType<GameObject>();
+        Time.timeScale = 1f;
+
+        // Loop through all objects and destroy them
+        foreach (GameObject obj in allObjects)
+        {
+            if (obj != Camera.main.gameObject)
+            {
+                Destroy(obj);
+            }
+        }
     }
         
 }

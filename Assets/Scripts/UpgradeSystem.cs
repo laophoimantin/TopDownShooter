@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UpgradeSystem : MonoBehaviour
 {
@@ -8,6 +9,9 @@ public class UpgradeSystem : MonoBehaviour
     private MainPlayerMovement playerMovementScript;
     private AdvancedGunController playerGunControllerScript;
     private PlayerStats playerStats;
+
+    [SerializeField] private Button[] upgradeButtons;
+
 
     void Start()
     {
@@ -18,30 +22,43 @@ public class UpgradeSystem : MonoBehaviour
 
     void Update()
     {
+        // Test
         if (Input.GetKeyDown(KeyCode.E))
         {
             UpgradeMoveSpeed();
             UpgradeFireRate();
             UpgradeMaxHealth();
+            UpgradeDamage();
         }
     }
+
+
 
     void UpgradeMoveSpeed()
     {
         playerGunControllerScript.originalMoveSpeed += 1;
+//string Name = " More Speed";
         Debug.Log("Player is faster: " + playerMovementScript.moveSpeed);
     }
 
     void UpgradeMaxHealth()
     {
         playerStats.playerMaxHealth += 1;
+       // string Name = "More Max Health";
         Debug.Log("Player is stronger: " + playerStats.playerMaxHealth);
     }
 
     void UpgradeFireRate()
     {
         playerGunControllerScript.fireRate -= 0.01f;
-        Debug.Log("Gun shoots faster: " + playerGunControllerScript.fireRate);
+        //string Name = "More Fire Rate";
+        Debug.Log("Shoot faster: " + playerGunControllerScript.fireRate);
     }
 
+    void UpgradeDamage()
+    {
+        playerGunControllerScript.damage += 1f;
+        //string Name = "More Damage";
+        Debug.Log("More pain: " + playerGunControllerScript.fireRate);
+    }
 }

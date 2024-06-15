@@ -49,7 +49,7 @@ public class AdvancedMobController : MonoBehaviour
             }
             else
             {
-                Kill();
+                Die();
             }
 
             if (Vector2.Distance(transform.position, player.transform.position) >= MobDta.despawnDistance)
@@ -64,7 +64,7 @@ public class AdvancedMobController : MonoBehaviour
         if (player != null)
         {
             EnemySpawner enemySpawner = FindObjectOfType<EnemySpawner>();
-            transform.position = player.transform.position + enemySpawner.spawnPoints[Random.Range(0, enemySpawner.spawnPoints.Count)].position;
+            //transform.position = player.transform.position + enemySpawner.spawnPoints[Random.Range(0, enemySpawner.spawnPoints.Count)].position;
         }
     }
 
@@ -88,7 +88,7 @@ public class AdvancedMobController : MonoBehaviour
         }
     }
 
-    private void Kill()
+    private void Die()
     {
         Destroy(gameObject);
         GameObject death = Instantiate(MobDta.deathAnim, transform.position, Quaternion.identity);

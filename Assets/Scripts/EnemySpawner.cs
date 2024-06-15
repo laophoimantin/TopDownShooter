@@ -31,11 +31,13 @@ public class EnemySpawner : MonoBehaviour
     public int enemiesAlive;
     public int maxEnemiesAllowed;
     public bool maxEnemiesReached = false;
+    private bool isWaveActive = false;
 
     public float waveInterval; // The interval between each wave
 
     [Header("Spawn Posistions")]
-    public List<Transform> spawnPoints;
+    [SerializeField] private List<Transform> spawnPoints;
+    [SerializeField] private Collider2D validSpawnArea;
 
 
 
@@ -48,7 +50,7 @@ public class EnemySpawner : MonoBehaviour
 
     void Update()
     {
-        if(currentWaveCount < waves.Count && waves[currentWaveCount].spawnCount == 0) // Check if the wave has ended and the next wave should start
+        if(currentWaveCount < waves.Count && waves[currentWaveCount].spawnCount == 0 && !isWaveActive) // Check if the wave has ended and the next wave should start
         {
             StartCoroutine(BeginNextWave());
         }
@@ -65,12 +67,15 @@ public class EnemySpawner : MonoBehaviour
 
     private IEnumerator BeginNextWave()
     {
+        isWaveActive = true;
+
         // Wave for "waveInterval seconds before starting the next wave
         yield return new WaitForSeconds(waveInterval);
 
         // If there are more waves to start after the current wave, move on to the next wave
         if (currentWaveCount < waves.Count - 1)
         {
+            isWaveActive = false;
             currentWaveCount++;
             CalculateWaveQuota();
         }
@@ -98,30 +103,64 @@ public class EnemySpawner : MonoBehaviour
                 // Check if the minimum number of enemies of this type have been spawned 
                 if (enemyGroup.spawnCount < enemyGroup.enemyCount)
                 {
+
+                    List<Transform> availSpawnPoints = spawnPoints;
+                    Vector2 spawnPoint = Vector2.zero;
+                    bool validSpawnPointFound = false;
+                    int randomIndex;
+
+                    while (!validSpawnPointFound || availSpawnPoints.Count > 0)
+                    {
+                        randomIndex = Random.Range (0, availSpawnPoints.Count);
+                        spawnPoint = availSpawnPoints[randomIndex].position;
+
+                        if (validSpawnArea.OverlapPoint(spawnPoint))
+                        {
+                            validSpawnPointFound = true;
+                        }
+                        else
+                        {
+                            availSpawnPoints.RemoveAt(randomIndex);
+                        }
+                    }
+
+                    if (validSpawnPointFound)
+                    {
+                        //Instantiate(enemyGroup.enemyPrefab, player.transform.position + spawnPoints[Random.Range(0, spawnPoints.Count)].position, Quaternion.identity);
+                        Instantiate(enemyGroup.enemyPrefab, player.transform.position + (Vector3)spawnPoint, Quaternion.identity);
+                    }
+                    else
+                    {
+                        Debug.LogWarning("No valid spawn point found!");
+                    }
+
+
+
+                    enemyGroup.spawnCount++;
+                    waves[currentWaveCount].spawnCount++;
+                    enemiesAlive++;
+
                     // Limit the number of enemies that can be spawned at one
                     if (enemiesAlive >= maxEnemiesAllowed)
                     {
                         maxEnemiesReached = true;
                         return;
                     }
-                    Instantiate(enemyGroup.enemyPrefab, player.transform.position + spawnPoints[Random.Range(0, spawnPoints.Count)].position, Quaternion.identity);
-
-                    enemyGroup.spawnCount++;
-                    waves[currentWaveCount].spawnCount++;
-                    enemiesAlive++;
                 }
             }
 
         }
-        //Reset the maxEnemiesReached flag if the number of enemies alive has dropped below the maximum amount
-        if (enemiesAlive < maxEnemiesAllowed)
-        {
-            maxEnemiesReached = false;
-        }
+
     }
 
     public void OnEnemyKilled()
     {
         enemiesAlive--;
+
+        //Reset the maxEnemiesReached flag if the number of enemies alive has dropped below the maximum amount
+        if (enemiesAlive < maxEnemiesAllowed)
+        {
+            maxEnemiesReached = false;
+        }
     }
 }

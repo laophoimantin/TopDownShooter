@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class AdvancedGunController : MonoBehaviour
 {
+
     private MainPlayerMovement playerMovement;
 
     //Gun handle
@@ -14,7 +15,7 @@ public class AdvancedGunController : MonoBehaviour
     private Vector3 mousePos;
     private Vector3 mouseDirection;
 
-    [Header("GunSelection")]
+    [Header("Gun Selection")]
     [SerializeField] private GunTypeSelection getGunType;
     [SerializeField] private int gunType = 1;
     [SerializeField] private GameObject bulletPf;
@@ -25,7 +26,7 @@ public class AdvancedGunController : MonoBehaviour
     [HideInInspector] public GunData gunData;
 
     //Weapon stats
-    [Header("GunStats")]
+    [Header("Gun Stats")]
     private Transform[] activeFirePoints;
     private float bulletSpeed;
     public float fireRate;
@@ -35,8 +36,9 @@ public class AdvancedGunController : MonoBehaviour
     private float fireRateTimer;
 
     //Reduce player speed while shooting
-    [Header("Slow")]
+    [Header("Speed Adjustment")]
     [SerializeField] private float slowDownDuration = 0.5f;
+    [SerializeField] private float speedDebuff = 0.7f;
     private float slowDownTimer;
     [HideInInspector] public float originalMoveSpeed;
 
@@ -96,7 +98,7 @@ public class AdvancedGunController : MonoBehaviour
 
         if (slowDownTimer > 0)
         {
-            playerMovement.moveSpeed = originalMoveSpeed * 0.7f;
+            playerMovement.moveSpeed = originalMoveSpeed * speedDebuff;
         }
         else
         {

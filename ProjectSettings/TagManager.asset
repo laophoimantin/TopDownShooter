@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Bullet
   - Mob
+  - MobBullet
+  - Wall
   layers:
   - Default
   - TransparentFX
@@ -54,6 +56,9 @@ TagManager:
     locked: 0
   - name: Mob
     uniqueID: 1839379281
+    locked: 0
+  - name: Wall
+    uniqueID: 559231489
     locked: 0
   - name: Projectile
     uniqueID: 2873765101

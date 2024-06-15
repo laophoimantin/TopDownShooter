@@ -1,4 +1,3 @@
-using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -25,7 +24,7 @@ public class PlayerStats : MonoBehaviour
     {
         if(playerCurrentHealth <= 0)
         {
-            Kill();
+            Die();
         }
 
         anim.SetFloat("GetHit", invincibilityTimer);
@@ -33,6 +32,12 @@ public class PlayerStats : MonoBehaviour
         if(invincibilityTimer >= 0)
         {
             invincibilityTimer -= Time.deltaTime;
+        }
+
+        // Max health cap
+        if (playerMaxHealth > 8)
+        {
+            playerMaxHealth = 8;
         }
     }
 
@@ -42,13 +47,14 @@ public class PlayerStats : MonoBehaviour
         Debug.Log("Get Hit! Health remain: " + playerCurrentHealth);
         invincibilityTimer = invincibilityDuration;
     }
-    private void Kill()
+    private void Die()
     {
         Instantiate(dummy, transform.position, transform.rotation);
         Destroy(gameObject);
         if (!GameManager.instance.isGameOver)
         {
             GameManager.instance.AssignLevelReached(level);
+            //StartCoroutine(GameManager.instance.GameOver());
             GameManager.instance.GameOver();
         }
     }
@@ -104,8 +110,5 @@ public class PlayerStats : MonoBehaviour
             GameManager.instance.StartLevelUp();
         }
     }
-
-
-
 
 }

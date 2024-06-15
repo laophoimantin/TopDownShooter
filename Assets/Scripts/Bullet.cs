@@ -64,6 +64,12 @@ public class Bullet : MonoBehaviour
             }
             collision.GetComponent<AdvancedMobController>().GetHit();
         }
+        else if (collision.CompareTag("Wall"))
+        {
+            GameObject effect = Instantiate(hitEffect, transform.position, Quaternion.identity);
+            Destroy(gameObject);
+            Destroy(effect, 1);
+        }
     }
 
 }
