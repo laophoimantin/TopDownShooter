@@ -20,12 +20,6 @@ public class UpgradeSystem : MonoBehaviour
         playerStats = FindObjectOfType<PlayerStats>();
     }
 
-    void Update()
-    {
-
-    }
-
-
 
     void UpgradeMoveSpeed()
     {

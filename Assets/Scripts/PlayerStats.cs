@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using User.Manager.General;
 public class PlayerStats : MonoBehaviour
 {
     private Animator anim;
@@ -47,7 +47,6 @@ public class PlayerStats : MonoBehaviour
     public void GetHit()
     {
         playerCurrentHealth -= 1;
-        Debug.Log("Get Hit! Health remain: " + playerCurrentHealth);
         invincibilityTimer = invincibilityDuration;
         audioManager.PlaySFX(audioManager.hurtSoundClip, audioManager.otherSoundSource);
     }

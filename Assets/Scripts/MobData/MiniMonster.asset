@@ -16,7 +16,7 @@ MonoBehaviour:
   mobHealth: 5.7
   ranger: 0
   knockbackResistance: 1
-  despawnDistance: 40
+  despawnDistance: 30
   bulletPf: {fileID: 0}
   bulletSpeed: 10
   fireRate: 2

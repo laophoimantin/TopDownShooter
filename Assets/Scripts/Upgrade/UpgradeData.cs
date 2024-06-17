@@ -1,18 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class UpgradeData : MonoBehaviour
+namespace User.Scriptable.Upgrade
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    using Manager.Upgrade;
 
-    // Update is called once per frame
-    void Update()
+    [CreateAssetMenu(fileName = "New Upgrade Data", menuName = "Upgrade/Upgrade Data")]
+    public class UpgradeData : ScriptableObject
     {
-        
+        public UpgradeType upgradeType;
+        public string upgradeName;
+        public Sprite upgradeImage;
+        public Sprite highlightedSprite;
     }
 }

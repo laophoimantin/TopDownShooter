@@ -190,7 +190,7 @@ MonoBehaviour:
     droprate: 90
   - name: Heal Item
     itemPrefab: {fileID: 4247610485684130058, guid: 73aadaec256e081489e15f5e2a2dd666, type: 3}
-    droprate: 0.1
+    droprate: 2
 --- !u!82 &-2897434547039847334
 AudioSource:
   m_ObjectHideFlags: 0

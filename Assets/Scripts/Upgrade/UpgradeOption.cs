@@ -1,18 +1,40 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class UpgradeOption : MonoBehaviour
+
+namespace User.UI
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    using Scriptable.Upgrade;
+    using Manager.Upgrade;
 
-    // Update is called once per frame
-    void Update()
+    public class UpgradeOption : MonoBehaviour
     {
-        
+        [Header("REFERENCES")]
+        [SerializeField] private Image image;
+        [SerializeField] private Text text;
+        [SerializeField] private Button targetButton;
+        private UpgradeType upgradeType;
+        private UpgradeManager upgradeManager;
+
+        private void Start()
+        {
+            upgradeManager = FindObjectOfType<UpgradeManager>();
+        }
+
+        public void ApplyUpgrade()
+        {
+            upgradeManager.GetUpgradeFromType(upgradeType);
+        }
+
+        public void UpdateDisplay(UpgradeData UpgradeDta)
+        {
+            image.sprite = UpgradeDta.upgradeImage;
+            text.text = UpgradeDta.upgradeName;
+            upgradeType = UpgradeDta.upgradeType;
+
+            SpriteState spriteState = targetButton.spriteState;
+            spriteState.highlightedSprite = UpgradeDta.highlightedSprite;
+            targetButton.spriteState = spriteState;
+        }
     }
 }

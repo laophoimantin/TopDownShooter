@@ -28,12 +28,12 @@ public class EnemySpawner : MonoBehaviour
 
     [Header("Spawner Attributes")]
     private float spawnTimer;
-    public int enemiesAlive;
-    public int maxEnemiesAllowed;
-    public bool maxEnemiesReached = false;
+    [SerializeField] private int enemiesAlive;
+    [SerializeField] private int maxEnemiesAllowed;
+    private bool maxEnemiesReached;
     private bool isWaveActive = false;
 
-    public float waveInterval; // The interval between each wave
+    [SerializeField] private float waveInterval; // The interval between each wave
 
     [Header("Spawn Posistions")]
     [SerializeField] private List<Transform> spawnPoints;
