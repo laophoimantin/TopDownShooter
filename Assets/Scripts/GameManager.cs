@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.U2D;
 using UnityEngine.UI;
+using System;
 
 public class GameManager : MonoBehaviour
 {
@@ -20,6 +18,9 @@ public class GameManager : MonoBehaviour
     // Store the previous state of the game
     public GameState previousState;
 
+
+    [Header("LevelUP")]
+    public static Action OnLevelUp;
 
 
     [Header("Ui")]
@@ -49,6 +50,7 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        stopwatchTime = 300f;
         if (instance == null)
         {
             instance = this;
@@ -100,11 +102,11 @@ public class GameManager : MonoBehaviour
 
     private void CheckForWin()
     {
-        if (stopwatchTime >= 5f)
+        if (stopwatchTime <= 0f)
         {
             playerDisplay.sprite = happyPenny;
             playerDisplay.SetNativeSize();
-            GameOver();
+            GameOver(true);
         }
     }
 
@@ -168,9 +170,16 @@ public class GameManager : MonoBehaviour
     //    ChangeState(GameState.GameOver);
     //}
 
-    public void GameOver()
+    public void GameOver(bool isWinning)
     {
-        timeSurvivedDisplay.text = ("Survived: " + stopwatchDisplay.text);
+        if (!isWinning)
+        {
+            timeSurvivedDisplay.text = ("Survived: " + stopwatchDisplay.text);
+        }
+        else
+        {
+            timeSurvivedDisplay.text = ("You Win!");
+        }
         ChangeState(GameState.GameOver);
     }
 
@@ -191,7 +200,7 @@ public class GameManager : MonoBehaviour
 
     private void UpdateStopwatch()
     {
-        stopwatchTime += Time.deltaTime;
+        stopwatchTime -= Time.deltaTime;
 
         UpdateStopwatchDisplay();
     }
@@ -216,6 +225,12 @@ public class GameManager : MonoBehaviour
         levelUpScreen.SetActive(false);
         ChangeState(GameState.Gameplay);
     }
+
+    public void LevelUp()
+    {
+        OnLevelUp?.Invoke();
+    }
+
 
     public void DestroyEverything()
     {

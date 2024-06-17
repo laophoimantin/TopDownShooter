@@ -16,6 +16,7 @@ public class PlayerStats : MonoBehaviour
     {
         playerCurrentHealth = playerMaxHealth;
         anim = GetComponent<Animator>();
+        GameManager.instance.AssignLevelReached(level);
 
         experienceCap = levelRanges[0].experienceCapIncrease;
         audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<SoundManager>();
@@ -56,9 +57,8 @@ public class PlayerStats : MonoBehaviour
         Destroy(gameObject);
         if (!GameManager.instance.isGameOver)
         {
-            GameManager.instance.AssignLevelReached(level);
             //StartCoroutine(GameManager.instance.GameOver());
-            GameManager.instance.GameOver();
+            GameManager.instance.GameOver(false);
         }
     }
 
@@ -112,6 +112,7 @@ public class PlayerStats : MonoBehaviour
             experienceCap += experienceCapIncrease;
 
             audioManager.PlaySFX(audioManager.levelUpSoundClip, audioManager.otherSoundSource);
+            GameManager.instance.AssignLevelReached(level);
             GameManager.instance.StartLevelUp();
         }
     }

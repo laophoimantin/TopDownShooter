@@ -22,14 +22,7 @@ public class UpgradeSystem : MonoBehaviour
 
     void Update()
     {
-        // Test
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            UpgradeMoveSpeed();
-            UpgradeFireRate();
-            UpgradeMaxHealth();
-            UpgradeDamage();
-        }
+
     }
 
 
@@ -55,7 +48,7 @@ public class UpgradeSystem : MonoBehaviour
         Debug.Log("Shoot faster: " + playerGunControllerScript.fireRate);
     }
 
-    void UpgradeDamage()
+    private static void UpgradeDamage(ref AdvancedGunController playerGunControllerScript)
     {
         playerGunControllerScript.damage += 1f;
         //string Name = "More Damage";
