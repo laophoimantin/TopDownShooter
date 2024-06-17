@@ -12,12 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8737536a85a094e42821801391f53478, type: 3}
   m_Name: HeavyMonster
   m_EditorClassIdentifier: 
-  mobSpeed: 0.5
-  mobHealth: 10
+  mobSpeed: 1.25
+  mobHealth: 30
   ranger: 0
-  knockbackResistance: 5
+  knockbackResistance: 0.03
+  despawnDistance: 40
   bulletPf: {fileID: 0}
   bulletSpeed: 0
   fireRate: 0
   Image: {fileID: -917861451, guid: 6caaa0ea0f8e3364492137c1779c3b6e, type: 3}
   deathAnim: {fileID: 6765254764837772842, guid: e21daeff3a1a888408a0e6f58e6de854, type: 3}
+  blood: {fileID: 6406195483311095927, guid: 7d43514d62ba82a43ab639bc205bf6a8, type: 3}

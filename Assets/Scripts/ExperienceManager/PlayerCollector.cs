@@ -6,29 +6,36 @@ public class PlayerCollector : MonoBehaviour
 {
     private PlayerStats player;
     private CircleCollider2D playerCollector;
-    [SerializeField] float pullSpeed = 300f;
-
+    [SerializeField] private float pullSpeed = 300f;
+    [SerializeField] private float pullRadius = 5f;
+    [SerializeField] private LayerMask collectibleLayer;
 
     private void Start()
     {
         player = GetComponent<PlayerStats>();
-        playerCollector = GetComponent<CircleCollider2D>();
     }
 
     private void Update()
     {
+        Vector2 pullCenter = transform.position;
+        float radius = pullRadius;
+
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(pullCenter, radius, collectibleLayer);
+
+        foreach (var collider in colliders)
+        {
+            BobbingAnimation bobbingScript = collider.GetComponent<BobbingAnimation>();
+            bobbingScript.isCollected = true;
+            if (collider.gameObject.TryGetComponent(out ICollectible collectible))
+            {
+                collider.transform.position = Vector2.MoveTowards(collider.transform.position, transform.position, pullSpeed * Time.deltaTime);
+            }
+        }
     }
 
-    private void OnTriggerStay2D(Collider2D collision)
+    private void OnDrawGizmosSelected()
     {
-        if(collision.gameObject.TryGetComponent(out ICollectible collectible))
-        {
-            //Rigidbody2D rb = collision.gameObject.GetComponent<Rigidbody2D>();
-            //Vector2 forceDirection = (transform.position - collision.transform.position).normalized;
-            //rb.AddForce(forceDirection * pullSpeed);
-            collision.transform.position = Vector2.MoveTowards(collision.transform.position, transform.position, pullSpeed);
-            //collectible.Collect();
-
-        }
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, pullRadius);
     }
 }

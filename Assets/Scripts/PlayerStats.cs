@@ -11,13 +11,14 @@ public class PlayerStats : MonoBehaviour
     [HideInInspector] public int playerCurrentHealth;
     [HideInInspector] public float invincibilityTimer;
     [SerializeField] private float invincibilityDuration = 3f;
-
+    private SoundManager audioManager;
     void Start()
     {
         playerCurrentHealth = playerMaxHealth;
         anim = GetComponent<Animator>();
 
         experienceCap = levelRanges[0].experienceCapIncrease;
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<SoundManager>();
     }
 
     void Update()
@@ -39,6 +40,7 @@ public class PlayerStats : MonoBehaviour
         {
             playerMaxHealth = 8;
         }
+        GameManager.instance.CurrentLVDisplay(level);
     }
 
     public void GetHit()
@@ -46,6 +48,7 @@ public class PlayerStats : MonoBehaviour
         playerCurrentHealth -= 1;
         Debug.Log("Get Hit! Health remain: " + playerCurrentHealth);
         invincibilityTimer = invincibilityDuration;
+        audioManager.PlaySFX(audioManager.hurtSoundClip, audioManager.otherSoundSource);
     }
     private void Die()
     {
@@ -64,6 +67,7 @@ public class PlayerStats : MonoBehaviour
         if (playerCurrentHealth < playerMaxHealth)
         {
             playerCurrentHealth += 1;
+            audioManager.PlaySFX(audioManager.healSoundClip, audioManager.otherSoundSource);
         }
     }
 
@@ -107,6 +111,7 @@ public class PlayerStats : MonoBehaviour
             }
             experienceCap += experienceCapIncrease;
 
+            audioManager.PlaySFX(audioManager.levelUpSoundClip, audioManager.otherSoundSource);
             GameManager.instance.StartLevelUp();
         }
     }

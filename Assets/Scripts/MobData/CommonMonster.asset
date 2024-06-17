@@ -12,12 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8737536a85a094e42821801391f53478, type: 3}
   m_Name: CommonMonster
   m_EditorClassIdentifier: 
-  mobSpeed: 0.5
-  mobHealth: 10
+  mobSpeed: 1.5
+  mobHealth: 8
   ranger: 0
-  knockbackResistance: 2
+  knockbackResistance: 0.4
+  despawnDistance: 40
   bulletPf: {fileID: 0}
-  bulletSpeed: 10
+  bulletSpeed: 0
   fireRate: 2
   Image: {fileID: -195095071, guid: 6caaa0ea0f8e3364492137c1779c3b6e, type: 3}
   deathAnim: {fileID: 3491775656508519713, guid: d18c246daab84a2459c1126869caabf2, type: 3}
+  blood: {fileID: 6406195483311095927, guid: 7d43514d62ba82a43ab639bc205bf6a8, type: 3}

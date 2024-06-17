@@ -60,5 +60,17 @@ public class UpgradeSystem : MonoBehaviour
         playerGunControllerScript.damage += 1f;
         //string Name = "More Damage";
         Debug.Log("More pain: " + playerGunControllerScript.fireRate);
+    }   
+    void UpgradeRange()
+    {
+        playerGunControllerScript.bulletLifeTime += 1f;
+        //string Name = "More Damage";
+        Debug.Log("More pain: " + playerGunControllerScript.fireRate);
     }
+
+    void UpgradePiercing()
+    {
+        playerGunControllerScript.pierceCount += 1;
+    }
+
 }

@@ -8,6 +8,8 @@ TagManager:
   - Mob
   - MobBullet
   - Wall
+  - Audio
+  - Collector
   layers:
   - Default
   - TransparentFX
@@ -16,8 +18,8 @@ TagManager:
   - Water
   - UI
   - Bullet
-  - 
-  - 
+  - Item
+  - Mob
   - 
   - 
   - 

@@ -17,9 +17,7 @@ public class MobBullet : MonoBehaviour
         {
             Destroy(gameObject, mobBulletLifetime);
         }
-
     }
-
 
     private void OnTriggerEnter2D(Collider2D collision)
     {

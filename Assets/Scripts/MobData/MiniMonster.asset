@@ -12,12 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8737536a85a094e42821801391f53478, type: 3}
   m_Name: MiniMonster
   m_EditorClassIdentifier: 
-  mobSpeed: 0.5
-  mobHealth: 10
+  mobSpeed: 2.5
+  mobHealth: 5.7
   ranger: 0
   knockbackResistance: 1
+  despawnDistance: 40
   bulletPf: {fileID: 0}
   bulletSpeed: 10
   fireRate: 2
   Image: {fileID: 775268295, guid: 6caaa0ea0f8e3364492137c1779c3b6e, type: 3}
   deathAnim: {fileID: 3170774766760178386, guid: d119b66e75d009c40940b147b221e947, type: 3}
+  blood: {fileID: 6406195483311095927, guid: 7d43514d62ba82a43ab639bc205bf6a8, type: 3}

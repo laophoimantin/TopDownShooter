@@ -18,7 +18,8 @@ public class AdvancedMobController : MonoBehaviour
 
     [Header("Visual")]
     private SpriteRenderer visual;
-
+    private SoundManager audioManager;
+    private AudioSource audioSource;
 
     void Start()
     {
@@ -29,6 +30,8 @@ public class AdvancedMobController : MonoBehaviour
 
         visual = GetComponent<SpriteRenderer>();
         visual.sprite = MobDta.Image;
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<SoundManager>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -64,7 +67,8 @@ public class AdvancedMobController : MonoBehaviour
         if (player != null)
         {
             EnemySpawner enemySpawner = FindObjectOfType<EnemySpawner>();
-            //transform.position = player.transform.position + enemySpawner.spawnPoints[Random.Range(0, enemySpawner.spawnPoints.Count)].position;
+            enemySpawner.UpdateAvailableSpawnPoints();
+            transform.position = enemySpawner.availSpawnPoints[Random.Range(0, enemySpawner.availSpawnPoints.Count)].position;
         }
     }
 
@@ -116,6 +120,7 @@ public class AdvancedMobController : MonoBehaviour
     {
         if (fireRateTimer <= 0)
         {
+            audioSource.PlayOneShot(audioManager.monsterShootClip);
             GameObject bullet = Instantiate(MobDta.bulletPf, transform.position, transform.rotation);
             Rigidbody2D bulletRb = bullet.GetComponent<Rigidbody2D>();
             Vector2 direction = (player.transform.position - transform.position).normalized;
@@ -126,10 +131,10 @@ public class AdvancedMobController : MonoBehaviour
 
     public void GetHit()
     {
+        Instantiate(MobDta.blood, transform.position, Quaternion.identity);
         currentHealth -= gunController.damage;
-        Debug.Log("Mob get hit! Health remain:" + currentHealth);
         Vector2 knockbackDirection = (transform.position - player.transform.position).normalized;
-        float modifiedKnockback = gunController.gunData.knockbackForce / MobDta.knockbackResistance;
+        float modifiedKnockback = gunController.gunData.knockbackForce * MobDta.knockbackResistance;
         if (modifiedKnockback < 0)
         {
             modifiedKnockback = 0;

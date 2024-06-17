@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 2111539861483015911}
   - component: {fileID: 2111539861483015904}
   - component: {fileID: -2721097641595576473}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: CommonMonster
   m_TagString: Mob
   m_Icon: {fileID: 0}
@@ -36,7 +36,7 @@ Transform:
   m_Children:
   - {fileID: 2111539862848997841}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2111539861483015910
 MonoBehaviour:
@@ -116,12 +116,12 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 99
+  m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 0}
-  m_Interpolate: 1
+  m_Interpolate: 0
   m_SleepingMode: 0
   m_CollisionDetection: 1
   m_Constraints: 4
@@ -187,6 +187,9 @@ MonoBehaviour:
   - name: Experience
     itemPrefab: {fileID: 7341958506029394192, guid: 3a41ce37c9470804db42b0f2ffb4479e, type: 3}
     droprate: 90
+  - name: Heal Item
+    itemPrefab: {fileID: 4247610485684130058, guid: 73aadaec256e081489e15f5e2a2dd666, type: 3}
+    droprate: 2
 --- !u!1 &2111539862848997840
 GameObject:
   m_ObjectHideFlags: 0
@@ -197,7 +200,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2111539862848997841}
   - component: {fileID: 2111539862848997854}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Shadown
   m_TagString: Untagged
   m_Icon: {fileID: 0}

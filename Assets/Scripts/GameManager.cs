@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.U2D;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
@@ -37,6 +38,15 @@ public class GameManager : MonoBehaviour
     private float stopwatchTime;
     public Text stopwatchDisplay;
 
+    [Header("LV Display")]
+    public Text LVDisplay;
+
+    [Header("Win")]
+    public Sprite happyPenny;
+    public Image playerDisplay;
+
+
+
     private void Awake()
     {
         if (instance == null)
@@ -58,6 +68,7 @@ public class GameManager : MonoBehaviour
             case GameState.Gameplay:
                 CheckForPauseAndResume();
                 UpdateStopwatch();
+                CheckForWin();
                 break;
 
             case GameState.Paused:
@@ -87,12 +98,21 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void CheckForWin()
+    {
+        if (stopwatchTime >= 5f)
+        {
+            playerDisplay.sprite = happyPenny;
+            playerDisplay.SetNativeSize();
+            GameOver();
+        }
+    }
+
     // Define the method to change the state of the game
     public void ChangeState(GameState newState)
     {
         currentState = newState;
     }
-
     public void PauseGame()
     {
         if (currentState != GameState.Paused)
@@ -150,25 +170,29 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
-        timeSurvivedDisplay.text = stopwatchDisplay.text;
+        timeSurvivedDisplay.text = ("Survived: " + stopwatchDisplay.text);
         ChangeState(GameState.GameOver);
     }
 
-
-
-    void DisplayResults()
+    private void DisplayResults()
     {
         resultScreen.SetActive(true);
     }
 
     public void AssignLevelReached(int levelReachedData)
     {
-        levelReached.text = levelReachedData.ToString();
+        levelReached.text =("Level: " + levelReachedData.ToString());
     }
 
-    void UpdateStopwatch()
+    public void CurrentLVDisplay(int currentLevel)
+    {
+        LVDisplay.text = currentLevel.ToString();
+    }
+
+    private void UpdateStopwatch()
     {
         stopwatchTime += Time.deltaTime;
+
         UpdateStopwatchDisplay();
     }
 

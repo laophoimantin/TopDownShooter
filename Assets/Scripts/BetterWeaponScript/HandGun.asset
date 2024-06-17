@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e97aa7ed90742994cbcd09aa3319fb66, type: 3}
   m_Name: HandGun
   m_EditorClassIdentifier: 
-  bulletSpeed: 50
-  fireRate: 0.25
+  bulletSpeed: 40
+  fireRate: 0.35
   damage: 2
-  bulletLifeTime: 1
+  bulletLifeTime: 0.17
   pierceCount: 0
   Image: {fileID: 21300000, guid: d41851ba7c779ea4a904e925f6b196b6, type: 3}
   bulletSP: {fileID: 21300000, guid: 7990ac14bb283c742a68bf159c6fb544, type: 3}
-  knockbackForce: 20
+  knockbackForce: 10

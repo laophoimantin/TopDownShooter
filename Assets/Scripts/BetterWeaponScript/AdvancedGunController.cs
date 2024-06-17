@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class AdvancedGunController : MonoBehaviour
 {
+    [Header("Audio")]
+    private SoundManager audioManager;
+
 
     private MainPlayerMovement playerMovement;
 
@@ -67,6 +70,7 @@ public class AdvancedGunController : MonoBehaviour
         fireRateTimer = fireRate;
         playerMovement = GetComponent<MainPlayerMovement>();
         originalMoveSpeed = playerMovement.moveSpeed;
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<SoundManager>();
     }
 
     void Update()
@@ -138,6 +142,15 @@ public class AdvancedGunController : MonoBehaviour
         foreach (Transform firePoint in activeFirePoints)
         {
             GameObject bullet = Instantiate(bulletPf, firePoint.position, firePoint.rotation);
+            if (gunType == 1)
+            {
+                audioManager.PlaySFX(audioManager.handgunSoundClip, audioManager.gunshotSource);
+            }
+            else if (gunType == 2)
+            {
+                audioManager.PlaySFX(audioManager.shotgunSoundClip, audioManager.gunshotSource);
+            }
+
             Rigidbody2D bulletRb = bullet.GetComponent<Rigidbody2D>();
             bulletRb.velocity = mouseDirection * bulletSpeed;
         }

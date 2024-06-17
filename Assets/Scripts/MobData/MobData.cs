@@ -21,6 +21,7 @@ public class MobData : ScriptableObject
     [Header("Visual")]
     public Sprite Image;
     public GameObject deathAnim;
+    public ParticleSystem blood;
 
     
 }

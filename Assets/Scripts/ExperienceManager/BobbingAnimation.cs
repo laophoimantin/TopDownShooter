@@ -8,7 +8,7 @@ public class BobbingAnimation : MonoBehaviour
     [SerializeField] private float magnitude; // Range of movement;
     [SerializeField] private Vector3 direction; // Direction of movement
     private Vector3 initialPosition;
-    private bool isCollected = false;
+    public bool isCollected = false;
 
     void Start()
     {

@@ -20,10 +20,6 @@ public class XPBarManager : MonoBehaviour
     {
         float currentXP = playerStats.experience;
         float targetXP = playerStats.experienceCap;
-
-       
-
-
         experienceFill.fillAmount = currentXP / targetXP;
     }
 }

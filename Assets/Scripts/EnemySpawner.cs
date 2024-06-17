@@ -39,13 +39,27 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private List<Transform> spawnPoints;
     [SerializeField] private Collider2D validSpawnArea;
 
-
+    [Header("Valid Spawn Positions")]
+    public List<Transform> availSpawnPoints;
 
     private GameObject player;
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
         CalculateWaveQuota();
+        availSpawnPoints = new List<Transform>(spawnPoints);
+        firstWave();
+    }
+
+    void firstWave()
+    {
+        if (currentWaveCount < waves.Count && waves[currentWaveCount].spawnCount == 0)
+        {
+            StartCoroutine(BeginNextWave());
+        }
+
+        spawnTimer = 0f;
+        SpawnEnemies();
     }
 
     void Update()
@@ -63,6 +77,7 @@ public class EnemySpawner : MonoBehaviour
             spawnTimer = 0f;
             SpawnEnemies();
         }
+
     }
 
     private IEnumerator BeginNextWave()
@@ -92,6 +107,18 @@ public class EnemySpawner : MonoBehaviour
         waves[currentWaveCount].waveQuota = currentWaveQuota;
     }
 
+    public void UpdateAvailableSpawnPoints()
+    {
+        availSpawnPoints.Clear();
+        foreach (Transform point in spawnPoints)
+        {
+            if (validSpawnArea.OverlapPoint(point.position))
+            {
+                availSpawnPoints.Add(point);
+            }
+        }
+    }
+
     private void SpawnEnemies()
     {
         // Check if the minimum number of enemies in the wave have been spawned
@@ -103,39 +130,10 @@ public class EnemySpawner : MonoBehaviour
                 // Check if the minimum number of enemies of this type have been spawned 
                 if (enemyGroup.spawnCount < enemyGroup.enemyCount)
                 {
-
-                    List<Transform> availSpawnPoints = spawnPoints;
-                    Vector2 spawnPoint = Vector2.zero;
-                    bool validSpawnPointFound = false;
-                    int randomIndex;
-
-                    while (!validSpawnPointFound || availSpawnPoints.Count > 0)
-                    {
-                        randomIndex = Random.Range (0, availSpawnPoints.Count);
-                        spawnPoint = availSpawnPoints[randomIndex].position;
-
-                        if (validSpawnArea.OverlapPoint(spawnPoint))
-                        {
-                            validSpawnPointFound = true;
-                        }
-                        else
-                        {
-                            availSpawnPoints.RemoveAt(randomIndex);
-                        }
-                    }
-
-                    if (validSpawnPointFound)
-                    {
-                        //Instantiate(enemyGroup.enemyPrefab, player.transform.position + spawnPoints[Random.Range(0, spawnPoints.Count)].position, Quaternion.identity);
-                        Instantiate(enemyGroup.enemyPrefab, player.transform.position + (Vector3)spawnPoint, Quaternion.identity);
-                    }
-                    else
-                    {
-                        Debug.LogWarning("No valid spawn point found!");
-                    }
-
-
-
+                    UpdateAvailableSpawnPoints();
+                    int randomIndex = Random.Range(0, availSpawnPoints.Count);
+                    Vector2 finalSpawnPoint = availSpawnPoints[randomIndex].position;
+                    Instantiate(enemyGroup.enemyPrefab, finalSpawnPoint, Quaternion.identity);
                     enemyGroup.spawnCount++;
                     waves[currentWaveCount].spawnCount++;
                     enemiesAlive++;
