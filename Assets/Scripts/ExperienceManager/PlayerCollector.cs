@@ -18,16 +18,15 @@ public class PlayerCollector : MonoBehaviour
     private void Update()
     {
         Vector2 pullCenter = transform.position;
-        float radius = pullRadius;
-
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(pullCenter, radius, collectibleLayer);
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(pullCenter, pullRadius, collectibleLayer);
 
         foreach (var collider in colliders)
         {
             BobbingAnimation bobbingScript = collider.GetComponent<BobbingAnimation>();
-            bobbingScript.isCollected = true;
+            bobbingScript.isCollected = true; // Disable bobbing to avoid disturbing the pull
             if (collider.gameObject.TryGetComponent(out ICollectible collectible))
             {
+                // Pull the item to the player
                 collider.transform.position = Vector2.MoveTowards(collider.transform.position, transform.position, pullSpeed * Time.deltaTime);
             }
         }

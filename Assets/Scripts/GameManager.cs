@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 
-using User.Manager.General;
 using System.Collections;
 
 namespace User.Manager.General
@@ -129,7 +128,6 @@ namespace User.Manager.General
                 ChangeState(GameState.Paused);
                 Time.timeScale = 0f; // Stop the game
                 pauseScreen.SetActive(true);
-                Debug.Log("GAme is paused");
             }
         }
 
@@ -140,7 +138,6 @@ namespace User.Manager.General
                 currentState = previousState;
                 Time.timeScale = 1f; // Resume the game
                 pauseScreen.SetActive(false);
-                Debug.Log("Game is resumed");
             }
         }
 
@@ -168,7 +165,7 @@ namespace User.Manager.General
 
         public void Delay(bool isWinning, int delayTime)
         {
-            StartCoroutine(GameOver(isWinning, delayTime));
+            StartCoroutine(GameOver(isWinning, delayTime)); // Delay the function so the player can run the death animation
         }
 
         public IEnumerator GameOver(bool isWinning, int delayTime)
@@ -176,7 +173,7 @@ namespace User.Manager.General
             yield return new WaitForSeconds(delayTime);
             if (!isWinning)
             {
-                timeSurvivedDisplay.text = ("Survived: " + stopwatchDisplay.text);
+                timeSurvivedDisplay.text = ("Time left: " + stopwatchDisplay.text);
             }
             else
             {
@@ -203,7 +200,6 @@ namespace User.Manager.General
         private void UpdateStopwatch()
         {
             stopwatchTime -= Time.deltaTime;
-
             UpdateStopwatchDisplay();
         }
 
@@ -228,6 +224,7 @@ namespace User.Manager.General
             ChangeState(GameState.Gameplay);
         }
 
+        // Prevent the OnDestroy function from spawning things after the game is quit
         public void DestroyEverything()
         {
             GameObject[] allObjects = FindObjectsOfType<GameObject>();
@@ -238,7 +235,14 @@ namespace User.Manager.General
             {
                 if (obj != Camera.main.gameObject)
                 {
-                    Destroy(obj);
+                    try
+                    {
+                        Destroy(obj);
+                    }
+                    catch (System.Exception ex)
+                    {
+                        Debug.LogError("Failed to destroy object: " + obj.name + " with error: " + ex.Message);
+                    }
                 }
             }
         }

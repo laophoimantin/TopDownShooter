@@ -7,7 +7,6 @@ public class GunSelector : MonoBehaviour
     public static GunSelector instance;
     public GunTypeSelection gunType;
 
-    // Start is called before the first frame update
     void Start()
     {
         if(instance == null)

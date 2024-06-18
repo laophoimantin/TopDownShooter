@@ -5,15 +5,15 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
+    [Header("Settings")]
     [SerializeField] private GameObject hitEffect;
+
     private int bulletPierceAmount;
     private float bulletLifeTime;
-
     private bool mobFound;
 
-    //GunController script
+    [Header("References")]
     private AdvancedGunController gunControl;
-
     private SpriteRenderer spriteRenderer;
 
     void Start()

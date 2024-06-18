@@ -5,17 +5,17 @@ using UnityEngine;
 public class MobBullet : MonoBehaviour
 {
     private Animator anim;
-    [SerializeField] private float mobBulletLifetime = 5f;
-    private bool playerFound = false;
+    [SerializeField] private float bulletLifetime = 5f;
+    private bool playerDetected = false;
     private Rigidbody2D rb;
 
     void Start()
     {
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
-        if (!playerFound)
+        if (!playerDetected)
         {
-            Destroy(gameObject, mobBulletLifetime);
+            Destroy(gameObject, bulletLifetime);
         }
     }
 
@@ -24,7 +24,7 @@ public class MobBullet : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             anim.SetBool("playerFound", true);
-            playerFound = true;
+            playerDetected = true;
             rb.velocity = Vector2.zero;
             Destroy(gameObject, 1);
         }

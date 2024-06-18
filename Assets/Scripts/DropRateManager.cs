@@ -17,6 +17,7 @@ public class DropRateManager : MonoBehaviour
     private bool isQuitting;
     void OnApplicationQuit()
     {
+        // Prevent drops from spawning when changing the scene
         isQuitting = true;
     }
 
@@ -24,7 +25,7 @@ public class DropRateManager : MonoBehaviour
     {
         if (!isQuitting)
         {
-            float randomNumber = UnityEngine.Random.Range(0f, 100f);
+            float randomNumber = Random.Range(0f, 100f);
 
             foreach (Drops rate in drops)
             {

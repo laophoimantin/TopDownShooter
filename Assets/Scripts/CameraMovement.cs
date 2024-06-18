@@ -5,6 +5,8 @@ using UnityEngine;
 public class CameraMovement : MonoBehaviour
 {
     private Transform player;
+
+    [Header("Camera Settings")]
     [SerializeField] private Camera cam;
     [SerializeField] private float threshold;
 
@@ -14,7 +16,7 @@ public class CameraMovement : MonoBehaviour
         cam = GetComponent<Camera>();
     }
 
-    void Update()
+    void LateUpdate() // To ensure the camera moves after all character movements have been processed, reducing jitter and ensuring smooth camera behavior. "GPT"
     {
         if (cam != null && player != null)
         {

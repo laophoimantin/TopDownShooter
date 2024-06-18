@@ -76,7 +76,6 @@ public class AdvancedGunController : MonoBehaviour
 
     void Update()
     {
-
         if (Time.timeScale == 0f)
         {
             return;
@@ -91,6 +90,7 @@ public class AdvancedGunController : MonoBehaviour
             fireRateTimer -= Time.deltaTime;
         }
 
+        // Shoot
         if (Input.GetKey(KeyCode.Mouse0))
         {
             if (fireRateTimer <= 0)

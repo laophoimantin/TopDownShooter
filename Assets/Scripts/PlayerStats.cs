@@ -4,14 +4,19 @@ using UnityEngine;
 using User.Manager.General;
 public class PlayerStats : MonoBehaviour
 {
+    [Header("References")]
     private Animator anim;
     [SerializeField] private GameObject dummy;
+    private SoundManager audioManager;
 
+    [Header("Health Settings")]
     public int playerMaxHealth = 3;
     [HideInInspector] public int playerCurrentHealth;
+
+    [Header("Invincibility Settings")]
     [HideInInspector] public float invincibilityTimer;
     [SerializeField] private float invincibilityDuration = 3f;
-    private SoundManager audioManager;
+
     void Start()
     {
         playerCurrentHealth = playerMaxHealth;
@@ -54,12 +59,6 @@ public class PlayerStats : MonoBehaviour
     {
         Instantiate(dummy, transform.position, transform.rotation);
         Destroy(gameObject);
-        //if (!GameManager.instance.isGameOver)
-        //{
-        //    //StartCoroutine(GameManager.instance.GameOver());
-        //    GameManager.instance.GameOver(false);
-        //}
-        //GameManager.instance.GameOver(false);
         GameManager.instance.Delay(false, 2);
     }
 

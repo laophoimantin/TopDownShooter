@@ -55,6 +55,7 @@ public class AdvancedMobController : MonoBehaviour
                 Die();
             }
 
+            // Teleport the monster if the player runs too far
             if (Vector2.Distance(transform.position, player.transform.position) >= MobDta.despawnDistance)
             {
                 ReturnEnemy();
@@ -76,7 +77,7 @@ public class AdvancedMobController : MonoBehaviour
     {
         if (player != null && currentHealth > 0)
         {
-            BetterMoveTowardsPlayer();
+            MoveTowardsPlayer();
         }
     }
 
@@ -99,7 +100,7 @@ public class AdvancedMobController : MonoBehaviour
         Destroy(death, 3);
     }
 
-    private void BetterMoveTowardsPlayer()
+    private void MoveTowardsPlayer()
     {
         if (forceToApply == Vector2.zero)
         {
@@ -131,15 +132,18 @@ public class AdvancedMobController : MonoBehaviour
 
     public void GetHit()
     {
-        Instantiate(MobDta.blood, transform.position, Quaternion.identity);
-        currentHealth -= gunController.damage;
-        Vector2 knockbackDirection = (transform.position - player.transform.position).normalized;
-        float modifiedKnockback = gunController.gunData.knockbackForce * MobDta.knockbackResistance;
-        if (modifiedKnockback < 0)
+        if (player != null)
         {
-            modifiedKnockback = 0;
+            Instantiate(MobDta.blood, transform.position, Quaternion.identity);
+            currentHealth -= gunController.damage;
+            Vector2 knockbackDirection = (transform.position - player.transform.position).normalized;
+            float modifiedKnockback = gunController.gunData.knockbackForce * MobDta.knockbackResistance;
+            if (modifiedKnockback < 0)
+            {
+                modifiedKnockback = 0;
+            }
+            forceToApply += new Vector2(knockbackDirection.x * modifiedKnockback, knockbackDirection.y * modifiedKnockback);
         }
-        forceToApply += new Vector2(knockbackDirection.x * modifiedKnockback, knockbackDirection.y * modifiedKnockback);
     }
 
     private void OnDestroy()

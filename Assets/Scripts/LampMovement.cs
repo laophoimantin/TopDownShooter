@@ -11,7 +11,7 @@ public class LampMovement : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player");
     }
 
-    void FixedUpdate()
+    void LateUpdate()
     {
         if (player != null)
         {
