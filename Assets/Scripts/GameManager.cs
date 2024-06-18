@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using System;
 
 using User.Manager.General;
+using System.Collections;
 
 namespace User.Manager.General
 {
@@ -111,7 +112,7 @@ namespace User.Manager.General
             {
                 playerDisplay.sprite = happyPenny;
                 playerDisplay.SetNativeSize();
-                GameOver(true);
+                Delay(true, 0);
             }
         }
 
@@ -165,18 +166,14 @@ namespace User.Manager.General
             levelUpScreen.SetActive(false);
         }
 
-        //public IEnumerator GameOver()
-        //{
-        //    Debug.Log("GameOver");
-        //    yield return new WaitForSeconds(2f);
-        //    Debug.Log("GameOver");
-        //    timeSurvivedDisplay.text = stopwatchDisplay.text;
-        //    yield return new WaitForSeconds(2f);
-        //    ChangeState(GameState.GameOver);
-        //}
-
-        public void GameOver(bool isWinning)
+        public void Delay(bool isWinning, int delayTime)
         {
+            StartCoroutine(GameOver(isWinning, delayTime));
+        }
+
+        public IEnumerator GameOver(bool isWinning, int delayTime)
+        {
+            yield return new WaitForSeconds(delayTime);
             if (!isWinning)
             {
                 timeSurvivedDisplay.text = ("Survived: " + stopwatchDisplay.text);

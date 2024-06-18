@@ -5,22 +5,29 @@ using UnityEngine;
 public class CameraMovement : MonoBehaviour
 {
     private Transform player;
-    [SerializeField] private float smoothing = 0.125f;
+    [SerializeField] private Camera cam;
+    [SerializeField] private float threshold;
 
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player").transform;      
+        player = GameObject.FindGameObjectWithTag("Player").transform;
+        cam = GetComponent<Camera>();
     }
 
-    void FixedUpdate()
+    void Update()
     {
-        if (player != null)
+        if (cam != null && player != null)
         {
-            Vector2 targetPosition = player.position;
-            Vector3 smoothedPosition = Vector3.Lerp(transform.position, targetPosition, smoothing); //Create smooth movements
-            smoothedPosition.z = transform.position.z; //Lock z position
-            transform.position = smoothedPosition; //Update the camera's position
-            transform.position = targetPosition;
+            Vector3 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
+            mousePos.z = 0;
+
+            Vector3 targetPos = (player.position + mousePos) / 2f;
+            targetPos.z = 0;
+
+            targetPos.x = Mathf.Clamp(targetPos.x, player.position.x - threshold, player.position.x + threshold);
+            targetPos.y = Mathf.Clamp(targetPos.y, player.position.y - threshold, player.position.y + threshold);
+
+            transform.position = Vector3.Lerp(transform.position, targetPos, Time.deltaTime * 5f);
         }
     }
 }

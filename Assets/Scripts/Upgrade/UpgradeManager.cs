@@ -97,17 +97,17 @@ namespace User.Manager.Upgrade
 
         public  void UpgradeDamage()
         {
-            gunStats.damage += 0.1f;
+            gunStats.damage += 0.3f;
         }
 
         public  void UpgradeSpeed()
         {
-            gunStats.originalMoveSpeed += 0.1f;
+            gunStats.originalMoveSpeed += 0.2f;
         }
 
         public  void UpgradeRange()
         {
-            gunStats.bulletLifeTime += 0.03f;
+            gunStats.bulletLifeTime += 0.06f;
         }
 
         public  void UpgradePierce()
@@ -117,7 +117,7 @@ namespace User.Manager.Upgrade
 
         public  void UpgradeFireRate()
         {
-            gunStats.fireRate -= 0.02f;
+            gunStats.fireRate -= 0.05f;
         }
     }
 }

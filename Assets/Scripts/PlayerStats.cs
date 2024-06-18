@@ -54,11 +54,13 @@ public class PlayerStats : MonoBehaviour
     {
         Instantiate(dummy, transform.position, transform.rotation);
         Destroy(gameObject);
-        if (!GameManager.instance.isGameOver)
-        {
-            //StartCoroutine(GameManager.instance.GameOver());
-            GameManager.instance.GameOver(false);
-        }
+        //if (!GameManager.instance.isGameOver)
+        //{
+        //    //StartCoroutine(GameManager.instance.GameOver());
+        //    GameManager.instance.GameOver(false);
+        //}
+        //GameManager.instance.GameOver(false);
+        GameManager.instance.Delay(false, 2);
     }
 
     public void RestoreHealth()
