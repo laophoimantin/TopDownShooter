@@ -7,142 +7,141 @@ using UnityEngine.UI;
 
 public class SceneController : MonoBehaviour
 {
-       public static SceneController Instance { get; private set; }
+	public static SceneController Instance { get; private set; }
 
-    private bool _isLoading;
+	private bool _isLoading;
 
-    [Header("Settings")]
-    [SerializeField] private float _fadeDuration = 0.5f;
-    [SerializeField] private bool _dontDestroyOnLoad = true;
+	[Header("Settings")]
+	[SerializeField] private float _fadeDuration = 0.5f;
+	[SerializeField] private bool _dontDestroyOnLoad = true;
 
-    [Header("References")]
-    [SerializeField] private EventDispatcher _eventDispatcher;
+	[Header("References")]
+	[SerializeField] private EventDispatcher _eventDispatcher;
 
-    [Header("Loading Screen")]
-    [SerializeField] private GameObject _loadingScreen;
-    [SerializeField] private CanvasGroup _canvasGroup;
-    [SerializeField] private Slider _progressBar;
-
-
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-            if (_dontDestroyOnLoad) DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        if (_loadingScreen != null)
-            _loadingScreen.SetActive(false);
-    }
-
-    #region Public API
-
-    /// Standard Level Transition: Fades out, loads a new scene, fades in.
-    public void LoadNewScene(string sceneName)
-    {
-        LoadScene(sceneName);
-    }
-
-    public void LoadGameplayScene()
-    {
-        LoadScene(SceneName.Gameplay);
-    }
-
-    public void LoadMainMenu()
-    {
-        LoadScene(SceneName.MainMenu);
-    }
-
-    public void ReloadCurrentScene()
-    {
-        LoadScene(SceneManager.GetActiveScene().name);
-    }
+	[Header("Loading Screen")]
+	[SerializeField] private GameObject _loadingScreen;
+	[SerializeField] private CanvasGroup _canvasGroup;
+	[SerializeField] private Slider _progressBar;
 
 
-    public void QuitGame()
-    {
-        Debug.Log("Quitting Game...");
+	private void Awake()
+	{
+		if (Instance == null)
+		{
+			Instance = this;
+			if (_dontDestroyOnLoad) DontDestroyOnLoad(gameObject);
+		}
+		else
+		{
+			Destroy(gameObject);
+			return;
+		}
+
+		if (_loadingScreen != null)
+			_loadingScreen.SetActive(false);
+	}
+
+	#region Public API
+
+	/// Standard Level Transition: Fades out, loads a new scene, fades in.
+	public void LoadNewScene(string sceneName)
+	{
+		LoadScene(sceneName);
+	}
+
+	public void LoadGameplayScene()
+	{
+		LoadScene(SceneName.Gameplay);
+	}
+
+	public void LoadMainMenu()
+	{
+		LoadScene(SceneName.MainMenu);
+	}
+
+	public void ReloadCurrentScene()
+	{
+		LoadScene(SceneManager.GetActiveScene().name);
+	}
+
+
+	public void QuitGame()
+	{
 #if UNITY_EDITOR
-        EditorApplication.isPlaying = false;
+		EditorApplication.isPlaying = false;
 #else
             Application.Quit();
 #endif
-    }
+	}
 
-    #endregion
-
-
-    #region Internal Logic
-
-    private void LoadScene(string sceneName)
-    {
-        if (_isLoading) return;
-        _isLoading = true;
-        StartCoroutine(LoadSceneRoutine(sceneName));
-    }
+	#endregion
 
 
-    private IEnumerator LoadSceneRoutine(string sceneName)
-    {
-        _canvasGroup.blocksRaycasts = true;
+	#region Internal Logic
 
-        // PHASE 1: TRANSITION TO LOADING SCREEN
-        // =============================================================================
-        yield return ScreenFader.FadeIn(_canvasGroup, _fadeDuration).WaitForCompletion();
-        if (_loadingScreen != null) _loadingScreen.SetActive(true);
-        yield return ScreenFader.FadeOut(_canvasGroup, _fadeDuration).WaitForCompletion();
+	private void LoadScene(string sceneName)
+	{
+		if (_isLoading) return;
+		_isLoading = true;
+		StartCoroutine(LoadSceneRoutine(sceneName));
+	}
 
 
-        // PHASE 2: LOADING
-        // =============================================================================
+	private IEnumerator LoadSceneRoutine(string sceneName)
+	{
+		_canvasGroup.blocksRaycasts = true;
 
-        AsyncOperation operation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
-        _eventDispatcher.ClearAll();
-        operation.allowSceneActivation = false; // Prevent auto-jumping
+		// PHASE 1: TRANSITION TO LOADING SCREEN
+		// =============================================================================
+		yield return ScreenFader.FadeIn(_canvasGroup, _fadeDuration).WaitForCompletion();
+		if (_loadingScreen != null) _loadingScreen.SetActive(true);
+		yield return ScreenFader.FadeOut(_canvasGroup, _fadeDuration).WaitForCompletion();
 
-        // While loading...
-        while (operation.progress < 0.9f)
-        {
-            float progress = Mathf.Clamp01(operation.progress / 0.9f);
-            if (_progressBar != null)
-                _progressBar.value = progress;
-            yield return null;
-        }
 
-        if (_progressBar != null)
-            _progressBar.value = 1f;
+		// PHASE 2: LOADING
+		// =============================================================================
 
-        yield return new WaitForSecondsRealtime(0.5f);
+		AsyncOperation operation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
+		_eventDispatcher.ClearAll();
+		operation.allowSceneActivation = false; // Prevent auto-jumping
 
-        // PHASE 3: TRANSITION TO NEW SCENE
-        // =============================================================================
+		// While loading...
+		while (operation.progress < 0.9f)
+		{
+			float progress = Mathf.Clamp01(operation.progress / 0.9f);
+			if (_progressBar != null)
+				_progressBar.value = progress;
+			yield return null;
+		}
 
-        yield return ScreenFader.FadeIn(_canvasGroup, _fadeDuration).WaitForCompletion();
+		if (_progressBar != null)
+			_progressBar.value = 1f;
 
-        operation.allowSceneActivation = true;
-        while (!operation.isDone)
-            yield return null;
+		yield return new WaitForSecondsRealtime(0.5f);
 
-        if (_loadingScreen != null)
-            _loadingScreen.SetActive(false);
+		// PHASE 3: TRANSITION TO NEW SCENE
+		// =============================================================================
 
-        yield return ScreenFader.FadeOut(_canvasGroup, _fadeDuration).WaitForCompletion();
+		yield return ScreenFader.FadeIn(_canvasGroup, _fadeDuration).WaitForCompletion();
 
-        _canvasGroup.blocksRaycasts = false;
-        _isLoading = false;
-    }
+		operation.allowSceneActivation = true;
+		while (!operation.isDone)
+			yield return null;
 
-    #endregion
+		if (_loadingScreen != null)
+			_loadingScreen.SetActive(false);
+
+		yield return ScreenFader.FadeOut(_canvasGroup, _fadeDuration).WaitForCompletion();
+
+		_canvasGroup.blocksRaycasts = false;
+		_isLoading = false;
+	}
+
+	#endregion
 }
 
 public static class SceneName
 {
-    public const string MainMenu = "MainMenu";
-    public const string Gameplay = "Gameplay";
+	public const string MainMenu = "MainMenu";
+	public const string Gameplay = "Gameplay";
 }

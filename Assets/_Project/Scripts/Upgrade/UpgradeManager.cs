@@ -1,9 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace User.Manager.Upgrade
-{
-    using Scriptable.Upgrade;
 
     public enum UpgradeType
     {
@@ -120,5 +117,4 @@ namespace User.Manager.Upgrade
             gunStats.fireRate -= 0.05f;
         }
     }
-}
 

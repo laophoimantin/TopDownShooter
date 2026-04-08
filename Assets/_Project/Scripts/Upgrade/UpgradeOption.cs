@@ -2,11 +2,6 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-namespace User.UI
-{
-    using Scriptable.Upgrade;
-    using Manager.Upgrade;
-
     public class UpgradeOption : MonoBehaviour
     {
         [Header("REFERENCES")]
@@ -37,4 +32,3 @@ namespace User.UI
             targetButton.spriteState = spriteState;
         }
     }
-}

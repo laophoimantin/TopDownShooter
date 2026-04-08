@@ -38,8 +38,8 @@ public class UpdateManager : Singleton<UpdateManager>
 
     private void Update()
     {
-        //if (GameManager.Instance.IsOver) return;
-        //if (GameManager.Instance.IsPaused) return;
+        if (GameManager.Instance.IsOver) return;
+        if (GameManager.Instance.IsPaused) return;
         if (_listUpdater.Count == 0) return;
 
         _tmpListUpdater = _listUpdater;

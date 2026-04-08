@@ -1,12 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-namespace User.UI
-{
-    using Manager.General;
-    using Manager.Upgrade;
-    using User.Scriptable.Upgrade;
 
     public class UpgradePanel : MonoBehaviour
     {
@@ -35,5 +28,3 @@ namespace User.UI
             }
         }
     }
-}
-
