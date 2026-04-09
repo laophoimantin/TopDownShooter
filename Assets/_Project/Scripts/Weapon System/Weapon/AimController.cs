@@ -2,35 +2,49 @@ using UnityEngine;
 
 public class AimController : MonoBehaviour
 {
-	[Header("References")]
-	[SerializeField] private Camera _mainCam;
-	[SerializeField] private Transform _handPos;
+    [Header("References")]
+    [SerializeField] private Camera _mainCam;
+    [SerializeField] private Transform _weaponPivot;
+    [SerializeField] private Transform _handPos;
 
-	private bool isFacingRight = true;
+    private Vector3 _aimDir;
+    public Vector3 AimDir => _aimDir;
 
-	void Update()
-	{
-		AimAndFlip();
-	}
+    private bool _isFacingRight = true;
 
-	private void AimAndFlip()
-	{
-		Vector3 mousePos = _mainCam.ScreenToWorldPoint(Input.mousePosition);
-		mousePos.z = 0;
+    void Update()
+    {
+        AimAndFlip();
+    }
 
-		Vector3 aimDirection = (mousePos - transform.position).normalized;
-		float angle = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg;
+    private void AimAndFlip()
+    {
+        Vector3 mouseWorldPos = _mainCam.ScreenToWorldPoint(Input.mousePosition);
+        mouseWorldPos.z = 0;
 
-		_handPos.rotation = Quaternion.Euler(0, 0, angle);
+        _aimDir = (mouseWorldPos - transform.position).normalized;
+        float angle = Mathf.Atan2(_aimDir.y, _aimDir.x) * Mathf.Rad2Deg;
 
-		if ((mousePos.x < transform.position.x && isFacingRight) ||
-			(mousePos.x > transform.position.x && !isFacingRight))
-		{
-			isFacingRight = !isFacingRight;
-			Vector3 localScale = transform.localScale;
-			localScale.x *= -1f;
-			transform.localScale = localScale;
-			_handPos.localScale = new Vector3(_handPos.localScale.x, _handPos.localScale.y * -1, _handPos.localScale.z);
-		}
-	}
+        _weaponPivot.rotation = Quaternion.Euler(0, 0, angle);
+
+        GunFlipHandle(mouseWorldPos.x);
+    }
+
+    private void GunFlipHandle(float targetX)
+    {
+        bool shouldFaceRight = targetX > transform.position.x;
+
+        if (shouldFaceRight != _isFacingRight)
+        {
+            FlipGunOnly();
+        }
+    }
+
+    private void FlipGunOnly()
+    {
+        _isFacingRight = !_isFacingRight;
+        Vector3 handScale = _handPos.localScale;
+        handScale.y *= -1;
+        _handPos.localScale = handScale;
+    }
 }

@@ -17,8 +17,6 @@ public class WeaponData : ScriptableObject
     public int pierceCount;
     public float knockbackForce;
 
-    [Header("Apperance")]
-    public Sprite Image;
-    public Sprite bulletSP;
+    [Header("Sound Effects")]
 	public AudioClip fireSound;
 }

@@ -24,5 +24,8 @@ public class GunSelectionPanel : MonoBehaviour
 	private void AssignSelectedGun(WeaponIdentity data)
 	{
 		_loadout.SetSelectedWeapon(data);
+		SceneController.Instance.LoadGameplayScene();
 	}
+	
+	
 }

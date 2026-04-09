@@ -136,12 +136,7 @@ public class AdvancedMobController : MonoBehaviour , IDamageable
         {
             Instantiate(MobDta.blood, transform.position, Quaternion.identity);
             currentHealth -= dmg;
-            float modifiedKnockback = gunController.gunData.knockbackForce * MobDta.knockbackResistance;
-            if (modifiedKnockback < 0)
-            {
-                modifiedKnockback = 0;
-            }
-            forceToApply += new Vector2(knockbackVector.x * modifiedKnockback, knockbackVector.y * modifiedKnockback);
+            forceToApply += new Vector2(knockbackVector.x * MobDta.knockbackResistance, knockbackVector.y * MobDta.knockbackResistance);
         }
     }
 

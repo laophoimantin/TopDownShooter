@@ -20,7 +20,7 @@ public class Bullet : MonoBehaviour
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         gunControl = GameObject.FindGameObjectWithTag("Player").GetComponent<AdvancedGunController>();
-        spriteRenderer.sprite = gunControl.gunData.bulletSP;
+        //spriteRenderer.sprite = gunControl.gunData.bulletSP;
 
         bulletLifeTime = gunControl.bulletLifeTime;
         bulletPierceAmount = gunControl.pierceCount;

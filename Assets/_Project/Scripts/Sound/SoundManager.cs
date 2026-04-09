@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SoundManager : MonoBehaviour
+public class SoundManager : Singleton<SoundManager>
 {
 
     [Header (" ----------------- Audio Source ----------------- ")]
@@ -11,7 +11,8 @@ public class SoundManager : MonoBehaviour
     public AudioSource gunshotSource;
     public AudioSource monsterSoundSource;
     public AudioSource otherSoundSource;
-
+public AudioSource _gunshotSource;
+    
     [Header(" ----------------- Audio Clip ----------------- ")]
     public AudioClip backgroundMusicClip;
     public AudioClip monsterSoundClip;
@@ -41,7 +42,7 @@ public class SoundManager : MonoBehaviour
         StartCoroutine(PlayRandomSFX());
     }
 
-    public void PlaySFX(AudioClip clip, AudioSource source)
+    public void PlaySFX(AudioClip clip, AudioSource source = null)
     {
         if (clip != null && source != null)
         {

@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f051bb3be6cdbdd43863f64c23532cf4, type: 3}
   m_Name: Handgun Iden
   m_EditorClassIdentifier: 
-  WeaponName: 
-  WeaponPrefab: {fileID: 0}
+  WeaponName: Handgun
+  WeaponPrefab: {fileID: 6301312280314918358, guid: 19b99ad8b59bb54438e78c68d09db0e8, type: 3}

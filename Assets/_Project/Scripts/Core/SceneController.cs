@@ -39,6 +39,11 @@ public class SceneController : MonoBehaviour
 
 		if (_loadingScreen != null)
 			_loadingScreen.SetActive(false);
+		if (_canvasGroup != null)
+		{
+			_canvasGroup.blocksRaycasts = false;
+			_canvasGroup.alpha = 0f;
+		}
 	}
 
 	#region Public API

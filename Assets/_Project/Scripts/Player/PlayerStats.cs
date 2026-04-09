@@ -44,7 +44,7 @@ public class PlayerStats : MonoBehaviour, IDamageable
         {
             playerMaxHealth = 8;
         }
-        GameManager.Instance.CurrentLVDisplay(level);
+        //GameManager.Instance.CurrentLVDisplay(level);
     }
 
     public void GetHit()

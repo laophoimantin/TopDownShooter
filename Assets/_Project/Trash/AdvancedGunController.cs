@@ -64,7 +64,7 @@ public class AdvancedGunController : MonoBehaviour
 
     void Start()
     {
-        handPos.sprite = gunData.Image;
+        //handPos.sprite = gunData.Image;
         hand = transform.Find("Hand");
         fireRateTimer = fireRate;
         playerMovement = GetComponent<MainPlayerMovement>();
@@ -158,7 +158,6 @@ public class AdvancedGunController : MonoBehaviour
         mouseDirection = (mousePos - transform.position).normalized;
 
         hand.rotation = Quaternion.Euler(new Vector3(0, 0, Mathf.Atan2(mouseDirection.y, mouseDirection.x) * Mathf.Rad2Deg));
-
         float angle = Mathf.Atan2(mouseDirection.y, mouseDirection.x) * Mathf.Rad2Deg;
         hand.position = transform.position + Quaternion.Euler(0, 0, angle) * new Vector3(gunDistance, 0, 0);
 
@@ -167,14 +166,9 @@ public class AdvancedGunController : MonoBehaviour
 
     private void GunFlipHandle()
     {
-        if (mousePos.x < transform.position.x && gunFacingRight)
-        {
+        bool shouldFaceRight = mousePos.x > transform.position.x;
+        if (shouldFaceRight != gunFacingRight)
             FlipGun();
-        }
-        else if (mousePos.x > transform.position.x && !gunFacingRight)
-        {
-            FlipGun();
-        }
     }
 
     private void FlipGun()
