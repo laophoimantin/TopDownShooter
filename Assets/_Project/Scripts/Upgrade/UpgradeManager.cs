@@ -19,9 +19,9 @@ using UnityEngine;
         [SerializeField] private List<UpgradeData> availableUpgrades = new();
 
         [Header ("SCRIPTS")]
-        private MainPlayerMovement playerMovement;
+        private PlayerMovement playerMovement;
         private AdvancedGunController gunStats;
-        private PlayerStats playerStats;
+        private PlayerHealth playerStats;
 
         private void Awake()
         {
@@ -37,9 +37,9 @@ using UnityEngine;
 
         void Start()
         {
-            playerMovement = FindObjectOfType<MainPlayerMovement>();
+            playerMovement = FindObjectOfType<PlayerMovement>();
             gunStats = FindObjectOfType<AdvancedGunController>();
-            playerStats = FindObjectOfType<PlayerStats>();
+            playerStats = FindObjectOfType<PlayerHealth>();
         }
 
         public static UpgradeData GetRandomUpgrade()
@@ -88,7 +88,7 @@ using UnityEngine;
 
         public  void UpgradeHealth()
         {
-            playerStats.playerMaxHealth += 1;
+            playerStats._maxHealth += 1;
             playerStats.RestoreHealth();
         }
 

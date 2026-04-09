@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(PlayerStats))]
+[RequireComponent(typeof(PlayerHealth))]
 public class HeartDisplay : MonoBehaviour
 {
 
-    private PlayerStats playerStats;
+    private PlayerHealth playerStats;
     private int currentHealth;
     private int maxHealth;
 
@@ -18,13 +18,13 @@ public class HeartDisplay : MonoBehaviour
 
     void Start()
     {
-        playerStats = GetComponent<PlayerStats>();
+        playerStats = GetComponent<PlayerHealth>();
     }
 
     void Update()
     {
-        maxHealth = playerStats.playerMaxHealth;
-        currentHealth = playerStats.playerCurrentHealth;
+        maxHealth = playerStats._maxHealth;
+        currentHealth = playerStats.CurrentHealth;
 
         // Iterate through each heart image to display current health
         for (int i = 0; i < hearts.Length; i++)

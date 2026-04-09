@@ -6,7 +6,7 @@ public class HealItem : MonoBehaviour, ICollectible
 {
     public void Collect()
     {
-        PlayerStats player = FindObjectOfType<PlayerStats>();
+        PlayerHealth player = FindObjectOfType<PlayerHealth>();
         player.RestoreHealth();
     }
     private void OnTriggerEnter2D(Collider2D collision)

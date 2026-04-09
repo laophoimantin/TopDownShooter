@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerCollector : MonoBehaviour
 {
-    private PlayerStats player;
+    private PlayerHealth player;
     private CircleCollider2D playerCollector;
     [SerializeField] private float pullSpeed = 300f;
     [SerializeField] private float pullRadius = 5f;
@@ -12,7 +12,7 @@ public class PlayerCollector : MonoBehaviour
 
     private void Start()
     {
-        player = GetComponent<PlayerStats>();
+        player = GetComponent<PlayerHealth>();
     }
 
     private void Update()

@@ -6,31 +6,31 @@ using UnityEngine.UI;
 public class UpgradeSystem : MonoBehaviour
 {
 
-    private MainPlayerMovement playerMovementScript;
+    private PlayerMovement playerMovementScript;
     private AdvancedGunController playerGunControllerScript;
-    private PlayerStats playerStats;
+    private PlayerHealth playerStats;
 
     [SerializeField] private Button[] upgradeButtons;
 
 
     void Start()
     {
-        playerMovementScript = FindObjectOfType<MainPlayerMovement>();    
+        playerMovementScript = FindObjectOfType<PlayerMovement>();    
         playerGunControllerScript = FindObjectOfType<AdvancedGunController>();
-        playerStats = FindObjectOfType<PlayerStats>();
+        playerStats = FindObjectOfType<PlayerHealth>();
     }
 
 
     void UpgradeMoveSpeed()
     {
         playerGunControllerScript.originalMoveSpeed += 1;
-        Debug.Log("Player is faster: " + playerMovementScript.moveSpeed);
+        //Debug.Log("Player is faster: " + playerMovementScript._moveSpeed);
     }
 
     void UpgradeMaxHealth()
     {
-        playerStats.playerMaxHealth += 1;
-        Debug.Log("Player is stronger: " + playerStats.playerMaxHealth);
+        //playerStats._maxHealth += 1;
+        //Debug.Log("Player is stronger: " + playerStats._maxHealth);
     }
 
     void UpgradeFireRate()

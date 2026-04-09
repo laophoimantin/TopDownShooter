@@ -7,7 +7,7 @@ public class AdvancedGunController : MonoBehaviour
 {
     [Header("Audio")]
     private SoundManager audioManager;
-    private MainPlayerMovement playerMovement;
+    private PlayerMovement playerMovement;
 
     //Gun handle
     [Header("Gun")]
@@ -67,8 +67,8 @@ public class AdvancedGunController : MonoBehaviour
         //handPos.sprite = gunData.Image;
         hand = transform.Find("Hand");
         fireRateTimer = fireRate;
-        playerMovement = GetComponent<MainPlayerMovement>();
-        originalMoveSpeed = playerMovement.moveSpeed;
+        playerMovement = GetComponent<PlayerMovement>();
+        //originalMoveSpeed = playerMovement._moveSpeed;
         audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<SoundManager>();
     }
 
@@ -97,11 +97,11 @@ public class AdvancedGunController : MonoBehaviour
 
         if (slowDownTimer > 0)
         {
-            playerMovement.moveSpeed = originalMoveSpeed * speedDebuff;
+            //playerMovement._moveSpeed = originalMoveSpeed * speedDebuff;
         }
         else
         {
-            playerMovement.moveSpeed = originalMoveSpeed;
+            //playerMovement._moveSpeed = originalMoveSpeed;
         }
     }
     private void GetGunType()

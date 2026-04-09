@@ -8,7 +8,7 @@ public class ExperienceThing : MonoBehaviour, ICollectible
 
     public void Collect()
     {
-        PlayerStats player = FindObjectOfType<PlayerStats>();
+        PlayerHealth player = FindObjectOfType<PlayerHealth>();
         player.IncreaseExperience(experienceGranted);
     }
 

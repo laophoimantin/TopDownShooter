@@ -1,38 +1,40 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-public class PlayerStats : MonoBehaviour, IDamageable
+public class PlayerHealth : MonoBehaviour
 {
     [Header("References")]
     private Animator anim;
     [SerializeField] private GameObject dummy;
-    private SoundManager audioManager;
 
     [Header("Health Settings")]
-    public int playerMaxHealth = 3;
-    [HideInInspector] public int playerCurrentHealth;
+    [SerializeField] private int _maxHealth = 3;
+    private int _currentHealth;
+    public int CurrentHealth;
 
     [Header("Invincibility Settings")]
     [HideInInspector] public float invincibilityTimer;
     [SerializeField] private float invincibilityDuration = 3f;
 
+    public event Action<float> OnTakeDamage;
+    public event Action<int> OnHealthChange;
+    
+
     void Start()
     {
-        playerCurrentHealth = playerMaxHealth;
+        _currentHealth = _maxHealth;
         anim = GetComponent<Animator>();
         GameManager.Instance.AssignLevelReached(level);
 
         experienceCap = levelRanges[0].experienceCapIncrease;
-        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<SoundManager>();
     }
 
     void Update()
     {
-        if(playerCurrentHealth <= 0)
+        if(_currentHealth <= 0)
         {
             Die();
         }
-
-        anim.SetFloat("GetHit", invincibilityTimer);
 
         if(invincibilityTimer >= 0)
         {
@@ -40,23 +42,19 @@ public class PlayerStats : MonoBehaviour, IDamageable
         }
 
         // Max health cap
-        if (playerMaxHealth > 8)
+        if (_maxHealth > 8)
         {
-            playerMaxHealth = 8;
+            _maxHealth = 8;
         }
         //GameManager.Instance.CurrentLVDisplay(level);
     }
 
     public void GetHit()
     {
-        playerCurrentHealth -= 1;
+        _currentHealth -= 1;
         invincibilityTimer = invincibilityDuration;
-        audioManager.PlaySFX(audioManager.hurtSoundClip, audioManager.otherSoundSource);
-    }
-
-    public void TakeDamage(float dmg, Vector2 forceDir)
-    {
-
+        OnTakeDamage?.Invoke(invincibilityDuration);
+        SoundManager.Instance.PlaySFX(SoundManager.Instance.hurtSoundClip, SoundManager.Instance.otherSoundSource);
     }
 
     private void Die()
@@ -68,10 +66,10 @@ public class PlayerStats : MonoBehaviour, IDamageable
 
     public void RestoreHealth()
     {
-        if (playerCurrentHealth < playerMaxHealth)
+        if (_currentHealth < _maxHealth)
         {
-            playerCurrentHealth += 1;
-            audioManager.PlaySFX(audioManager.healSoundClip, audioManager.otherSoundSource);
+            _currentHealth += 1;
+            SoundManager.Instance.PlaySFX(SoundManager.Instance.healSoundClip, SoundManager.Instance.otherSoundSource);
         }
     }
 
@@ -97,6 +95,7 @@ public class PlayerStats : MonoBehaviour, IDamageable
         LevelUpChecker();
     }
 
+
     void LevelUpChecker()
     {
         if (experience >= experienceCap)
@@ -115,7 +114,7 @@ public class PlayerStats : MonoBehaviour, IDamageable
             }
             experienceCap += experienceCapIncrease;
 
-            audioManager.PlaySFX(audioManager.levelUpSoundClip, audioManager.otherSoundSource);
+            SoundManager.Instance.PlaySFX(SoundManager.Instance.levelUpSoundClip, SoundManager.Instance.otherSoundSource);
             GameManager.Instance.AssignLevelReached(level);
             GameManager.Instance.StartLevelUp();
         }

@@ -6,11 +6,11 @@ using UnityEngine.UI;
 public class XPBarManager : MonoBehaviour
 {
     [SerializeField] private Image experienceFill;
-    private PlayerStats playerStats;
+    private PlayerHealth playerStats;
 
     void Start()
     {
-        playerStats = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
+        playerStats = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerHealth>();
     }
 
     void Update()
