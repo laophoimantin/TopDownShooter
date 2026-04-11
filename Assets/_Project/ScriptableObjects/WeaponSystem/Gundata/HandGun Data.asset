@@ -17,8 +17,7 @@ MonoBehaviour:
   fireRate: 0.35
   bulletSpeed: 40
   damage: 2.3
-  bulletLifeTime: 0.19
+  bulletLifeTime: 0.16
   pierceCount: 0
   knockbackForce: 10
-  Image: {fileID: 21300000, guid: d41851ba7c779ea4a904e925f6b196b6, type: 3}
   fireSound: {fileID: 8300000, guid: d3b1a381c4cbe624b8f3ade7492c26bc, type: 3}

@@ -32,7 +32,7 @@ public class MobHealth : MonoBehaviour
         _currentHealth -= amount;
         
         if (_data.blood != null)
-            Instantiate(_data.blood, transform.position, Quaternion.identity);
+            PoolManager.Instance.Spawn(_data.blood, transform.position, Quaternion.identity);
 
         if (_currentHealth <= 0)
         {
@@ -48,6 +48,6 @@ public class MobHealth : MonoBehaviour
         {
             _dropper.DropItem();
         }
-        Destroy(gameObject);
+        PoolManager.Instance.Despawn(gameObject);
     }
 }

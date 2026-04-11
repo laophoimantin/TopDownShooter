@@ -11,17 +11,11 @@ public class SoundManager : Singleton<SoundManager>
     
     [Header(" ----------------- Audio Clip ----------------- ")]
     public AudioClip backgroundMusicClip;
-    public AudioClip monsterSoundClip;
-
-    public AudioClip hurtSoundClip;
-    public AudioClip healSoundClip;
-
 
     [Header(" ----------------- Random Clip ----------------- ")]
     [SerializeField] private List<AudioClip> sfxClips; 
     private float min = 0f;
     private float max = 20f;
-
 
     private void Start()
     {
@@ -30,12 +24,10 @@ public class SoundManager : Singleton<SoundManager>
             _audioSource.clip = backgroundMusicClip;
             _audioSource.Play();
         }
-        StartCoroutine(PlayRandomSFX());
+        StartCoroutine(PlayRandomSfx());
     }
-
     
-    
-    public void PlaySFX(AudioClip clip)
+    public void PlaySfx(AudioClip clip)
     {
         if (clip != null)
         {
@@ -43,7 +35,7 @@ public class SoundManager : Singleton<SoundManager>
         }
     }
 
-    private IEnumerator PlayRandomSFX()
+    private IEnumerator PlayRandomSfx()
     {
         while (true)
         {
@@ -53,7 +45,7 @@ public class SoundManager : Singleton<SoundManager>
             if (sfxClips.Count > 0)
             {
                 int randomSound = Random.Range(0, sfxClips.Count);
-                PlaySFX(sfxClips[randomSound]);
+                PlaySfx(sfxClips[randomSound]);
             }
         }
     }

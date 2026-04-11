@@ -18,5 +18,5 @@ public class MobData : ScriptableObject
 
     [Header("Visual")]
     public Sprite Image;
-    public ParticleSystem blood;
+    public GameObject blood;
 }

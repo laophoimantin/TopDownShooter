@@ -57,10 +57,9 @@ public class CollectibleBehavior : MonoBehaviour, IUpdater
         {
             if (_collectibleEffect != null)
             {
-               
                 _collectibleEffect.Collect(collision.gameObject); 
             }
-            Destroy(gameObject); 
+            PoolManager.Instance.Despawn(gameObject);
         }
     }
 }

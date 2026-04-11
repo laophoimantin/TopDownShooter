@@ -52,13 +52,14 @@ public class WeaponController : MonoBehaviour
     {
         if (_data.fireSound != null)
         {
-            SoundManager.Instance.PlaySFX(_data.fireSound);
+            SoundManager.Instance.PlaySfx(_data.fireSound);
         }
 
         foreach (Transform firePoint in _shootPoint)
         {
-            GameObject bullet = Instantiate(_data.bulletPrefab, firePoint.position, firePoint.rotation);
-
+            //GameObject bullet = Instantiate(_data.bulletPrefab, firePoint.position, firePoint.rotation);
+            GameObject bullet = PoolManager.Instance.Spawn(_data.bulletPrefab, firePoint.position, firePoint.rotation);
+            
             if (bullet.TryGetComponent(out Projectile proj))
             {
                 proj.Setup(_currentDamage, _data.bulletSpeed, _currentRange, _currentPierceCount, _data.knockbackForce);

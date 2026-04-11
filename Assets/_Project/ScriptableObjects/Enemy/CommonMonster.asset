@@ -22,5 +22,4 @@ MonoBehaviour:
   bulletSpeed: 0
   fireRate: 2
   Image: {fileID: -195095071, guid: 6caaa0ea0f8e3364492137c1779c3b6e, type: 3}
-  deathAnim: {fileID: 3491775656508519713, guid: d18c246daab84a2459c1126869caabf2, type: 3}
-  blood: {fileID: 6406195483311095927, guid: 7d43514d62ba82a43ab639bc205bf6a8, type: 3}
+  blood: {fileID: 1810937755164199950, guid: 7d43514d62ba82a43ab639bc205bf6a8, type: 3}

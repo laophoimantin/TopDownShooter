@@ -48637,9 +48637,6 @@ MonoBehaviour:
   _dontDestroyOnLoad: 0
   _audioSource: {fileID: 879118893}
   backgroundMusicClip: {fileID: 8300000, guid: 54b7b9becfdb53e429cb8ba03b87e548, type: 3}
-  monsterSoundClip: {fileID: 0}
-  hurtSoundClip: {fileID: 8300000, guid: 38d5a9e7244fdce4fbf401df21813283, type: 3}
-  healSoundClip: {fileID: 8300000, guid: 747c551f4650c7243a2a379737908fd6, type: 3}
   sfxClips:
   - {fileID: 8300000, guid: 75691372106d1a34c90dcfb7ce89059c, type: 3}
   - {fileID: 8300000, guid: 2bd4b70ddafb4a4459a2aca114049582, type: 3}
@@ -49387,19 +49384,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Waves:
-  - WaveName: 1
+  - WaveName: 300
     EnemyGroups:
     - EnemyName: Com
-      EnemyCount: 600
-      SpawnCount: 0
-      EnemyPrefab: {fileID: 7819686992807784302, guid: 65fa27dfb2bfb054a9fd87e5bd79bff1, type: 3}
-    WaveQuota: 0
-    SpawnInterval: 0.01
-    SpawnCount: 0
-  - WaveName: 1
-    EnemyGroups:
-    - EnemyName: Com
-      EnemyCount: 100
+      EnemyCount: 10
       SpawnCount: 0
       EnemyPrefab: {fileID: 7819686992807784302, guid: 65fa27dfb2bfb054a9fd87e5bd79bff1, type: 3}
     WaveQuota: 0
@@ -49548,6 +49536,51 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1 &1303386049
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1303386050}
+  - component: {fileID: 1303386051}
+  m_Layer: 0
+  m_Name: Pool Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1303386050
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1303386049}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 7.952158, y: 3.7992158, z: -11.557943}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1303386051
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1303386049}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ed054e47f584ac08c1191ac2e02863f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _dontDestroyOnLoad: 0
 --- !u!4 &1305459861 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6325955929142038041, guid: b7a1f3ca9428eb64e94168520b2dd5c1, type: 3}
@@ -126062,6 +126095,14 @@ PrefabInstance:
       propertyPath: _mainCam
       value: 
       objectReference: {fileID: 414516637}
+    - target: {fileID: 6679827316183201996, guid: b7a1f3ca9428eb64e94168520b2dd5c1, type: 3}
+      propertyPath: _healSoundClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 747c551f4650c7243a2a379737908fd6, type: 3}
+    - target: {fileID: 6679827316183201996, guid: b7a1f3ca9428eb64e94168520b2dd5c1, type: 3}
+      propertyPath: _hurtSoundClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 38d5a9e7244fdce4fbf401df21813283, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -126076,6 +126117,7 @@ SceneRoots:
   - {fileID: 1772106527}
   - {fileID: 1060312198}
   - {fileID: 628035990}
+  - {fileID: 1303386050}
   - {fileID: 616143291}
   - {fileID: 1157403407}
   - {fileID: 1233443447}

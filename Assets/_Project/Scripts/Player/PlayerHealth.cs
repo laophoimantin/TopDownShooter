@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour
 {
+    
+    
     [Header("Health Settings")]
     [SerializeField] private int _maxHealth = 3;
     private int _currentHealth;
@@ -30,7 +32,12 @@ public class PlayerHealth : MonoBehaviour
     
     public static event Action OnDeathStarted;
     public static event Action OnDeathFinished;
-
+    
+    [Header("Audio")]
+    [SerializeField] private AudioClip _hurtSoundClip;
+    [SerializeField] private AudioClip _healSoundClip;
+    
+    
     void Start()
     {
         _currentHealth = _maxHealth;
@@ -65,7 +72,7 @@ public class PlayerHealth : MonoBehaviour
             _isInvincible = true;
             _invincibleTimer = _invincibleDuration;
             OnInvincibilityChanged?.Invoke(true);
-            SoundManager.Instance.PlaySFX(SoundManager.Instance.hurtSoundClip);
+            SoundManager.Instance.PlaySfx(_hurtSoundClip);
         }
     }
 
@@ -74,7 +81,7 @@ public class PlayerHealth : MonoBehaviour
         if (_currentHealth < _maxHealth)
         {
             ChangeHealth(1);
-            SoundManager.Instance.PlaySFX(SoundManager.Instance.healSoundClip);
+            SoundManager.Instance.PlaySfx(_healSoundClip);
         }
     }
     private IEnumerator DieRoutine()

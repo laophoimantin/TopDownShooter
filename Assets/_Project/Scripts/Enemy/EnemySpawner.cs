@@ -162,7 +162,7 @@ public class EnemySpawner : MonoBehaviour, IUpdater
         if (_availSpawnPoints.Count == 0) return; 
 
         Vector3 spawnPos = GetRandomAvailableSpawnPoint();
-        GameObject spawnedEnemy = Instantiate(groupToSpawn.EnemyPrefab, spawnPos, Quaternion.identity);
+        GameObject spawnedEnemy =  PoolManager.Instance.Spawn(groupToSpawn.EnemyPrefab, spawnPos, Quaternion.identity);
 
         if (spawnedEnemy.TryGetComponent(out MobController mob))
         {

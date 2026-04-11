@@ -22,7 +22,7 @@ public class DropRateManager : MonoBehaviour
         {
             if (randomNumber <= rate.droprate)
             {
-                Instantiate(rate.itemPrefab, transform.position, Quaternion.identity);
+                PoolManager.Instance.Spawn(rate.itemPrefab, transform.position, Quaternion.identity);
             }
         }
     }
