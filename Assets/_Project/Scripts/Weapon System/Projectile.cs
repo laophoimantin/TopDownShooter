@@ -8,7 +8,6 @@ public class Projectile : MonoBehaviour, IUpdater
 
     [SerializeField] private Rigidbody2D _rb;
     [SerializeField] private GameObject _hitEffect;
-    [SerializeField] private SpriteRenderer _spriteRenderer;
 
     private float _lifetimeTimer;
     private bool _isDead;
@@ -47,8 +46,6 @@ public class Projectile : MonoBehaviour, IUpdater
         _isDead = false;
 
         _rb.velocity = transform.right * speed;
-
-        _spriteRenderer.flipY = _rb.velocity.x < 0;
     }
 
     void OnTriggerEnter2D(Collider2D collision)

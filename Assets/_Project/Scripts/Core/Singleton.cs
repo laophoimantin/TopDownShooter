@@ -37,7 +37,7 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
                     }
                     else
                     {
-                        Debug.Log($"No instances found: {typeof(T)} instance");
+                        //Debug.Log($"No instances found: {typeof(T)} instance");
                         //_instance = new GameObject($"{typeof(T).Name} (singleton").AddComponent<T>();
                         return null;
                     }

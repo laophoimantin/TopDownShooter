@@ -17,6 +17,5 @@ public class MobData : ScriptableObject
     public float fireRate;
 
     [Header("Visual")]
-    public Sprite Image;
     public GameObject blood;
 }

@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class UpgradePanel : MonoBehaviour
 {
-    [SerializeField] private PlayerController _player;
     [SerializeField] private GameObject _uiContainer;
     [SerializeField] private List<UpgradeSelectButton> _upgradeSelectButtons;
 
@@ -34,7 +33,7 @@ public class UpgradePanel : MonoBehaviour
             if (i < randomUpgrades.Count)
             {
                 _upgradeSelectButtons[i].gameObject.SetActive(true);
-                _upgradeSelectButtons[i].Setup(randomUpgrades[i], this, _player); 
+                _upgradeSelectButtons[i].Setup(randomUpgrades[i], this, UpgradeManager.Instance.Player); 
             }
             else
             {

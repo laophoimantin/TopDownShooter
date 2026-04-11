@@ -27,7 +27,7 @@ public class AdvancedMobController : MonoBehaviour, IDamageable
         currentHealth = MobDta.mobHealth;
 
         visual = GetComponent<SpriteRenderer>();
-        visual.sprite = MobDta.Image;
+        //.sprite = MobDta.Image;
         audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<SoundManager>();
         audioSource = GetComponent<AudioSource>();
     }

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerVisual : MonoBehaviour
+public class PlayerVisual : MonoBehaviour, IUpdater
 {
     private static readonly int IsInvincible = Animator.StringToHash("IsInvincible");
     private static readonly int IsWalking = Animator.StringToHash("IsWalking");
@@ -13,12 +13,19 @@ public class PlayerVisual : MonoBehaviour
     {
         PlayerHealth.OnInvincibilityChanged += SetGetHitState;
         PlayerHealth.OnDeathStarted += PlayDeathAnim;
+        
+        UpdateManager.Instance.OnAssignUpdater(this);
     }
 
     private void OnDisable()
     {
         PlayerHealth.OnInvincibilityChanged -= SetGetHitState;
         PlayerHealth.OnDeathStarted -= PlayDeathAnim;
+        
+        if (UpdateManager.Instance != null)
+        {
+            UpdateManager.Instance. OnUnassignUpdater(this);
+        }
     }
 
     public void OnUpdate()

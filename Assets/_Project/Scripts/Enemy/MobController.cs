@@ -1,21 +1,30 @@
+using System.Collections.Generic;
 using UnityEngine;
 
-public class MobController : MonoBehaviour, IDamageable, IUpdater, IFixedUpdater
+public class MobController : MonoBehaviour, IDamageable, IUpdater
 {
     [Header("Data")]
     [SerializeField] private MobData _mobData;
+    public MobData MobData => _mobData;
 
     [Header("References")]
     [SerializeField] private MobHealth _health;
     [SerializeField] private MobMovement _movement;
     [SerializeField] private MobVisuals _visuals;
-   
+
 
     [Header("Attack")]
     [SerializeField] private MobMelee _meleeAttacker;
-    [SerializeField] private MobShooter _shooter;
     private Transform _targetPlayer;
     private EnemySpawner _mySpawner;
+
+    [Header("Spatial Partitioning")]
+    [SerializeField] private bool _UseSP;
+    [SerializeField] private MobMovementSP _movementSP;
+    public MobMovementSP MovementSP => _movementSP;
+
+    [HideInInspector] public List<MobController> NearbyNeighbors = new();
+
 
     public void Init(Transform targetPlayer, EnemySpawner spawner)
     {
@@ -24,19 +33,17 @@ public class MobController : MonoBehaviour, IDamageable, IUpdater, IFixedUpdater
 
         _health.Init(_mobData, _mySpawner);
         _movement.Init(_mobData, _targetPlayer);
-        _visuals.Init(_mobData, _targetPlayer);
+
+        if (_visuals != null)
+            _visuals.Init(_mobData, _targetPlayer);
 
         if (_meleeAttacker != null)
             _meleeAttacker.Init(_mobData);
-
-        if (_shooter != null)
-            _shooter.Init(_mobData, _targetPlayer);
     }
 
     void OnEnable()
     {
         UpdateManager.Instance.OnAssignUpdater(this);
-        UpdateManager.Instance.OnAssignFixedUpdater(this);
     }
 
     void OnDisable()
@@ -44,32 +51,19 @@ public class MobController : MonoBehaviour, IDamageable, IUpdater, IFixedUpdater
         if (UpdateManager.Instance != null)
         {
             UpdateManager.Instance.OnUnassignUpdater(this);
-            UpdateManager.Instance.OnUnassignFixedUpdater(this);
         }
     }
 
     public void OnUpdate()
     {
-        if (_targetPlayer != null)
-        {
-            if (Vector2.Distance(transform.position, _targetPlayer.position) >= _mobData.despawnDistance)
-            {
-                ReturnToSpawner();
-            }
-        }
-
-        _health.OnUpdate();
-        _movement.OnUpdate();
-        _visuals.OnUpdate();
+        // if (_targetPlayer != null)
+        // {
+        //     if (Vector2.Distance(transform.position, _targetPlayer.position) >= _mobData.despawnDistance)
+        //     {
+        //         ReturnToSpawner();
+        //     }
+        // }
     }
-
-    public void OnFixedUpdate()
-    {
-        _health.OnFixedUpdate();
-        _movement.OnFixedUpdate();
-        _visuals.OnFixedUpdate();
-    }
-
 
     private void ReturnToSpawner()
     {
@@ -82,6 +76,13 @@ public class MobController : MonoBehaviour, IDamageable, IUpdater, IFixedUpdater
     public void TakeDamage(float dmg, Vector2 knockbackVector)
     {
         _health.DecreaseHealth(dmg);
-        _movement.TakeKnockback(knockbackVector);
+
+        if (_mobData.blood != null)
+            PoolManager.Instance.Spawn(_mobData.blood, transform.position, Quaternion.identity);
+
+        if (!_UseSP)
+            _movement.TakeKnockback(knockbackVector);
+        else
+            _movementSP.TakeKnockback(knockbackVector);
     }
 }

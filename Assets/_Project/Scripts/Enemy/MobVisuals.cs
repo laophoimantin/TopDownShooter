@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class MobVisuals : MonoBehaviour
+public class MobVisuals : MonoBehaviour , IUpdater
 {
     [SerializeField] private SpriteRenderer _visual;
     private MobData _data;
@@ -10,19 +10,24 @@ public class MobVisuals : MonoBehaviour
     {
         _data = data;
         _target = target;
-        if (_visual != null && _data.Image != null)
-            _visual.sprite = _data.Image;
     }
 
+    void OnEnable()
+    {
+        UpdateManager.Instance.OnAssignUpdater(this);
+    }
+
+    void OnDisable()
+    {
+        if (UpdateManager.Instance != null)
+        {
+            UpdateManager.Instance. OnUnassignUpdater(this);
+        }
+    }
+    
     public void OnUpdate()
     {
         if (_target == null) return;
         _visual.flipX = _target.position.x < transform.position.x;
     }
-
-    public void OnFixedUpdate()
-    {
-        
-    }
-
 }

@@ -9,8 +9,6 @@ public class PlayerLevelManager : Singleton<PlayerLevelManager>
     private int _xpCap;
 
     public int CurrentLevel => _currentLevel;
-    public int CurrentXp => _currentXp;
-    public int XpCap => _currentXp;
 
     public static event Action<int, int> OnXpChange;
     public static event Action<int> OnLevelUp;
@@ -30,6 +28,9 @@ public class PlayerLevelManager : Singleton<PlayerLevelManager>
         if (_levelRanges == null || _levelRanges.Count == 0)
             return;
         _xpCap = _levelRanges[0].ExperienceCapIncrease;
+        
+        OnXpChange?.Invoke(_currentLevel, _xpCap);
+        OnLevelUp?.Invoke(_currentLevel);
     }
 
     public void IncreaseExperience(int amount)

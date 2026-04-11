@@ -13,11 +13,11 @@ public class UpgradeSelectButton : MonoBehaviour
     private UpgradePanel _parentPanel;
     private PlayerController  _player;
 
-    public void Setup(UpgradeData data, UpgradePanel panel, PlayerController playerController)
+    public void Setup(UpgradeData data, UpgradePanel panel, PlayerController target)
     {
         _currentData = data;
         _parentPanel = panel;
-        _player = playerController;
+        _player = target;
         
         _image.sprite = data.UpgradeImage;
         _text.text = data.upgradeName;

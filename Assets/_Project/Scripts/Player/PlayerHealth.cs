@@ -3,10 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerHealth : MonoBehaviour
+public class PlayerHealth : MonoBehaviour, IUpdater
 {
-    
-    
     [Header("Health Settings")]
     [SerializeField] private int _maxHealth = 3;
     private int _currentHealth;
@@ -23,20 +21,33 @@ public class PlayerHealth : MonoBehaviour
 
     public static event Action<bool> OnInvincibilityChanged;
     public static event Action<int, int> OnHealthChanged;
-    
-    
+
+
     [Header("Death Settings")]
     [SerializeField] private float _deathDelay = 2f;
     private bool _isDead = false;
     public bool IsDead => _isDead;
-    
+
     public static event Action OnDeathStarted;
     public static event Action OnDeathFinished;
-    
+
     [Header("Audio")]
     [SerializeField] private AudioClip _hurtSoundClip;
     [SerializeField] private AudioClip _healSoundClip;
-    
+
+    void OnEnable()
+    {
+        UpdateManager.Instance.OnAssignUpdater(this);
+    }
+
+    void OnDisable()
+    {
+        if (UpdateManager.Instance != null)
+        {
+            UpdateManager.Instance.OnUnassignUpdater(this);
+        }
+    }
+
     
     void Start()
     {
@@ -59,7 +70,7 @@ public class PlayerHealth : MonoBehaviour
 
     public void DecreaseHealth()
     {
-        if (_isDead) return; 
+        if (_isDead) return;
 
         ChangeHealth(-1);
 
@@ -72,7 +83,9 @@ public class PlayerHealth : MonoBehaviour
             _isInvincible = true;
             _invincibleTimer = _invincibleDuration;
             OnInvincibilityChanged?.Invoke(true);
-            SoundManager.Instance.PlaySfx(_hurtSoundClip);
+
+            if (SoundManager.Instance != null)
+                SoundManager.Instance.PlaySfx(_hurtSoundClip);
         }
     }
 
@@ -81,12 +94,15 @@ public class PlayerHealth : MonoBehaviour
         if (_currentHealth < _maxHealth)
         {
             ChangeHealth(1);
-            SoundManager.Instance.PlaySfx(_healSoundClip);
+            
+            if (SoundManager.Instance != null)
+                SoundManager.Instance.PlaySfx(_healSoundClip);
         }
     }
+
     private IEnumerator DieRoutine()
     {
-        _isDead = true; 
+        _isDead = true;
 
         OnDeathStarted?.Invoke();
 
@@ -94,7 +110,7 @@ public class PlayerHealth : MonoBehaviour
 
         OnDeathFinished?.Invoke();
     }
-    
+
 
     private void ChangeHealth(int amount)
     {
@@ -106,7 +122,7 @@ public class PlayerHealth : MonoBehaviour
     public void IncreaseMaxHealth(int amount)
     {
         _maxHealth += amount;
-        if (_maxHealth > 8) _maxHealth = 8; 
+        if (_maxHealth > 8) _maxHealth = 8;
         UpdateHealthUI();
     }
 

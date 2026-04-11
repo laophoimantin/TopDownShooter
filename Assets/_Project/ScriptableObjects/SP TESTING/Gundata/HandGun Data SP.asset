@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e97aa7ed90742994cbcd09aa3319fb66, type: 3}
+  m_Name: HandGun Data SP
+  m_EditorClassIdentifier: 
+  weaponName: Revolver
+  bulletPrefab: {fileID: 639885616717614466, guid: f87a4806826acc44c80abcf9c2cb6a5a, type: 3}
+  fireRate: 0.35
+  bulletSpeed: 40
+  damage: 2.3
+  bulletLifeTime: 0.2
+  pierceCount: 0
+  knockbackForce: 25
+  fireSound: {fileID: 0}

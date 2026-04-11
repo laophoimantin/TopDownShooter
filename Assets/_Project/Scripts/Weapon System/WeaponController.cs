@@ -1,8 +1,9 @@
 using System;
 using JetBrains.Annotations;
+using UnityEditor.Rendering;
 using UnityEngine;
 
-public class WeaponController : MonoBehaviour
+public class WeaponController : MonoBehaviour, IUpdater
 {
     [Header("References")]
     [SerializeField] private WeaponVisuals _visuals;
@@ -18,6 +19,20 @@ public class WeaponController : MonoBehaviour
     private float _fireRateTimer;
     public static event Action OnFire;
 
+    void OnEnable()
+    {
+        UpdateManager.Instance.OnAssignUpdater(this);
+    }
+
+    void OnDisable()
+    {
+        if (UpdateManager.Instance != null)
+        {
+            UpdateManager.Instance.OnUnassignUpdater(this);
+        }
+    }
+
+    
     void Start()
     {
         _currentDamage = _data.damage;
@@ -50,7 +65,7 @@ public class WeaponController : MonoBehaviour
 
     private void Shoot()
     {
-        if (_data.fireSound != null)
+        if (_data.fireSound != null && SoundManager.Instance != null)
         {
             SoundManager.Instance.PlaySfx(_data.fireSound);
         }
@@ -59,7 +74,7 @@ public class WeaponController : MonoBehaviour
         {
             //GameObject bullet = Instantiate(_data.bulletPrefab, firePoint.position, firePoint.rotation);
             GameObject bullet = PoolManager.Instance.Spawn(_data.bulletPrefab, firePoint.position, firePoint.rotation);
-            
+
             if (bullet.TryGetComponent(out Projectile proj))
             {
                 proj.Setup(_currentDamage, _data.bulletSpeed, _currentRange, _currentPierceCount, _data.knockbackForce);
@@ -78,10 +93,12 @@ public class WeaponController : MonoBehaviour
     {
         _currentRange += range;
     }
+
     public void AddPierceCount(int count)
     {
         _currentPierceCount += count;
     }
+
     public void AddFireRate(float rate)
     {
         _currentFireRate -= rate;

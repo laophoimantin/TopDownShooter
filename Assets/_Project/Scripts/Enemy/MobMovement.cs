@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class MobMovement : MonoBehaviour
+public class MobMovement : MonoBehaviour, IFixedUpdater
 {
     [SerializeField] private Rigidbody2D _rb;
     private MobData _data;
@@ -14,10 +14,17 @@ public class MobMovement : MonoBehaviour
         _data = data;
         _target = target;
     }
-
-    public void OnUpdate()
+    void OnEnable()
     {
-        
+        UpdateManager.Instance.OnAssignFixedUpdater(this);
+    }
+
+    void OnDisable()
+    {
+        if (UpdateManager.Instance != null)
+        {
+            UpdateManager.Instance.OnUnassignFixedUpdater(this);
+        }
     }
     
     public void OnFixedUpdate()

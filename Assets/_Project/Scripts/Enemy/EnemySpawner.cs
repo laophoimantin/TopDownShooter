@@ -45,6 +45,9 @@ public class EnemySpawner : MonoBehaviour, IUpdater
 
     [SerializeField] private Transform _playerTransform;
 
+    [Space(20)]
+    [SerializeField] private bool IsTesting;
+
     private void OnEnable()
     {
         UpdateManager.Instance.OnAssignUpdater(this);
@@ -132,7 +135,11 @@ public class EnemySpawner : MonoBehaviour, IUpdater
         _availSpawnPoints.Clear();
         foreach (Transform point in _spawnPoints)
         {
-            if (_validSpawnArea.OverlapPoint(point.position))
+            if (_validSpawnArea != null && _validSpawnArea.OverlapPoint(point.position))
+            {
+                _availSpawnPoints.Add(point);
+            }
+            else if (IsTesting)
             {
                 _availSpawnPoints.Add(point);
             }

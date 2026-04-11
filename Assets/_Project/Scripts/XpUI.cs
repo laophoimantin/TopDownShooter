@@ -7,14 +7,6 @@ public class XpUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _levelDisplay;
     [SerializeField] private Image _experienceFill;
 
-    void Start()
-    {
-        if (PlayerLevelManager.Instance != null)
-        {
-            AssignLevelReached(PlayerLevelManager.Instance.CurrentLevel);
-            UpdateBarFill(PlayerLevelManager.Instance.CurrentXp, PlayerLevelManager.Instance.XpCap);
-        }
-    }
 
     void OnEnable()
     {

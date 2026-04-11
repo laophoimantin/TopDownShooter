@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class UpgradeManager : Singleton<UpgradeManager>
 {
+    [SerializeField] private PlayerController _player;
+    public PlayerController Player => _player;
+    
     [SerializeField] private List<UpgradeData> _availableUpgrades = new();
 
     public List<UpgradeData> GetThreeRandomUpgrades()

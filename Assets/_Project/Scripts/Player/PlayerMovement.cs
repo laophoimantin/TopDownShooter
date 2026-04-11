@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : MonoBehaviour, IUpdater, IFixedUpdater
 {
     [Header("References")]
     [SerializeField] private Rigidbody2D _rb;
@@ -8,13 +8,29 @@ public class PlayerMovement : MonoBehaviour
     [Header("Movement Stats")]
     [SerializeField] private float _moveSpeed = 5f;
     [SerializeField] private float _maxSpeed = 15f;
-    
+
     [Header("Knockback Stats")]
     [SerializeField] private float _fixedKnockbackForce = 20f;
     [SerializeField] private float _forceDamping = 1.2f;
 
     private Vector2 _playerInput;
     private Vector2 _forceToApply;
+
+    void OnEnable()
+    {
+        UpdateManager.Instance.OnAssignUpdater(this);
+        UpdateManager.Instance.OnAssignFixedUpdater(this);
+    }
+
+    void OnDisable()
+    {
+        if (UpdateManager.Instance != null)
+        {
+            UpdateManager.Instance.OnUnassignUpdater(this);
+            UpdateManager.Instance.OnUnassignFixedUpdater(this);
+        }
+    }
+
 
     public void OnUpdate()
     {
@@ -29,7 +45,7 @@ public class PlayerMovement : MonoBehaviour
     private void Move()
     {
         _forceToApply = Vector2.Lerp(_forceToApply, Vector2.zero, _forceDamping * Time.fixedDeltaTime);
-        
+
         if (_forceToApply.sqrMagnitude <= 0.01f)
         {
             _forceToApply = Vector2.zero;

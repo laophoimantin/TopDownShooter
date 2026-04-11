@@ -15,25 +15,13 @@ public class MobHealth : MonoBehaviour
         _currentHealth = _data.mobHealth;
     }
 
-    public void OnUpdate()
-    {
-        
-    }
-
-    public void OnFixedUpdate()
-    {
-        
-    }
-    
     public void DecreaseHealth(float amount)
     {
         if (_currentHealth <= 0) return;
 
         _currentHealth -= amount;
         
-        if (_data.blood != null)
-            PoolManager.Instance.Spawn(_data.blood, transform.position, Quaternion.identity);
-
+  
         if (_currentHealth <= 0)
         {
             Die();
