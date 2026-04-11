@@ -1,30 +1,51 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-    public class UpgradePanel : MonoBehaviour
+public class UpgradePanel : MonoBehaviour
+{
+    [SerializeField] private PlayerController _player;
+    [SerializeField] private GameObject _uiContainer;
+    [SerializeField] private List<UpgradeSelectButton> _upgradeSelectButtons;
+
+    private void OnEnable()
     {
-        [Header("REFERENCES")]
-        [SerializeField] private List<UpgradeOption> upgradeOptions;
+        PlayerLevelManager.OnLevelUp += DisplayRandomUpgrades;
+    }
 
+    private void OnDisable()
+    {
+        PlayerLevelManager.OnLevelUp -= DisplayRandomUpgrades;
+    }
 
+    void Start()
+    {
+        HidePanel();
+    }
+    
+    private void DisplayRandomUpgrades(int level)
+    {
+        GameManager.Instance.PauseGame();
+        _uiContainer.SetActive(true);
 
-        private void OnEnable()
+        List<UpgradeData> randomUpgrades = UpgradeManager.Instance.GetThreeRandomUpgrades();
+
+        for (int i = 0; i < _upgradeSelectButtons.Count; i++)
         {
-            GameManager.OnLevelUp += DisplayRandomUpgrades;
-        }
-
-        private void OnDisable()
-        {
-            GameManager.OnLevelUp -= DisplayRandomUpgrades;
-        }
-
-        private void DisplayRandomUpgrades()
-        {
-            List<UpgradeData> randomUpgrades = UpgradeManager.Instance.GetThreeRandomUpgrades();
-
-            for (int i = 0; i < upgradeOptions.Count && i < randomUpgrades.Count; i++)
+            if (i < randomUpgrades.Count)
             {
-                upgradeOptions[i].UpdateDisplay(randomUpgrades[i]);
+                _upgradeSelectButtons[i].gameObject.SetActive(true);
+                _upgradeSelectButtons[i].Setup(randomUpgrades[i], this, _player); 
+            }
+            else
+            {
+                _upgradeSelectButtons[i].gameObject.SetActive(false); 
             }
         }
     }
+
+    public void HidePanel()
+    {
+        _uiContainer.SetActive(false);
+        GameManager.Instance.ResumeGame();
+    }
+}

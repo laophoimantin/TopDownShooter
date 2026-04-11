@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cb64f61a7f14fa983f92d4d91ac54e6, type: 3}
+  m_Name: Speed
+  m_EditorClassIdentifier: 
+  upgradeName: Speed
+  _power: 10
+  UpgradeImage: {fileID: -1475578792, guid: de8bb1db82454724abb442c531fc7471, type: 3}
+  HighlightedSprite: {fileID: 842367033, guid: de8bb1db82454724abb442c531fc7471, type: 3}

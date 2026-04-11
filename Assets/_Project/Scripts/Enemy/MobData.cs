@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "MobData", menuName = "Mob/Mob Data", order = 0)]
@@ -11,7 +9,7 @@ public class MobData : ScriptableObject
     public bool ranger;
     public float knockbackResistance;
     public float despawnDistance = 40f;
-
+    public float KnockbackForce;
 
     [Header("ProjectileHandle")]
     public GameObject bulletPf;
@@ -20,8 +18,5 @@ public class MobData : ScriptableObject
 
     [Header("Visual")]
     public Sprite Image;
-    public GameObject deathAnim;
     public ParticleSystem blood;
-
-    
 }

@@ -6,28 +6,19 @@ public class SoundManager : Singleton<SoundManager>
 {
 
     [Header (" ----------------- Audio Source ----------------- ")]
-    public AudioSource backgroundMusicSource;
-    public AudioSource sfxSource;
-    public AudioSource gunshotSource;
-    public AudioSource monsterSoundSource;
-    public AudioSource otherSoundSource;
-public AudioSource _gunshotSource;
+    [SerializeField] private AudioSource _audioSource;
+
     
     [Header(" ----------------- Audio Clip ----------------- ")]
     public AudioClip backgroundMusicClip;
     public AudioClip monsterSoundClip;
-    public AudioClip monsterShootClip;
 
-    public AudioClip handgunSoundClip;
-    public AudioClip shotgunSoundClip;
-
-    public AudioClip levelUpSoundClip;
     public AudioClip hurtSoundClip;
     public AudioClip healSoundClip;
 
 
     [Header(" ----------------- Random Clip ----------------- ")]
-    [SerializeField] private List<AudioClip> sfxClips; // List of sound effects
+    [SerializeField] private List<AudioClip> sfxClips; 
     private float min = 0f;
     private float max = 20f;
 
@@ -36,21 +27,23 @@ public AudioSource _gunshotSource;
     {
         if (backgroundMusicClip != null)
         {
-            backgroundMusicSource.clip = backgroundMusicClip;
-            backgroundMusicSource.Play();
+            _audioSource.clip = backgroundMusicClip;
+            _audioSource.Play();
         }
         StartCoroutine(PlayRandomSFX());
     }
 
-    public void PlaySFX(AudioClip clip, AudioSource source = null)
+    
+    
+    public void PlaySFX(AudioClip clip)
     {
-        if (clip != null && source != null)
+        if (clip != null)
         {
-            source.PlayOneShot(clip);
+            _audioSource.PlayOneShot(clip);
         }
     }
 
-    public IEnumerator PlayRandomSFX()
+    private IEnumerator PlayRandomSFX()
     {
         while (true)
         {
@@ -60,10 +53,8 @@ public AudioSource _gunshotSource;
             if (sfxClips.Count > 0)
             {
                 int randomSound = Random.Range(0, sfxClips.Count);
-                PlaySFX(sfxClips[randomSound], sfxSource);
+                PlaySFX(sfxClips[randomSound]);
             }
         }
     }
-
-
 }

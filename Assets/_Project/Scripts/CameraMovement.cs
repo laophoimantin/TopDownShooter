@@ -23,7 +23,7 @@ public class CameraMovement : MonoBehaviour
             targetPos.x = Mathf.Clamp(targetPos.x, player.position.x - threshold, player.position.x + threshold);
             targetPos.y = Mathf.Clamp(targetPos.y, player.position.y - threshold, player.position.y + threshold);
 
-            transform.position = Vector3.Lerp(transform.position, targetPos, Time.deltaTime * 5f);
+            cam.transform.position = Vector3.Lerp(cam.transform.position, targetPos, Time.deltaTime * 5f);
         }
     }
 }

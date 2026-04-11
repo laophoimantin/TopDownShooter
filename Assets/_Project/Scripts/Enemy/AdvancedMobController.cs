@@ -1,10 +1,9 @@
 using UnityEngine;
 
-public class AdvancedMobController : MonoBehaviour , IDamageable
+public class AdvancedMobController : MonoBehaviour, IDamageable
 {
     [Header("References")]
     private GameObject player;
-    private AdvancedGunController gunController;
     private Rigidbody2D rb;
 
     [Header("Basic Data")]
@@ -24,7 +23,6 @@ public class AdvancedMobController : MonoBehaviour , IDamageable
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
-        gunController = player.GetComponent<AdvancedGunController>();
         rb = GetComponent<Rigidbody2D>();
         currentHealth = MobDta.mobHealth;
 
@@ -40,15 +38,13 @@ public class AdvancedMobController : MonoBehaviour , IDamageable
         {
             if (currentHealth > 0)
             {
-                if (player != null)
+                if (currentHealth > 0 && MobDta.ranger)
                 {
-                    if (currentHealth > 0 && MobDta.ranger)
-                    {
-                        fireRateTimer -= Time.deltaTime;
-                        Shoot();
-                    }
-                    Flip();
+                    fireRateTimer -= Time.deltaTime;
+                    Shoot();
                 }
+
+                Flip();
             }
             else
             {
@@ -69,7 +65,7 @@ public class AdvancedMobController : MonoBehaviour , IDamageable
         {
             EnemySpawner enemySpawner = FindObjectOfType<EnemySpawner>();
             enemySpawner.UpdateAvailableSpawnPoints();
-            transform.position = enemySpawner.availSpawnPoints[Random.Range(0, enemySpawner.availSpawnPoints.Count)].position;
+            //transform.position = enemySpawner._availSpawnPoints[Random.Range(0, enemySpawner._availSpawnPoints.Count)].position;
         }
     }
 
@@ -96,8 +92,8 @@ public class AdvancedMobController : MonoBehaviour , IDamageable
     private void Die()
     {
         Destroy(gameObject);
-        GameObject death = Instantiate(MobDta.deathAnim, transform.position, Quaternion.identity);
-        Destroy(death, 3);
+        //GameObject death = Instantiate(MobDta.deathAnim, transform.position, Quaternion.identity);
+        //Destroy(death, 3);
     }
 
     private void MoveTowardsPlayer()
@@ -121,7 +117,6 @@ public class AdvancedMobController : MonoBehaviour , IDamageable
     {
         if (fireRateTimer <= 0)
         {
-            audioSource.PlayOneShot(audioManager.monsterShootClip);
             GameObject bullet = Instantiate(MobDta.bulletPf, transform.position, transform.rotation);
             Rigidbody2D bulletRb = bullet.GetComponent<Rigidbody2D>();
             Vector2 direction = (player.transform.position - transform.position).normalized;
@@ -130,7 +125,7 @@ public class AdvancedMobController : MonoBehaviour , IDamageable
         }
     }
 
-    public void TakeDamage(float dmg,Vector2 knockbackVector)
+    public void TakeDamage(float dmg, Vector2 knockbackVector)
     {
         if (player != null)
         {

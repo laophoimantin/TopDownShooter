@@ -7,6 +7,8 @@ public class AimController : MonoBehaviour
     [SerializeField] private Transform _weaponPivot;
     [SerializeField] private Transform _handPos;
 
+    [SerializeField] private Transform _playerVisual;
+    
     private Vector3 _aimDir;
     public Vector3 AimDir => _aimDir;
 
@@ -36,15 +38,23 @@ public class AimController : MonoBehaviour
 
         if (shouldFaceRight != _isFacingRight)
         {
-            FlipGunOnly();
+            FlipAll();
         }
     }
 
-    private void FlipGunOnly()
+    private void FlipAll()
     {
         _isFacingRight = !_isFacingRight;
+        
         Vector3 handScale = _handPos.localScale;
         handScale.y *= -1;
         _handPos.localScale = handScale;
+        
+        if (_playerVisual != null)
+        {
+            Vector3 visualScale = _playerVisual.localScale;
+            visualScale.x *= -1;
+            _playerVisual.localScale = visualScale;
+        }
     }
 }

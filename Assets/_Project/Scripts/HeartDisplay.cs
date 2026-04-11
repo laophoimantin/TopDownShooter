@@ -1,48 +1,31 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(PlayerHealth))]
 public class HeartDisplay : MonoBehaviour
 {
-
-    private PlayerHealth playerStats;
-    private int currentHealth;
-    private int maxHealth;
-
     [SerializeField] private Image[] hearts;
     [SerializeField] private Sprite fullHeart;
     [SerializeField] private Sprite emptyHeart;
 
-
-    void Start()
+    void OnEnable()
     {
-        playerStats = GetComponent<PlayerHealth>();
+        PlayerHealth.OnHealthChanged += UpdateHearts;
     }
 
-    void Update()
+    void OnDisable()
     {
-        maxHealth = playerStats._maxHealth;
-        currentHealth = playerStats.CurrentHealth;
+        PlayerHealth.OnHealthChanged -= UpdateHearts;
+    }
 
-        // Iterate through each heart image to display current health
+    private void UpdateHearts(int currentHealth, int maxHealth)
+    {
         for (int i = 0; i < hearts.Length; i++)
         {
-            // Set heart sprite based on current health
-            if (i < currentHealth)
-            {
-                hearts[i].sprite = fullHeart;
-            }
-            else 
-            {
-                hearts[i].sprite = emptyHeart;
-            }
-
-            // Enable/disable heart images based on max health
             if (i < maxHealth)
             {
                 hearts[i].enabled = true;
+
+                hearts[i].sprite = (i < currentHealth) ? fullHeart : emptyHeart;
             }
             else
             {

@@ -38,29 +38,22 @@ public class UpdateManager : Singleton<UpdateManager>
 
     private void Update()
     {
-        if (GameManager.Instance.IsOver) return;
-        if (GameManager.Instance.IsPaused) return;
+        if (GameManager.Instance.CurrentState != GameManager.GameState.Gameplay) return;
         if (_listUpdater.Count == 0) return;
 
-        _tmpListUpdater = _listUpdater;
-
-        for (int i = 0; i < _tmpListUpdater.Count; i++)
+        for (int i = _listUpdater.Count - 1; i >= 0; i--)
         {
-            _tmpListUpdater[i].OnUpdate();
+            _listUpdater[i].OnUpdate();
         }
     }
 
     private void FixedUpdate()
     {
-        //if (GameManager.Instance.IsOver) return;
-        //if (GameManager.Instance.IsPaused) return;
+        if (GameManager.Instance.CurrentState != GameManager.GameState.Gameplay) return;
         if (_listFixedUpdater.Count == 0) return;
-
-        _tmpListFixedUpdater = _listFixedUpdater;
-
-        for (int i = 0; i < _tmpListFixedUpdater.Count; i++)
+        for (int i = _listFixedUpdater.Count - 1; i >= 0; i--)
         {
-            _tmpListFixedUpdater[i].OnFixedUpdate();
+            _listFixedUpdater[i].OnFixedUpdate();
         }
     }
 }

@@ -1,123 +1,110 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 public class PlayerHealth : MonoBehaviour
 {
-    [Header("References")]
-    private Animator anim;
-    [SerializeField] private GameObject dummy;
-
     [Header("Health Settings")]
     [SerializeField] private int _maxHealth = 3;
     private int _currentHealth;
-    public int CurrentHealth;
+
+    public int CurrentHealth => _currentHealth;
+    public int MaxHealth => _maxHealth;
 
     [Header("Invincibility Settings")]
-    [HideInInspector] public float invincibilityTimer;
-    [SerializeField] private float invincibilityDuration = 3f;
+    [SerializeField] private float _invincibleDuration = 3f;
+    private float _invincibleTimer;
 
-    public event Action<float> OnTakeDamage;
-    public event Action<int> OnHealthChange;
+    private bool _isInvincible;
+    public bool IsInvincible => _isInvincible;
+
+    public static event Action<bool> OnInvincibilityChanged;
+    public static event Action<int, int> OnHealthChanged;
     
+    
+    [Header("Death Settings")]
+    [SerializeField] private float _deathDelay = 2f;
+    private bool _isDead = false;
+    public bool IsDead => _isDead;
+    
+    public static event Action OnDeathStarted;
+    public static event Action OnDeathFinished;
 
     void Start()
     {
         _currentHealth = _maxHealth;
-        anim = GetComponent<Animator>();
-        GameManager.Instance.AssignLevelReached(level);
-
-        experienceCap = levelRanges[0].experienceCapIncrease;
+        UpdateHealthUI();
     }
 
-    void Update()
+    public void OnUpdate()
     {
-        if(_currentHealth <= 0)
+        if (_isInvincible)
         {
-            Die();
+            _invincibleTimer -= Time.deltaTime;
+            if (_invincibleTimer <= 0)
+            {
+                _isInvincible = false;
+                OnInvincibilityChanged?.Invoke(false);
+            }
         }
-
-        if(invincibilityTimer >= 0)
-        {
-            invincibilityTimer -= Time.deltaTime;
-        }
-
-        // Max health cap
-        if (_maxHealth > 8)
-        {
-            _maxHealth = 8;
-        }
-        //GameManager.Instance.CurrentLVDisplay(level);
     }
 
-    public void GetHit()
+    public void DecreaseHealth()
     {
-        _currentHealth -= 1;
-        invincibilityTimer = invincibilityDuration;
-        OnTakeDamage?.Invoke(invincibilityDuration);
-        SoundManager.Instance.PlaySFX(SoundManager.Instance.hurtSoundClip, SoundManager.Instance.otherSoundSource);
-    }
+        if (_isDead) return; 
 
-    private void Die()
-    {
-        Instantiate(dummy, transform.position, transform.rotation);
-        Destroy(gameObject);
-        GameManager.Instance.Delay(false, 2);
+        ChangeHealth(-1);
+
+        if (_currentHealth <= 0)
+        {
+            StartCoroutine(DieRoutine());
+        }
+        else
+        {
+            _isInvincible = true;
+            _invincibleTimer = _invincibleDuration;
+            OnInvincibilityChanged?.Invoke(true);
+            SoundManager.Instance.PlaySFX(SoundManager.Instance.hurtSoundClip);
+        }
     }
 
     public void RestoreHealth()
     {
         if (_currentHealth < _maxHealth)
         {
-            _currentHealth += 1;
-            SoundManager.Instance.PlaySFX(SoundManager.Instance.healSoundClip, SoundManager.Instance.otherSoundSource);
+            ChangeHealth(1);
+            SoundManager.Instance.PlaySFX(SoundManager.Instance.healSoundClip);
         }
     }
-
-    // Experience and level handle
-    [Header("Experience/Level")]
-    public int experience = 0;
-    public int level = 1;
-    public int experienceCap;
-
-    [System.Serializable]
-    public class LevelRange
+    private IEnumerator DieRoutine()
     {
-        public int startLevel;
-        public int endLevel;
-        public int experienceCapIncrease;
+        _isDead = true; 
+
+        OnDeathStarted?.Invoke();
+
+        yield return new WaitForSeconds(_deathDelay);
+
+        OnDeathFinished?.Invoke();
+    }
+    
+
+    private void ChangeHealth(int amount)
+    {
+        _currentHealth += amount;
+        _currentHealth = Mathf.Clamp(_currentHealth, 0, _maxHealth);
+        UpdateHealthUI();
     }
 
-    public List<LevelRange> levelRanges;
-
-    public void IncreaseExperience(int amount)
+    public void IncreaseMaxHealth(int amount)
     {
-        experience += amount;
-        LevelUpChecker();
+        _maxHealth += amount;
+        if (_maxHealth > 8) _maxHealth = 8; 
+        UpdateHealthUI();
     }
 
-
-    void LevelUpChecker()
+    private void UpdateHealthUI()
     {
-        if (experience >= experienceCap)
-        {
-            level++;
-            experience -= experienceCap;
-
-            int experienceCapIncrease = 0;
-            foreach (LevelRange range in levelRanges)
-            {
-                if (level >= range.startLevel && level <= range.endLevel)
-                {
-                    experienceCapIncrease = range.experienceCapIncrease;
-                    break;
-                }
-            }
-            experienceCap += experienceCapIncrease;
-
-            SoundManager.Instance.PlaySFX(SoundManager.Instance.levelUpSoundClip, SoundManager.Instance.otherSoundSource);
-            GameManager.Instance.AssignLevelReached(level);
-            GameManager.Instance.StartLevelUp();
-        }
+        OnHealthChanged?.Invoke(CurrentHealth, MaxHealth);
     }
-
 }

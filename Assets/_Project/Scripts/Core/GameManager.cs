@@ -4,234 +4,72 @@ using System;
 
 using System.Collections;
 
-public class GameManager : Singleton < GameManager>
+public class GameManager : Singleton<GameManager>
 {
-	public enum GameState
-	{
-		Gameplay,
-		Paused,
-		GameOver,
-		LevelUp
-	}
+    public enum GameState
+    {
+       Gameplay,
+       Paused,
+       GameOver
+    }
 
-	private GameState currentState;
-	private GameState previousState;
+    public GameState CurrentState { get; private set; } = GameState.Gameplay;
+    private GameState _previousState;
 
+    public static event Action<GameState> OnGameStateChanged;
 
-	[Header("LevelUp")]
-	public static Action OnLevelUp;
+    void OnEnable()
+    {
+       PlayerHealth.OnDeathStarted += HandleGameOver;
+       CountdownTimer.OnTimeOut += HandleGameOver;
+    }
+    
+    void OnDisable()
+    {
+       PlayerHealth.OnDeathStarted -= HandleGameOver;
+       CountdownTimer.OnTimeOut -= HandleGameOver;
+    }
 
+    public void ChangeState(GameState newState)
+    {
+        if (CurrentState == newState) return; 
 
-	[Header("Ui")]
-	public GameObject pauseScreen;
-	public GameObject resultScreen;
-	public GameObject levelUpScreen;
+        _previousState = CurrentState;
+        CurrentState = newState;
 
-	public bool isGameOver = false;
-	public bool choosingUpgrade;
+        switch (CurrentState)
+        {
+            case GameState.Gameplay:
+                break;
+            case GameState.Paused:
+	            break;
+            case GameState.GameOver:
+                break;
+        }
 
-	[Header("Results Screen Displays")]
-	public Text levelReached;
-	public Text timeSurvivedDisplay;
+        OnGameStateChanged?.Invoke(CurrentState); 
+    }
 
-	[Header("StopWatch")]
-	private float stopwatchTime;
-	public Text stopwatchDisplay;
+    public void PauseGame()
+    {
+        if (CurrentState == GameState.Gameplay)
+        {
+            ChangeState(GameState.Paused);
+        }
+    }
 
-	[Header("LV Display")]
-	public Text LVDisplay;
+    public void ResumeGame()
+    {
+        if (CurrentState == GameState.Paused)
+        {
+            ChangeState(_previousState); 
+        }
+    }
 
-	[Header("Win")]
-	public Sprite happyPenny;
-	public Image playerDisplay;
-
-	public bool IsPaused => currentState == GameState.Paused;
-	public bool IsOver => currentState == GameState.GameOver;
-
-	void Start()
-	{
-		stopwatchTime = 300f;
-		DisableScreen();
-	}
-	private void Update()
-	{
-		// Define the behaviour for each state
-		switch (currentState)
-		{
-			case GameState.Gameplay:
-				CheckForPauseAndResume();
-				UpdateStopwatch();
-				CheckForWin();
-				break;
-
-			case GameState.Paused:
-				CheckForPauseAndResume();
-				break;
-
-			case GameState.GameOver:
-				if (!isGameOver)
-				{
-					isGameOver = true;
-					DisplayResults();
-				}
-				break;
-			case GameState.LevelUp:
-				if (!choosingUpgrade)
-				{
-					levelUpScreen.SetActive(true);
-					OnLevelUp?.Invoke();
-					choosingUpgrade = true;
-				}
-				break;
-
-			default:
-				Debug.LogWarning("STATE DOES NOT EXIST!");
-				break;
-		}
-	}
-
-	private void CheckForWin()
-	{
-		if (stopwatchTime <= 0f)
-		{
-			playerDisplay.sprite = happyPenny;
-			playerDisplay.SetNativeSize();
-			Delay(true, 0);
-		}
-	}
-
-	// Define the method to change the state of the game
-	public void ChangeState(GameState newState)
-	{
-		currentState = newState;
-	}
-	public void PauseGame()
-	{
-		if (currentState != GameState.Paused)
-		{
-			currentState = GameState.Paused;
-			ChangeState(GameState.Paused);
-			Time.timeScale = 0f; // Stop the game
-			pauseScreen.SetActive(true);
-		}
-	}
-
-	public void ResumeGame()
-	{
-		if (currentState == GameState.Paused)
-		{
-			currentState = previousState;
-			Time.timeScale = 1f; // Resume the game
-			pauseScreen.SetActive(false);
-		}
-	}
-
-	void CheckForPauseAndResume()
-	{
-		if (Input.GetKeyDown(KeyCode.Escape))
-		{
-			if (currentState == GameState.Paused)
-			{
-				ResumeGame();
-			}
-			else
-			{
-				PauseGame();
-			}
-		}
-	}
-
-	void DisableScreen()
-	{
-		pauseScreen.SetActive(false);
-		resultScreen.SetActive(false);
-		levelUpScreen.SetActive(false);
-	}
-
-	public void Delay(bool isWinning, int delayTime)
-	{
-		StartCoroutine(GameOver(isWinning, delayTime)); // Delay the function so the player can run the death animation
-	}
-
-	public IEnumerator GameOver(bool isWinning, int delayTime)
-	{
-		yield return new WaitForSeconds(delayTime);
-		if (!isWinning)
-		{
-			timeSurvivedDisplay.text = ("Time left: " + stopwatchDisplay.text);
-		}
-		else
-		{
-			timeSurvivedDisplay.text = ("You Win!");
-		}
-		ChangeState(GameState.GameOver);
-	}
-
-	private void DisplayResults()
-	{
-		resultScreen.SetActive(true);
-	}
-
-	public void AssignLevelReached(int levelReachedData)
-	{
-		levelReached.text = ("Level: " + levelReachedData.ToString());
-	}
-
-	public void CurrentLVDisplay(int currentLevel)
-	{
-		LVDisplay.text = currentLevel.ToString();
-	}
-
-	private void UpdateStopwatch()
-	{
-		stopwatchTime -= Time.deltaTime;
-		UpdateStopwatchDisplay();
-	}
-
-	private void UpdateStopwatchDisplay()
-	{
-		int minutes = Mathf.FloorToInt(stopwatchTime / 60);
-		int seconds = Mathf.FloorToInt(stopwatchTime % 60);
-
-		stopwatchDisplay.text = string.Format("{0:00}:{1:00}", minutes, seconds);
-	}
-
-	public void StartLevelUp()
-	{
-		ChangeState(GameState.LevelUp);
-	}
-
-	public void EndLevelUp()
-	{
-		choosingUpgrade = false;
-		Time.timeScale = 1f;
-		levelUpScreen.SetActive(false);
-		ChangeState(GameState.Gameplay);
-	}
-
-	// Prevent the OnDestroy function from spawning things after the game is quit
-	public void DestroyEverything()
-	{
-		GameObject[] allObjects = FindObjectsOfType<GameObject>();
-		Time.timeScale = 1f;
-
-		// Loop through all objects and destroy them
-		foreach (GameObject obj in allObjects)
-		{
-			if (obj != Camera.main.gameObject)
-			{
-				try
-				{
-					Destroy(obj);
-				}
-				catch (System.Exception ex)
-				{
-					Debug.LogError("Failed to destroy object: " + obj.name + " with error: " + ex.Message);
-				}
-			}
-		}
-	}
-
+    private void HandleGameOver()
+    {
+        ChangeState(GameState.GameOver);
+    }
 }
 
 

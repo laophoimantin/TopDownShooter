@@ -74,17 +74,3 @@ crashlytics-build.properties
 
 # RIDER & IDE:
 .idea/
-*.sln
-*.csproj
-*.unityproj
-*.suo
-*.tmp
-*.user
-*.userprefs
-*.pidb
-*.booproj
-*.svd
-*.pdb
-*.mdb
-*.opendb
-*.VC.db

@@ -1,10 +1,13 @@
 using UnityEngine;
 
-    [CreateAssetMenu(fileName = "New Upgrade Data", menuName = "Upgrade/Upgrade Data")]
-    public class UpgradeData : ScriptableObject
-    {
-        public UpgradeType upgradeType;
-        public string upgradeName;
-        public Sprite upgradeImage;
-        public Sprite highlightedSprite;
-    }
+
+public abstract class UpgradeData : ScriptableObject
+{
+    [Header("UI Info")]
+    public string upgradeName;
+    [SerializeField] protected float _power;
+    public Sprite UpgradeImage;
+    public Sprite HighlightedSprite;
+
+    public abstract void ApplyUpgrade(PlayerController player);
+}

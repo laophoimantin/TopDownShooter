@@ -43,12 +43,13 @@ public class SceneController : MonoBehaviour
 		{
 			_canvasGroup.blocksRaycasts = false;
 			_canvasGroup.alpha = 0f;
+			_canvasGroup.gameObject.SetActive(false);
 		}
 	}
 
 	#region Public API
 
-	/// Standard Level Transition: Fades out, loads a new scene, fades in.
+	/// Standard CurrentLevel Transition: Fades out, loads a new scene, fades in.
 	public void LoadNewScene(string sceneName)
 	{
 		LoadScene(sceneName);
@@ -56,12 +57,12 @@ public class SceneController : MonoBehaviour
 
 	public void LoadGameplayScene()
 	{
-		LoadScene(SceneName.Gameplay);
+		LoadScene(SceneName.GAMEPLAY);
 	}
 
 	public void LoadMainMenu()
 	{
-		LoadScene(SceneName.MainMenu);
+		LoadScene(SceneName.MAIN_MENU);
 	}
 
 	public void ReloadCurrentScene()
@@ -94,6 +95,7 @@ public class SceneController : MonoBehaviour
 
 	private IEnumerator LoadSceneRoutine(string sceneName)
 	{
+		_canvasGroup.gameObject.SetActive(true);
 		_canvasGroup.blocksRaycasts = true;
 
 		// PHASE 1: TRANSITION TO LOADING SCREEN
@@ -139,6 +141,7 @@ public class SceneController : MonoBehaviour
 		yield return ScreenFader.FadeOut(_canvasGroup, _fadeDuration).WaitForCompletion();
 
 		_canvasGroup.blocksRaycasts = false;
+		_canvasGroup.gameObject.SetActive(false);
 		_isLoading = false;
 	}
 
@@ -147,6 +150,6 @@ public class SceneController : MonoBehaviour
 
 public static class SceneName
 {
-	public const string MainMenu = "MainMenu";
-	public const string Gameplay = "Gameplay";
+	public const string MAIN_MENU = "MainMenu";
+	public const string GAMEPLAY = "Gameplay";
 }

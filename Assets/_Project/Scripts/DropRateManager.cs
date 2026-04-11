@@ -11,28 +11,18 @@ public class DropRateManager : MonoBehaviour
         public GameObject itemPrefab;
         public float droprate;
     }
-
     public List<Drops> drops;
 
-    private bool isQuitting;
-    void OnApplicationQuit()
-    {
-        // Prevent drops from spawning when changing the scene
-        isQuitting = true;
-    }
 
-    private void OnDestroy()
+    public void DropItem()
     {
-        if (!isQuitting)
+        float randomNumber = Random.Range(0f, 100f);
+
+        foreach (Drops rate in drops)
         {
-            float randomNumber = Random.Range(0f, 100f);
-
-            foreach (Drops rate in drops)
+            if (randomNumber <= rate.droprate)
             {
-                if (randomNumber <= rate.droprate)
-                {
-                    Instantiate(rate.itemPrefab, transform.position, Quaternion.identity);
-                }
+                Instantiate(rate.itemPrefab, transform.position, Quaternion.identity);
             }
         }
     }

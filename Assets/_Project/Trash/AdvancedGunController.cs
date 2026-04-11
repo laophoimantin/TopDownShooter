@@ -40,7 +40,6 @@ public class AdvancedGunController : MonoBehaviour
     //Reduce player speed while shooting
     [Header("Speed Adjustment")]
     [SerializeField] private float slowDownDuration = 0.5f;
-    [SerializeField] private float speedDebuff = 0.7f;
     private float slowDownTimer;
     [HideInInspector] public float originalMoveSpeed;
 
@@ -137,14 +136,14 @@ public class AdvancedGunController : MonoBehaviour
         foreach (Transform firePoint in activeFirePoints)
         {
             GameObject bullet = Instantiate(bulletPf, firePoint.position, firePoint.rotation);
-            if (gunType == 1)
-            {
-                audioManager.PlaySFX(audioManager.handgunSoundClip, audioManager.gunshotSource);
-            }
-            else if (gunType == 2)
-            {
-                audioManager.PlaySFX(audioManager.shotgunSoundClip, audioManager.gunshotSource);
-            }
+            // if (gunType == 1)
+            // {
+            //     audioManager.PlaySFX(audioManager.handgunSoundClip, audioManager.gunshotSource);
+            // }
+            // else if (gunType == 2)
+            // {
+            //     audioManager.PlaySFX(audioManager.shotgunSoundClip, audioManager.gunshotSource);
+            // }
 
             Rigidbody2D bulletRb = bullet.GetComponent<Rigidbody2D>();
             bulletRb.velocity = mouseDirection * bulletSpeed;

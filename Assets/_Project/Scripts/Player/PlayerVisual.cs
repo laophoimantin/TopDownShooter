@@ -2,46 +2,43 @@ using UnityEngine;
 
 public class PlayerVisual : MonoBehaviour
 {
+    private static readonly int IsInvincible = Animator.StringToHash("IsInvincible");
+    private static readonly int IsWalking = Animator.StringToHash("IsWalking");
+    private static readonly int Die = Animator.StringToHash("Die");
+    
     [SerializeField] private Animator _anim;
     [SerializeField] private Rigidbody2D _rb;
-    [SerializeField] private SpriteRenderer _sprite;
-    [SerializeField] private PlayerHealth _health;
 
     private void OnEnable()
     {
-        _health.OnTakeDamage += SetGetHitState;
+        PlayerHealth.OnInvincibilityChanged += SetGetHitState;
+        PlayerHealth.OnDeathStarted += PlayDeathAnim;
     }
 
     private void OnDisable()
     {
-        
-    }
-    private void Flip()
-    {
-        if (_rb.velocity.x < 0)
-        {
-            _sprite.flipX = true;
-        }
-        else
-        {
-            _sprite.flipX = false;
-        }
+        PlayerHealth.OnInvincibilityChanged -= SetGetHitState;
+        PlayerHealth.OnDeathStarted -= PlayDeathAnim;
     }
 
+    public void OnUpdate()
+    {
+        ChangeAnimState();
+    }
+
+    private void PlayDeathAnim()
+    {
+        _anim.SetTrigger(Die);
+    }
+    
     private void ChangeAnimState()
     {
-        if (_rb.velocity != Vector2.zero)
-        {
-            _anim.SetBool("IsWalking", true);
-        }
-        else
-        {
-            _anim.SetBool("IsWalking", false);
-        }
+        bool isMoving = _rb.velocity.sqrMagnitude > 0.01f;
+        _anim.SetBool(IsWalking, isMoving);
     }
 
-    private void SetGetHitState(float duration)
+    private void SetGetHitState(bool state)
     {
-        _anim.SetFloat("GetHit", duration);
+        _anim.SetBool(IsInvincible, state);
     }
 }

@@ -4,17 +4,11 @@ using UnityEngine;
 
 public class HealItem : MonoBehaviour, ICollectible
 {
-    public void Collect()
+    public void Collect(GameObject collector)
     {
-        PlayerHealth player = FindObjectOfType<PlayerHealth>();
-        player.RestoreHealth();
-    }
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Player"))
+        if (collector.TryGetComponent(out PlayerHealth player))
         {
-            Collect();
-            Destroy(gameObject);
+            player.RestoreHealth();
         }
     }
 }

@@ -4,21 +4,9 @@ using UnityEngine;
 
 public class ExperienceThing : MonoBehaviour, ICollectible
 {
-    public int experienceGranted;
-
-    public void Collect()
+    public void Collect(GameObject collector)
     {
-        PlayerHealth player = FindObjectOfType<PlayerHealth>();
-        player.IncreaseExperience(experienceGranted);
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Player"))
-        {
-            Collect();
-            Destroy(gameObject);
-        }
+        PlayerLevelManager.Instance.IncreaseExperience(1);
     }
 }
 
