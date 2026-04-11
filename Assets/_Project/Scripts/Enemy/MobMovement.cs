@@ -7,6 +7,8 @@ public class MobMovement : MonoBehaviour
     private Transform _target;
     private Vector2 _forceToApply;
 
+    [SerializeField] private float _forceDamping = 1.2f;
+    
     public void Init(MobData data, Transform target)
     {
         _data = data;
@@ -26,11 +28,24 @@ public class MobMovement : MonoBehaviour
 
     private void Move()
     {
-        _forceToApply /= 1.2f; // Damping
-        if (_forceToApply.sqrMagnitude <= 0.01f) _forceToApply = Vector2.zero;
+        _forceToApply = Vector2.Lerp(_forceToApply, Vector2.zero, _forceDamping * Time.fixedDeltaTime);
 
-        Vector2 direction = (_target.position - transform.position).normalized;
-        Vector2 walkVelocity = direction * _data.mobSpeed;
+        if (_forceToApply.sqrMagnitude <= 0.01f) 
+        {
+            _forceToApply = Vector2.zero;
+        }
+
+        Vector2 walkVelocity = Vector2.zero;
+        if (_target != null)
+        {
+            Vector2 offset = (Vector2)_target.position - (Vector2)transform.position;
+        
+            if (offset.sqrMagnitude > 0.01f) 
+            {
+                Vector2 direction = offset.normalized;
+                walkVelocity = direction * _data.mobSpeed;
+            }
+        }
 
         _rb.velocity = walkVelocity + _forceToApply;
     }

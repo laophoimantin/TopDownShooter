@@ -10,7 +10,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float _maxSpeed = 15f;
     
     [Header("Knockback Stats")]
-    [SerializeField] private float _knockbackMultiplier = 20f;
+    [SerializeField] private float _fixedKnockbackForce = 20f;
     [SerializeField] private float _forceDamping = 1.2f;
 
     private Vector2 _playerInput;
@@ -28,15 +28,14 @@ public class PlayerMovement : MonoBehaviour
 
     private void Move()
     {
-        _forceToApply /= _forceDamping;
+        _forceToApply = Vector2.Lerp(_forceToApply, Vector2.zero, _forceDamping * Time.fixedDeltaTime);
         
-        if (Mathf.Abs(_forceToApply.x) <= 0.01f && Mathf.Abs(_forceToApply.y) <= 0.01f)
+        if (_forceToApply.sqrMagnitude <= 0.01f)
         {
             _forceToApply = Vector2.zero;
         }
 
         Vector2 moveForce = (_playerInput * _moveSpeed) + _forceToApply;
-
         _rb.velocity = moveForce;
     }
 
@@ -49,7 +48,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void TakeKnockback(Vector2 knockbackDirection)
     {
-        _forceToApply += knockbackDirection * _knockbackMultiplier;
+        _forceToApply = knockbackDirection.normalized * _fixedKnockbackForce;
     }
 
     public void AddSpeed(float speed)
