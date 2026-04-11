@@ -7,9 +7,13 @@ using UnityEngine.Jobs;
 
 public class SwarmManager : Singleton<SwarmManager>, IUpdater
 {
-    public List<MobController> activeMobs = new List<MobController>();
+    public List<MobController> activeMobs = new();
     [SerializeField] private Transform _player;
 
+    [Header("Swarm Settings")]
+    [SerializeField] private float _separationRadius = 1.5f;
+    [SerializeField] private float _separationWeight = 3f;
+    
     // private TransformAccessArray _transformAccessArray;
     // private NativeArray<Vector3> _separationForces;
 
@@ -24,22 +28,41 @@ public class SwarmManager : Singleton<SwarmManager>, IUpdater
             UpdateManager.Instance.OnUnassignUpdater(this);
     }
 
+    public void RegisterMob(MobController mob)
+    {
+        mob.SwarmIndex = activeMobs.Count;
+        activeMobs.Add(mob);
+    }
+
+    public void UnregisterMob(MobController mob)
+    {
+        int index = mob.SwarmIndex;
+        if (index < 0 || index >= activeMobs.Count || activeMobs[index] != mob) return;
+        int lastIndex = activeMobs.Count - 1;
+        MobController lastMob = activeMobs[lastIndex];
+        activeMobs[index] = lastMob;
+        lastMob.SwarmIndex = index;
+        activeMobs.RemoveAt(lastIndex);
+        mob.SwarmIndex = -1;
+    }
+
     public void OnUpdate()
     {
-        if (activeMobs.Count == 0) return;
+        if (activeMobs.Count == 0 || _player == null) return;
 
         SpatialGrid.Instance.ClearGrid();
+
+        float radius = _separationRadius;
+        float sqrRadius = radius * radius;
+        float sepWeight = _separationWeight;
+
+        Vector2 playerPos = _player.position;
 
         for (int i = 0; i < activeMobs.Count; i++)
         {
             MobController mob = activeMobs[i];
-            MobMovementSP moveComp = mob.MovementSP;
-
-            moveComp._forceToApply /= 1.2f;
-            if (moveComp._forceToApply.sqrMagnitude <= 0.01f) moveComp._forceToApply = Vector2.zero;
-
-            moveComp._separationForce = Vector2.zero;
-            SpatialGrid.Instance.GetNearbyEntities(mob.transform.position, 1.5f, ref mob.NearbyNeighbors);
+            mob.MovementSP.CurrentPos = mob.transform.position; 
+            SpatialGrid.Instance.Register(mob);
         }
 
         for (int i = 0; i < activeMobs.Count; i++)
@@ -47,14 +70,42 @@ public class SwarmManager : Singleton<SwarmManager>, IUpdater
             MobController mob = activeMobs[i];
             MobMovementSP moveComp = mob.MovementSP;
 
-            Vector2 direction = (_player.position - mob.transform.position).normalized;
+            Vector3 myPos = moveComp.CurrentPos;
+
+            moveComp.ForceToApply /= 1.2f;
+            if (moveComp.ForceToApply.sqrMagnitude <= 0.01f) moveComp.ForceToApply = Vector2.zero;
+
+            moveComp.SeparationForce = Vector2.zero;
+
+            SpatialGrid.Instance.GetNearbyEntities(myPos, radius, ref mob.NearbyNeighbors);
+
+            for (int j = 0; j < mob.NearbyNeighbors.Count; j++)
+            {
+                MobController neighbor = mob.NearbyNeighbors[j];
+                if (neighbor == mob) continue;
+
+                Vector2 offset = (Vector2)myPos - (Vector2)neighbor.MovementSP.CurrentPos;
+                float sqrDist = offset.sqrMagnitude;
+
+                if (sqrDist == 0)
+                {
+                    offset = new Vector2(UnityEngine.Random.Range(-0.1f, 0.1f), UnityEngine.Random.Range(-0.1f, 0.1f));
+                    sqrDist = offset.sqrMagnitude;
+                }
+
+                if (sqrDist > 0 && sqrDist < sqrRadius)
+                {
+                    float dist = Mathf.Sqrt(sqrDist);
+                    moveComp.SeparationForce += (offset / dist) * ((radius - dist) * sepWeight);
+                }
+            }
+
+            Vector2 direction = (playerPos - (Vector2)myPos).normalized;
             Vector2 walkVelocity = direction * mob.MobData.mobSpeed;
 
-            Vector2 finalVelocity = walkVelocity + moveComp._forceToApply + moveComp._separationForce;
+            Vector2 finalVelocity = walkVelocity + moveComp.ForceToApply + moveComp.SeparationForce;
 
-            mob.transform.position += (Vector3)finalVelocity * Time.deltaTime;
-
-            SpatialGrid.Instance.Register(mob);
+            mob.transform.position = myPos + (Vector3)finalVelocity * Time.deltaTime;
         }
     }
 }

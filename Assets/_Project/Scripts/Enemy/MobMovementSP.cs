@@ -4,19 +4,19 @@ public class MobMovementSP : MonoBehaviour
 {
     private MobData _data;
     
-    public Vector2 _forceToApply; 
-
-    public Vector2 _separationForce; 
+    [HideInInspector] public Vector2 ForceToApply; 
+    [HideInInspector] public Vector2 SeparationForce; 
+    [HideInInspector] public Vector3 CurrentPos;
 
     public void Init(MobData data)
     {
         _data = data;
-        _forceToApply = Vector2.zero;
-        _separationForce = Vector2.zero;
+        ForceToApply = Vector2.zero;
+        SeparationForce = Vector2.zero;
     }
 
     public void TakeKnockback(Vector2 knockback)
     {
-        _forceToApply += knockback * _data.knockbackResistance;
+        ForceToApply += knockback * _data.knockbackResistance;
     }
 }
