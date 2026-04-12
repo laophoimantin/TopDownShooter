@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: HandGun Data SP
   m_EditorClassIdentifier: 
   weaponName: Revolver
-  bulletPrefab: {fileID: 639885616717614466, guid: f87a4806826acc44c80abcf9c2cb6a5a, type: 3}
+  bulletPrefab: {fileID: 639885616717614466, guid: 5d046b37059682144a49f0bd00eb568f, type: 3}
   fireRate: 0.35
-  bulletSpeed: 40
+  bulletSpeed: 25
   damage: 2.3
-  bulletLifeTime: 0.2
+  bulletLifeTime: 1
   pierceCount: 0
   knockbackForce: 25
   fireSound: {fileID: 0}

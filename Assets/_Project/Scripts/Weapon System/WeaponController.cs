@@ -5,9 +5,6 @@ using UnityEngine;
 
 public class WeaponController : MonoBehaviour, IUpdater
 {
-    [Header("References")]
-    [SerializeField] private WeaponVisuals _visuals;
-
     [Header("Data")]
     [SerializeField] private WeaponData _data;
     [SerializeField] private Transform[] _shootPoint;
@@ -32,8 +29,8 @@ public class WeaponController : MonoBehaviour, IUpdater
         }
     }
 
-    
-    void Start()
+
+    public void Init()
     {
         _currentDamage = _data.damage;
         _currentRange = _data.bulletLifeTime;
@@ -70,14 +67,22 @@ public class WeaponController : MonoBehaviour, IUpdater
             SoundManager.Instance.PlaySfx(_data.fireSound);
         }
 
-        foreach (Transform firePoint in _shootPoint)
+        for (int i = 0; i < _shootPoint.Length; i++)
         {
-            //GameObject bullet = Instantiate(_data.bulletPrefab, firePoint.position, firePoint.rotation);
-            GameObject bullet = PoolManager.Instance.Spawn(_data.bulletPrefab, firePoint.position, firePoint.rotation);
-
+            Transform firePoint = _shootPoint[i];
+            Vector3 firePos = firePoint.position;
+            
+            Vector3 fireDirection = firePoint.right;
+            GameObject bullet = PoolManager.Instance.Spawn(_data.bulletPrefab, firePos, firePoint.rotation);
+            
+            
             if (bullet.TryGetComponent(out Projectile proj))
             {
                 proj.Setup(_currentDamage, _data.bulletSpeed, _currentRange, _currentPierceCount, _data.knockbackForce);
+            }
+            else if (bullet.TryGetComponent(out ProjectileSP projSP))
+            {
+                projSP.Setup(_currentDamage, _data.bulletSpeed, _currentRange, _currentPierceCount, _data.knockbackForce, fireDirection, firePos);
             }
         }
 

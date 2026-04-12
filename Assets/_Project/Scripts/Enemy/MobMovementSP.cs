@@ -8,9 +8,10 @@ public class MobMovementSP : MonoBehaviour
     [HideInInspector] public Vector2 SeparationForce; 
     [HideInInspector] public Vector3 CurrentPos;
 
-    public void Init(MobData data)
+    public void Init(MobData data, Vector3 startPos)
     {
         _data = data;
+        CurrentPos = startPos;
         ForceToApply = Vector2.zero;
         SeparationForce = Vector2.zero;
     }

@@ -5,13 +5,11 @@ public class MobHealth : MonoBehaviour
 {
     private float _currentHealth;
     private MobData _data;
-    private EnemySpawner _spawner;
     [SerializeField] private DropRateManager _dropper;
     
-    public void Init(MobData data, EnemySpawner spawner)
+    public void Init(MobData data)
     {
         _data = data;
-        _spawner = spawner;
         _currentHealth = _data.mobHealth;
     }
 
@@ -30,8 +28,8 @@ public class MobHealth : MonoBehaviour
 
     private void Die()
     {
-        if (_spawner != null) 
-            _spawner.OnEnemyKilled();
+        if (EnemySpawner.Instance != null)
+            EnemySpawner.Instance.OnEnemyKilled();
         if (_dropper != null)
         {
             _dropper.DropItem();

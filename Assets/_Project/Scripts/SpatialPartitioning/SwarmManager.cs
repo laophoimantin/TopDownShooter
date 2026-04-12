@@ -16,7 +16,20 @@ public class SwarmManager : Singleton<SwarmManager>, IUpdater
     
     // private TransformAccessArray _transformAccessArray;
     // private NativeArray<Vector3> _separationForces;
+    
+    private float _radius;
+    private float _sqrRadius;
+    private float _sepWeight;
 
+#if UNITY_EDITOR
+    private void OnValidate()
+    {
+        _radius = _separationRadius;
+        _sqrRadius = _separationRadius * _separationRadius;
+        _sepWeight = _separationWeight;
+    }
+#endif
+    
     void OnEnable()
     {
         UpdateManager.Instance.OnAssignUpdater(this);
@@ -51,11 +64,6 @@ public class SwarmManager : Singleton<SwarmManager>, IUpdater
         if (activeMobs.Count == 0 || _player == null) return;
 
         SpatialGrid.Instance.ClearGrid();
-
-        float radius = _separationRadius;
-        float sqrRadius = radius * radius;
-        float sepWeight = _separationWeight;
-
         Vector2 playerPos = _player.position;
 
         for (int i = 0; i < activeMobs.Count; i++)
@@ -77,7 +85,7 @@ public class SwarmManager : Singleton<SwarmManager>, IUpdater
 
             moveComp.SeparationForce = Vector2.zero;
 
-            SpatialGrid.Instance.GetNearbyEntities(myPos, radius, ref mob.NearbyNeighbors);
+            SpatialGrid.Instance.GetNearbyEntities(myPos, _radius, ref mob.NearbyNeighbors);
 
             for (int j = 0; j < mob.NearbyNeighbors.Count; j++)
             {
@@ -93,10 +101,10 @@ public class SwarmManager : Singleton<SwarmManager>, IUpdater
                     sqrDist = offset.sqrMagnitude;
                 }
 
-                if (sqrDist > 0 && sqrDist < sqrRadius)
+                if (sqrDist > 0 && sqrDist < _sqrRadius)
                 {
                     float dist = Mathf.Sqrt(sqrDist);
-                    moveComp.SeparationForce += (offset / dist) * ((radius - dist) * sepWeight);
+                    moveComp.SeparationForce += (offset / dist) * ((_radius - dist) * _sepWeight);
                 }
             }
 
@@ -105,7 +113,9 @@ public class SwarmManager : Singleton<SwarmManager>, IUpdater
 
             Vector2 finalVelocity = walkVelocity + moveComp.ForceToApply + moveComp.SeparationForce;
 
-            mob.transform.position = myPos + (Vector3)finalVelocity * Time.deltaTime;
+            Vector3 finalPos = myPos + (Vector3)finalVelocity * Time.deltaTime;
+            mob.transform.position = finalPos;
+            mob.MovementSP.CurrentPos = finalPos;
         }
     }
 }

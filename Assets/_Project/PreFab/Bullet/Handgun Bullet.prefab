@@ -44,12 +44,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 639885616717614466}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ee3faf4883df1a4bae7453d716fc2d5, type: 3}
+  m_Script: {fileID: 11500000, guid: 98a262b92c4c7a546bfd1c4805f3e688, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _rb: {fileID: 3244826560559862974}
-  _hitEffect: {fileID: 1392023173537689047, guid: fabdbfa778749b448943ae3fb7d144f9, type: 3}
-  _spriteRenderer: {fileID: 8920368270599750874}
+  _hitEffect: {fileID: 1392023173537689047, guid: 6e2db38bf35449b4c80b75bfa5ac8085, type: 3}
 --- !u!212 &8920368270599750874
 SpriteRenderer:
   m_ObjectHideFlags: 0

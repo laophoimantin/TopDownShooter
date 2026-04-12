@@ -16,7 +16,6 @@ public class MobController : MonoBehaviour, IDamageable
     [Header("Attack")]
     [SerializeField] private MobMelee _meleeAttacker;
     private Transform _targetPlayer;
-    private EnemySpawner _mySpawner;
 
     [Header("Spatial Partitioning")]
     private bool _isRegistered = false;
@@ -42,19 +41,18 @@ public class MobController : MonoBehaviour, IDamageable
         }
     }
     
-    public void Init(Transform targetPlayer, EnemySpawner spawner)
+    public void Init(Transform targetPlayer, Vector3 startPos)
     {
         _targetPlayer = targetPlayer;
-        _mySpawner = spawner;
 
-        _health.Init(_mobData, _mySpawner);
+        _health.Init(_mobData);
         if (_movement != null)
         {
             _movement.Init(_mobData, _targetPlayer);
         }
         else
         {
-            _movementSP.Init(_mobData);
+            _movementSP.Init(_mobData, startPos);
         }
 
         if (_visuals != null)
@@ -67,6 +65,7 @@ public class MobController : MonoBehaviour, IDamageable
 
     public void TakeDamage(float dmg, Vector2 knockbackVector)
     {
+        Debug.Log(dmg);
         _health.DecreaseHealth(dmg);
 
         if (_mobData.blood != null)
@@ -76,13 +75,5 @@ public class MobController : MonoBehaviour, IDamageable
             _movement.TakeKnockback(knockbackVector);
         else
             _movementSP.TakeKnockback(knockbackVector);
-    }
-    
-    private void ReturnToSpawner()
-    {
-        if (_mySpawner != null)
-        {
-            transform.position = _mySpawner.GetRandomAvailableSpawnPoint();
-        }
     }
 }

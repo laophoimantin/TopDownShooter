@@ -30,6 +30,7 @@ public class PlayerWeaponEquipper : MonoBehaviour
     private void EquipWeapon(GameObject newWeapon)
     {
         WeaponController weaponCon = newWeapon.GetComponent<WeaponController>();
+        weaponCon.Init();
         _playerController.EquipWeapon(weaponCon);
     }
 }

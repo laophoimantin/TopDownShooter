@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class EnemySpawner : MonoBehaviour, IUpdater
+public class EnemySpawner : Singleton<EnemySpawner>, IUpdater
 {
     [System.Serializable]
     public class Wave
@@ -173,7 +173,7 @@ public class EnemySpawner : MonoBehaviour, IUpdater
 
         if (spawnedEnemy.TryGetComponent(out MobController mob))
         {
-            mob.Init(_playerTransform, this);
+            mob.Init(_playerTransform, spawnPos);
         }
 
         groupToSpawn.SpawnCount++;
