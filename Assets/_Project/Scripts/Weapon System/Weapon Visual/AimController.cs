@@ -6,7 +6,6 @@ public class AimController : MonoBehaviour
     [SerializeField] private Camera _mainCam;
     [SerializeField] private Transform _weaponPivot;
     [SerializeField] private Transform _handPos;
-
     [SerializeField] private Transform _playerVisual;
     
     private Vector3 _aimDir;

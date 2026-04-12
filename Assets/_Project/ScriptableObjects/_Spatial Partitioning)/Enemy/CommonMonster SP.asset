@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8737536a85a094e42821801391f53478, type: 3}
   m_Name: CommonMonster SP
   m_EditorClassIdentifier: 
-  mobSpeed: 5
   mobHealth: 8
   attackRange: 1.01
   knockbackResistance: 1
   despawnDistance: 35
-  KnockbackForce: 2.93
+  mobSpeed: 5
+  separationRadius: 3.16
+  separationWeight: 7.3
   blood: {fileID: 1810937755164199950, guid: 2156bca2849190d4ca5c962e224a9364, type: 3}

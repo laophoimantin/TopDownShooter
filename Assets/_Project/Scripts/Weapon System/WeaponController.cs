@@ -9,13 +9,14 @@ public class WeaponController : MonoBehaviour, IUpdater
     [SerializeField] private WeaponData _data;
     [SerializeField] private Transform[] _shootPoint;
 
+    // -----------------------------------------------
     private float _currentDamage;
     private float _currentRange;
     private float _currentFireRate;
     private int _currentPierceCount;
     private float _fireRateTimer;
-    public static event Action OnFire;
 
+    // =================================================
     void OnEnable()
     {
         UpdateManager.Instance.OnAssignUpdater(this);
@@ -28,7 +29,6 @@ public class WeaponController : MonoBehaviour, IUpdater
             UpdateManager.Instance.OnUnassignUpdater(this);
         }
     }
-
 
     public void Init()
     {
@@ -75,21 +75,15 @@ public class WeaponController : MonoBehaviour, IUpdater
             Vector3 fireDirection = firePoint.right;
             GameObject bullet = PoolManager.Instance.Spawn(_data.bulletPrefab, firePos, firePoint.rotation);
             
-            
-            // if (bullet.TryGetComponent(out Projectile proj))
-            // {
-            //     proj.Setup(_currentDamage, _data.bulletSpeed, _currentRange, _currentPierceCount, _data.knockbackForce);
-            // }
-            // else
             if (bullet.TryGetComponent(out ProjectileSP projSP))
             {
                 projSP.Setup(_currentDamage, _data.bulletSpeed, _currentRange, _currentPierceCount, _data.knockbackForce, fireDirection, firePos);
             }
         }
-
-        OnFire?.Invoke();
     }
 
+    
+    // Upgrades
     public void AddDamage(float dmg)
     {
         _currentDamage += dmg;
@@ -105,7 +99,7 @@ public class WeaponController : MonoBehaviour, IUpdater
         _currentPierceCount += count;
     }
 
-    public void AddFireRate(float rate)
+    public void ReduceFireCooldown(float rate)
     {
         _currentFireRate -= rate;
         if (_currentFireRate <= 0)

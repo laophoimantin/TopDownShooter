@@ -18,14 +18,17 @@ public class GameOverPanel : MonoBehaviour
 
     void OnEnable()
     {
-        PlayerHealth.OnDeathFinished += () => ShowMenu(false);
-        CountdownTimer.OnTimeOut += () => ShowMenu(true);
+        this.Subscribe<OnTimeOut>(Win);
+        this.Subscribe<OnPlayerDeathFinished>(Lose);
     }
 
     void OnDisable()
     {
-        PlayerHealth.OnDeathFinished -= () => ShowMenu(false);
-        CountdownTimer.OnTimeOut -= () => ShowMenu(true);
+        if (EventDispatcher.Instance != null)
+        {
+            this.Unsubscribe<OnTimeOut>(Win);
+            this.Unsubscribe<OnPlayerDeathFinished>(Lose);
+        }
     }
 
     void Start()
@@ -34,6 +37,16 @@ public class GameOverPanel : MonoBehaviour
         _panel.SetActive(false);
     }
 
+    private void Lose(OnPlayerDeathFinished eventData)
+    {
+        ShowMenu(false);
+    }
+    
+    private void Win(OnTimeOut eventData)
+    {
+        ShowMenu(true);
+    }
+    
     private void ShowMenu(bool isWin)
     {
         _panel.SetActive(true);

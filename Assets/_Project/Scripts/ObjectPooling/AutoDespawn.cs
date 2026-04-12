@@ -10,7 +10,7 @@ public class AutoDespawn : MonoBehaviour
         _timer = _lifeTime; 
     }
 
-    private void Update()
+    void Update()
     {
         _timer -= Time.deltaTime;
         if (_timer <= 0)

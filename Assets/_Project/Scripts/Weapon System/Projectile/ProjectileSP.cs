@@ -7,6 +7,7 @@ public class ProjectileSP : MonoBehaviour
     public float HitboxRadius = 0.5f;
     [SerializeField] private GameObject _hitEffect;
 
+    // -------------------------------------------------------------------------
     [HideInInspector] public float SqrRadius;
     [HideInInspector] public float Damage;
     [HideInInspector] public int PierceCount;
@@ -14,15 +15,16 @@ public class ProjectileSP : MonoBehaviour
     [HideInInspector] public float Speed;
     [HideInInspector] public Vector3 Direction;
     [HideInInspector] public Vector3 CurrentPos;
-    
     [HideInInspector] public float LifetimeTimer;
     [HideInInspector] public int ProjIndex = -1;
 
+    // -------------------------------------------------------------------------
     private bool _isRegistered = false;
 
-    public HashSet<MobControllerSP> HitTargets = new HashSet<MobControllerSP>();
-    public List<MobControllerSP> NearbyEnemies = new List<MobControllerSP>();
+    public HashSet<MobControllerSP> HitTargets = new();
+    public List<MobControllerSP> NearbyEnemies = new();
 
+    // ==========================================================================
     void Awake()
     {
         SqrRadius = HitboxRadius * HitboxRadius;

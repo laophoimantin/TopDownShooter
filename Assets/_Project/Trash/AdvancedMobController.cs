@@ -140,7 +140,7 @@ public class AdvancedMobController : MonoBehaviour, IDamageable
         EnemySpawner enemySpawner = FindObjectOfType<EnemySpawner>();
         if (enemySpawner != null)
         {
-            enemySpawner.OnEnemyKilled();
+            //enemySpawner.OnEnemyKilled();
         }
     }
 }

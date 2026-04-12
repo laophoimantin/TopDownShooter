@@ -61,6 +61,11 @@ public class PlayerMovement : MonoBehaviour, IUpdater, IFixedUpdater
         }
     }
 
+    public void StopMovement()
+    {
+        _rb.velocity = Vector2.zero;
+    }
+    
     private void GetInput()
     {
         float horizontalInput = Input.GetAxisRaw("Horizontal");

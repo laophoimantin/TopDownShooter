@@ -5,6 +5,6 @@ public class FireRateUpgradeSO : UpgradeData
 {
     public override void ApplyUpgrade(PlayerController player)
     {
-        player.Weapon.AddFireRate(_power);
+        player.Weapon.ReduceFireCooldown(_power);
     }
 }

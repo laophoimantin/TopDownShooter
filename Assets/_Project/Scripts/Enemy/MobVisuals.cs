@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class MobVisuals : MonoBehaviour , IUpdater
 {
+    
     [SerializeField] private SpriteRenderer _visual;
     private MobData _data;
     private Transform _target;
@@ -25,6 +26,7 @@ public class MobVisuals : MonoBehaviour , IUpdater
         }
     }
     
+    // ===============================================================================
     public void OnUpdate()
     {
         if (_target == null) return;

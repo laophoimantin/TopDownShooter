@@ -1,58 +1,48 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System;
-
 using System.Collections;
 
 public class GameManager : Singleton<GameManager>
 {
     public enum GameState
     {
-       Gameplay,
-       Paused,
-       GameOver
+        Gameplay,
+        Paused,
+        GameOver
     }
 
-    public GameState CurrentState { get; private set; } = GameState.Gameplay;
+    private GameState _currentState = GameState.Gameplay;
     private GameState _previousState;
 
-    public static event Action<GameState> OnGameStateChanged;
-
+    public GameState CurrentState => _currentState;
+    
     void OnEnable()
     {
-       PlayerHealth.OnDeathStarted += HandleGameOver;
-       CountdownTimer.OnTimeOut += HandleGameOver;
+        this.Subscribe<OnPlayerDeathStarted>(LoseGameOver);
+        this.Subscribe<OnTimeOut>(WinGameOver);
     }
-    
+
     void OnDisable()
     {
-       PlayerHealth.OnDeathStarted -= HandleGameOver;
-       CountdownTimer.OnTimeOut -= HandleGameOver;
+        if (EventDispatcher.Instance != null)
+        {
+            this.Unsubscribe<OnPlayerDeathStarted>(LoseGameOver);
+            this.Unsubscribe<OnTimeOut>(WinGameOver);
+        }
     }
 
     public void ChangeState(GameState newState)
     {
-        if (CurrentState == newState) return; 
+        if (_currentState == newState) return;
 
-        _previousState = CurrentState;
-        CurrentState = newState;
-
-        switch (CurrentState)
-        {
-            case GameState.Gameplay:
-                break;
-            case GameState.Paused:
-	            break;
-            case GameState.GameOver:
-                break;
-        }
-
-        OnGameStateChanged?.Invoke(CurrentState); 
+        _previousState = _currentState;
+        _currentState = newState;
     }
 
     public void PauseGame()
     {
-        if (CurrentState == GameState.Gameplay)
+        if (_currentState == GameState.Gameplay)
         {
             ChangeState(GameState.Paused);
         }
@@ -60,16 +50,19 @@ public class GameManager : Singleton<GameManager>
 
     public void ResumeGame()
     {
-        if (CurrentState == GameState.Paused)
+        if (_currentState == GameState.Paused)
         {
-            ChangeState(_previousState); 
+            ChangeState(_previousState);
         }
     }
 
-    private void HandleGameOver()
+    private void LoseGameOver(OnPlayerDeathStarted eventData)
+    {
+        ChangeState(GameState.GameOver);
+    }
+
+    private void WinGameOver(OnTimeOut eventData)
     {
         ChangeState(GameState.GameOver);
     }
 }
-
-

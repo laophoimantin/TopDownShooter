@@ -9,31 +9,30 @@ public class PlayerHealth : MonoBehaviour, IUpdater
     [SerializeField] private int _maxHealth = 3;
     private int _currentHealth;
 
-    public int CurrentHealth => _currentHealth;
-    public int MaxHealth => _maxHealth;
-
+    // --------------------------------------------------------------------
     [Header("Invincibility Settings")]
     [SerializeField] private float _invincibleDuration = 3f;
     private float _invincibleTimer;
-
     private bool _isInvincible;
+
     public bool IsInvincible => _isInvincible;
 
-    public static event Action<bool> OnInvincibilityChanged;
-    public static event Action<int, int> OnHealthChanged;
-
-
+    // --------------------------------------------------------------------
     [Header("Death Settings")]
     [SerializeField] private float _deathDelay = 2f;
     private bool _isDead = false;
     public bool IsDead => _isDead;
 
-    public static event Action OnDeathStarted;
-    public static event Action OnDeathFinished;
-
+    // --------------------------------------------------------------------
     [Header("Audio")]
     [SerializeField] private AudioClip _hurtSoundClip;
     [SerializeField] private AudioClip _healSoundClip;
+
+    // --------------------------------------------------------------------
+    public event Action<bool> OnInvincibilityChanged;
+    public event Action OnDeathStarted;
+
+    // ===========================================================================================
 
     void OnEnable()
     {
@@ -48,7 +47,6 @@ public class PlayerHealth : MonoBehaviour, IUpdater
         }
     }
 
-    
     void Start()
     {
         _currentHealth = _maxHealth;
@@ -94,7 +92,7 @@ public class PlayerHealth : MonoBehaviour, IUpdater
         if (_currentHealth < _maxHealth)
         {
             ChangeHealth(1);
-            
+
             if (SoundManager.Instance != null)
                 SoundManager.Instance.PlaySfx(_healSoundClip);
         }
@@ -104,11 +102,14 @@ public class PlayerHealth : MonoBehaviour, IUpdater
     {
         _isDead = true;
 
+        // Global: notify external systems (UI, audio, game state)
+        this.SendEvent(new OnPlayerDeathStarted());
+        
+        // Local: notify components on this GameObject
         OnDeathStarted?.Invoke();
-
         yield return new WaitForSeconds(_deathDelay);
 
-        OnDeathFinished?.Invoke();
+        this.SendEvent(new OnPlayerDeathFinished());
     }
 
 
@@ -128,6 +129,10 @@ public class PlayerHealth : MonoBehaviour, IUpdater
 
     private void UpdateHealthUI()
     {
-        OnHealthChanged?.Invoke(CurrentHealth, MaxHealth);
+        this.SendEvent(new OnPlayerHealthChange
+        {
+            CurrentHealth = _currentHealth,
+            MaxHealth = _maxHealth
+        });
     }
 }

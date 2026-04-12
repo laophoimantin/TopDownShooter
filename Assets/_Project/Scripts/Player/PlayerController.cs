@@ -15,6 +15,28 @@ public class PlayerController : MonoBehaviour, IDamageable
     [Header("Test")]
     [SerializeField] private bool _isInvincible;
 
+    private void OnDisable()
+    {
+        if (_visual != null)
+        {
+            _health.OnDeathStarted -= _visual.PlayDeathAnim;
+            _health.OnInvincibilityChanged -= _visual.SetGetHitState;
+        }
+        _health.OnDeathStarted -= _movement.StopMovement;
+    }
+
+    
+    private void Start()
+    {
+        if (_visual != null)
+        {
+            _health.OnDeathStarted += _visual.PlayDeathAnim;
+            _health.OnInvincibilityChanged += _visual.SetGetHitState;
+        }
+        _health.OnDeathStarted += _movement.StopMovement;
+    }
+
+  
     public void EquipWeapon(WeaponController newWeapon)
     {
         _weapon = newWeapon;

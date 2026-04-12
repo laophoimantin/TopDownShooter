@@ -3,34 +3,41 @@ using UnityEngine.UI;
 
 public class HeartDisplay : MonoBehaviour
 {
-    [SerializeField] private Image[] hearts;
-    [SerializeField] private Sprite fullHeart;
-    [SerializeField] private Sprite emptyHeart;
+    [SerializeField] private Image[] _hearts;
+    [SerializeField] private Sprite _fullHeart;
+    [SerializeField] private Sprite _emptyHeart;
 
     void OnEnable()
     {
-        PlayerHealth.OnHealthChanged += UpdateHearts;
+        this.Subscribe<OnPlayerHealthChange>(UpdateHearts);
     }
 
     void OnDisable()
     {
-        PlayerHealth.OnHealthChanged -= UpdateHearts;
+        if (EventDispatcher.Instance != null)
+        {
+            this.Unsubscribe<OnPlayerHealthChange>(UpdateHearts);
+        }
     }
 
-    private void UpdateHearts(int currentHealth, int maxHealth)
+    private void UpdateHearts(OnPlayerHealthChange eventData)
     {
-        for (int i = 0; i < hearts.Length; i++)
+        int currentHealth = eventData.CurrentHealth;
+        int maxHealth =  eventData.MaxHealth;
+        
+        for (int i = 0; i < _hearts.Length; i++)
         {
             if (i < maxHealth)
             {
-                hearts[i].enabled = true;
+                _hearts[i].enabled = true;
 
-                hearts[i].sprite = (i < currentHealth) ? fullHeart : emptyHeart;
+                _hearts[i].sprite = (i < currentHealth) ? _fullHeart : _emptyHeart;
             }
             else
             {
-                hearts[i].enabled = false;
+                _hearts[i].enabled = false;
             }
         }
+        
     }
 }

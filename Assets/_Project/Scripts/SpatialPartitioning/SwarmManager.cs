@@ -7,31 +7,14 @@ using UnityEngine.Jobs;
 
 public class SwarmManager : Singleton<SwarmManager>, IUpdater
 {
-    public List<MobControllerSP> activeMobs = new();
-    [SerializeField] private Transform _player;
     [SerializeField] private PlayerController _playerController;
     
-    [Header("Swarm Settings")]
-    [SerializeField] private float _separationRadius = 1.5f;
-    [SerializeField] private float _separationWeight = 3f;
+    // -------------------------------------------------------
+    public List<MobControllerSP> activeMobs = new();
     
-    // private TransformAccessArray _transformAccessArray;
-    // private NativeArray<Vector3> _separationForces;
-
-    public bool Stop;
-    
-    private float _radius;
-    private float _sqrRadius;
-    private float _sepWeight;
-
-#if UNITY_EDITOR
-    private void OnValidate()
-    {
-        _radius = _separationRadius;
-        _sqrRadius = _separationRadius * _separationRadius;
-        _sepWeight = _separationWeight;
-    }
-#endif
+    [Header("Batching Optimization")]
+    [Range(1, 50)] public int totalBatches = 10; 
+    private int _currentBatchIndex = 0;
     
     void OnEnable()
     {
@@ -62,44 +45,52 @@ public class SwarmManager : Singleton<SwarmManager>, IUpdater
         mob.SwarmIndex = -1;
     }
 
-    public void OnUpdate()
+  public void OnUpdate()
     {
-        if (Stop)
-            return;
-        if (activeMobs.Count == 0 || _player == null) return;
+        int totalMobs = activeMobs.Count;
+        if (totalMobs == 0 || _playerController == null) return;
 
         if (PerformanceMonitor.Instance != null)
         {
             PerformanceMonitor.Instance.StartLogicTimer();
         }
         
-        SpatialGrid.Instance.ClearGrid();
-        Vector2 playerPos = _player.position;
-        float dt = Time.deltaTime;
+        int mobsPerBatch = Mathf.CeilToInt((float)totalMobs / totalBatches);
+        int startIndex = _currentBatchIndex * mobsPerBatch;
+        int endIndex = Mathf.Min(startIndex + mobsPerBatch, totalMobs);
+        _currentBatchIndex = (_currentBatchIndex + 1) % totalBatches;
         
-        for (int i = 0; i < activeMobs.Count; i++)
+        // ==========================================
+        
+        SpatialGrid.Instance.ClearGrid();
+        Vector2 playerPos = _playerController.transform.position;
+        
+        for (int i = 0; i < totalMobs; i++)
         {
             MobControllerSP mob = activeMobs[i];
-            mob.MovementSP.CurrentPos = mob.transform.position; 
             SpatialGrid.Instance.Register(mob);
         }
 
-        for (int i = 0; i < activeMobs.Count; i++)
+        float dt = Time.deltaTime * totalBatches; 
+
+        for (int i = startIndex; i < endIndex; i++)
         {
             MobControllerSP mob = activeMobs[i];
             MobMovementSP moveComp = mob.MovementSP;
 
             Vector3 myPos = moveComp.CurrentPos;
             
+            float currentRadius = mob.MobData.separationRadius;
+            float currentSqrRadius = currentRadius * currentRadius;
+            float currentWeight = mob.MobData.separationWeight;
             
-            mob.TickMelee(dt);
+            mob.TickMelee(dt); 
 
-            moveComp.ForceToApply /= 1.2f;
+            moveComp.ForceToApply /= Mathf.Pow(1.2f, totalBatches);
             if (moveComp.ForceToApply.sqrMagnitude <= 0.01f) moveComp.ForceToApply = Vector2.zero;
-
             moveComp.SeparationForce = Vector2.zero;
 
-            SpatialGrid.Instance.GetNearbyEntities(myPos, _radius, ref mob.NearbyNeighbors);
+            SpatialGrid.Instance.GetNearbyEntities(myPos, currentRadius, ref mob.NearbyNeighbors);
 
             for (int j = 0; j < mob.NearbyNeighbors.Count; j++)
             {
@@ -115,10 +106,10 @@ public class SwarmManager : Singleton<SwarmManager>, IUpdater
                     sqrDist = offset.sqrMagnitude;
                 }
 
-                if (sqrDist > 0 && sqrDist < _sqrRadius)
+                if (sqrDist > 0 && sqrDist < currentSqrRadius)
                 {
                     float dist = Mathf.Sqrt(sqrDist);
-                    moveComp.SeparationForce += (offset / dist) * ((_radius - dist) * _sepWeight);
+                    moveComp.SeparationForce += (offset / dist) * ((currentRadius - dist) * currentWeight);
                 }
             }
 
@@ -140,14 +131,15 @@ public class SwarmManager : Singleton<SwarmManager>, IUpdater
 
             Vector2 finalVelocity = walkVelocity + moveComp.ForceToApply + moveComp.SeparationForce;
 
-            Vector3 finalPos = myPos + (Vector3)finalVelocity * Time.deltaTime;
+            Vector3 finalPos = myPos + (Vector3)finalVelocity * dt; 
+            
             mob.transform.position = finalPos;
             mob.MovementSP.CurrentPos = finalPos;
-            
-            if (PerformanceMonitor.Instance != null)
-            {
-                PerformanceMonitor.Instance.StopLogicTimer(activeMobs.Count);
-            }
+        }
+
+        if (PerformanceMonitor.Instance != null)
+        {
+            PerformanceMonitor.Instance.StopLogicTimer(totalMobs);
         }
     }
 }

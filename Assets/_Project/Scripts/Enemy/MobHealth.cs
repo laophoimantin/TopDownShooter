@@ -3,23 +3,28 @@ using UnityEngine;
 
 public class MobHealth : MonoBehaviour
 {
+    [Header("References")]
+    [SerializeField] private EnemyDropper _dropper;
+    
     private float _currentHealth;
     private MobData _data;
-    [SerializeField] private DropRateManager _dropper;
-    
+    public event Action OnDeath;
+
+    // =================================================================================================================
     public void Init(MobData data)
     {
         _data = data;
         _currentHealth = _data.mobHealth;
     }
 
+    // ============================================================
     public void DecreaseHealth(float amount)
     {
         if (_currentHealth <= 0) return;
 
         _currentHealth -= amount;
-        
-  
+
+
         if (_currentHealth <= 0)
         {
             Die();
@@ -28,12 +33,10 @@ public class MobHealth : MonoBehaviour
 
     private void Die()
     {
-        if (EnemySpawner.Instance != null)
-            EnemySpawner.Instance.OnEnemyKilled();
-        if (_dropper != null)
-        {
-            _dropper.DropItem();
-        }
+        this.SendEvent(new OnEnemyKilledEvent());
+        
+        OnDeath?.Invoke();
+        
         PoolManager.Instance.Despawn(gameObject);
     }
 }

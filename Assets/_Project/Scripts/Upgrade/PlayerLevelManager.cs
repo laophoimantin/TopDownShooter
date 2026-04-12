@@ -10,9 +10,11 @@ public class PlayerLevelManager : Singleton<PlayerLevelManager>
 
     public int CurrentLevel => _currentLevel;
 
+    // ----------------------------------------------------------------
     public static event Action<int, int> OnXpChange;
     public static event Action<int> OnLevelUp;
 
+    // ----------------------------------------------------------------
     [Serializable]
     public class LevelRange
     {
@@ -23,14 +25,12 @@ public class PlayerLevelManager : Singleton<PlayerLevelManager>
 
     [SerializeField] private List<LevelRange> _levelRanges = new();
 
+    // =============================================================
     void Start()
     {
         if (_levelRanges == null || _levelRanges.Count == 0)
             return;
         _xpCap = _levelRanges[0].ExperienceCapIncrease;
-        
-        OnXpChange?.Invoke(_currentLevel, _xpCap);
-        OnLevelUp?.Invoke(_currentLevel);
     }
 
     public void IncreaseExperience(int amount)

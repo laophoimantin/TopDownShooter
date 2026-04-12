@@ -4,26 +4,26 @@ using UnityEngine;
 
 public class CameraMovement : MonoBehaviour
 {
-	[SerializeField] private Transform player;
+	[SerializeField] private Transform _target;
 
     [Header("Camera Settings")]
-    [SerializeField] private Camera cam;
-    [SerializeField] private float threshold;
+    [SerializeField] private Camera _cam;
+    [SerializeField] private float _threshold = 0.4f;
 
     void LateUpdate()
     {
-        if (cam != null && player != null)
+        if (_cam != null && _target != null)
         {
-            Vector3 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
+            Vector3 mousePos = _cam.ScreenToWorldPoint(Input.mousePosition);
             mousePos.z = 0;
 
-            Vector3 targetPos = (player.position + mousePos) / 2f;
+            Vector3 targetPos = (_target.position + mousePos) / 2f;
             targetPos.z = 0;
 
-            targetPos.x = Mathf.Clamp(targetPos.x, player.position.x - threshold, player.position.x + threshold);
-            targetPos.y = Mathf.Clamp(targetPos.y, player.position.y - threshold, player.position.y + threshold);
+            targetPos.x = Mathf.Clamp(targetPos.x, _target.position.x - _threshold, _target.position.x + _threshold);
+            targetPos.y = Mathf.Clamp(targetPos.y, _target.position.y - _threshold, _target.position.y + _threshold);
 
-            cam.transform.position = Vector3.Lerp(cam.transform.position, targetPos, Time.deltaTime * 5f);
+            _cam.transform.position = Vector3.Lerp(_cam.transform.position, targetPos, Time.deltaTime * 5f);
         }
     }
 }

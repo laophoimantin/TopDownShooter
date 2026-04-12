@@ -6,7 +6,10 @@ using Random = UnityEngine.Random;
 
 public class EnemySpawner : Singleton<EnemySpawner>, IUpdater
 {
-    [System.Serializable]
+    [SerializeField] private Transform _playerTransform;
+
+    // ----------------------------------------------------------------
+    [Serializable]
     public class Wave
     {
         public string WaveName;
@@ -16,7 +19,7 @@ public class EnemySpawner : Singleton<EnemySpawner>, IUpdater
         [HideInInspector] public int SpawnCount;
     }
 
-    [System.Serializable]
+    [Serializable]
     public class EnemyGroup
     {
         public string EnemyName;
@@ -33,8 +36,10 @@ public class EnemySpawner : Singleton<EnemySpawner>, IUpdater
         Finished
     }
 
+    // ----------------------------------------------------------------
     private SpawnerState _currentState = SpawnerState.Waiting;
-
+    
+    [Header("Wave Settings")]
     public List<Wave> Waves;
     private int _currentWaveCount;
 
@@ -48,16 +53,15 @@ public class EnemySpawner : Singleton<EnemySpawner>, IUpdater
     [Header("Spawn Positions")]
     [SerializeField] private List<Transform> _spawnPoints;
     [SerializeField] private Collider2D _validSpawnArea;
+    
     private List<Transform> _availSpawnPoints;
 
-    [SerializeField] private Transform _playerTransform;
-
-    [Space(20)]
-    [SerializeField] private bool IsTesting;
-
+    // ===========================================================================
     private void OnEnable()
     {
         UpdateManager.Instance.OnAssignUpdater(this);
+
+        this.Subscribe<OnEnemyKilledEvent>(OnEnemyKilled);
     }
 
     private void OnDisable()
@@ -65,6 +69,11 @@ public class EnemySpawner : Singleton<EnemySpawner>, IUpdater
         if (UpdateManager.Instance != null)
         {
             UpdateManager.Instance.OnUnassignUpdater(this);
+        }
+
+        if (EventDispatcher.Instance != null)
+        {
+            this.Unsubscribe<OnEnemyKilledEvent>(OnEnemyKilled);
         }
     }
 
@@ -76,6 +85,7 @@ public class EnemySpawner : Singleton<EnemySpawner>, IUpdater
         StartCoroutine(BeginNextWave());
     }
 
+    
     public void OnUpdate()
     {
         if (GameManager.Instance.CurrentState == GameManager.GameState.GameOver ||
@@ -117,6 +127,7 @@ public class EnemySpawner : Singleton<EnemySpawner>, IUpdater
         }
     }
 
+    
     private IEnumerator BeginNextWave()
     {
         _currentState = SpawnerState.Waiting;
@@ -127,6 +138,7 @@ public class EnemySpawner : Singleton<EnemySpawner>, IUpdater
         _spawnTimer = Waves[_currentWaveCount].SpawnInterval;
     }
 
+    
     private void CalculateWaveQuota()
     {
         int currentWaveQuota = 0;
@@ -138,6 +150,7 @@ public class EnemySpawner : Singleton<EnemySpawner>, IUpdater
         Waves[_currentWaveCount].WaveQuota = currentWaveQuota;
     }
 
+    
     public void UpdateAvailableSpawnPoints()
     {
         _availSpawnPoints.Clear();
@@ -147,18 +160,15 @@ public class EnemySpawner : Singleton<EnemySpawner>, IUpdater
             {
                 _availSpawnPoints.Add(point);
             }
-            else if (IsTesting)
-            {
-                _availSpawnPoints.Add(point);
-            }
         }
     }
 
+    
     private void SpawnSingleEnemy()
     {
         if (_enemiesAlive >= _maxEnemiesAllowed) return;
 
-        
+
         Wave currentWave = Waves[_currentWaveCount];
 
         List<EnemyGroup> validGroups = new List<EnemyGroup>();
@@ -194,11 +204,13 @@ public class EnemySpawner : Singleton<EnemySpawner>, IUpdater
         _enemiesAlive++;
     }
 
-    public void OnEnemyKilled()
+    
+    private void OnEnemyKilled(OnEnemyKilledEvent eventData)
     {
         _enemiesAlive--;
     }
 
+    
     public Vector3 GetRandomAvailableSpawnPoint()
     {
         int index = Random.Range(0, _availSpawnPoints.Count);

@@ -4,19 +4,15 @@ using UnityEngine;
 
 public class LampMovement : MonoBehaviour
 {
-    private GameObject player;
-    [SerializeField] private Vector2 offset;
-    void Start()
-    {
-        player = GameObject.FindGameObjectWithTag("Player");
-    }
+    [SerializeField] private Transform _pivot;
+    [SerializeField] private Vector2 _offset;
 
     void LateUpdate()
     {
-        if (player != null)
+        if (_pivot != null)
         {
-            Vector2 targetPosition = player.transform.position;
-            transform.position = targetPosition + offset;
+            Vector2 targetPosition = _pivot.transform.position;
+            transform.position = targetPosition + _offset;
         }
     }
 }

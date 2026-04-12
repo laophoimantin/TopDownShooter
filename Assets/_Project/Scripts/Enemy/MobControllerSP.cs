@@ -4,25 +4,29 @@ using UnityEngine;
 
 public class MobControllerSP : MonoBehaviour, IDamageable
 {
+    private Transform _targetPlayer;
+    
+    // ------------------------------------------------------------
     [Header("Data")]
     [SerializeField] private MobData _mobData;
     public MobData MobData => _mobData;
-
+    
+    // ------------------------------------------------------------
     [Header("References")]
     [SerializeField] private MobHealth _health;
     [SerializeField] private MobMovementSP _movementSP;
     [SerializeField] private MobMeleeSP _melee;
     [SerializeField] private MobVisuals _visuals;
+    
     public MobMovementSP MovementSP => _movementSP;
 
-
-    private Transform _targetPlayer;
-
+    // ------------------------------------------------------------
     [Header("Spatial Partitioning")]
     private bool _isRegistered = false;
     [HideInInspector] public int SwarmIndex = -1;
     [HideInInspector] public List<MobControllerSP> NearbyNeighbors = new();
 
+    // =================================================================================================================
     void OnEnable()
     {
         if (_movementSP != null && SwarmManager.Instance != null && !_isRegistered)
@@ -44,19 +48,16 @@ public class MobControllerSP : MonoBehaviour, IDamageable
     public void Init(Transform targetPlayer, Vector3 startPos)
     {
         _targetPlayer = targetPlayer;
-
+        
         _health.Init(_mobData);
-
         _movementSP.Init(_mobData, startPos);
-
         if (_visuals != null)
             _visuals.Init(_mobData, _targetPlayer);
-
         if (_melee != null)
             _melee.Init(_mobData);
     }
-
-
+    
+    // ============================================================
     public void TakeDamage(float dmg, Vector2 knockbackVector)
     {
         _health.DecreaseHealth(dmg);

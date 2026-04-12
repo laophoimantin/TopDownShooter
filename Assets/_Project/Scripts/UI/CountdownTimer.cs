@@ -12,7 +12,6 @@ public class CountdownTimer : MonoBehaviour
     public float TimeElapsed => _totalTime - _currentTime;
     public float TotalTime => _totalTime;
     
-    public static event Action OnTimeOut;
 
     void Start()
     {
@@ -32,11 +31,10 @@ public class CountdownTimer : MonoBehaviour
             _isTimeUp = true;
             
             UpdateTimerUI(); 
-            OnTimeOut?.Invoke(); 
+            this.SendEvent(new OnTimeOut());
         }
         else
         {
-            // Còn sống thì còn đếm
             UpdateTimerUI(); 
         }
     }
