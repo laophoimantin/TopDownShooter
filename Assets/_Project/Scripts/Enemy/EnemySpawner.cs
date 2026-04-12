@@ -11,9 +11,9 @@ public class EnemySpawner : Singleton<EnemySpawner>, IUpdater
     {
         public string WaveName;
         public List<EnemyGroup> EnemyGroups;
-        [HideInInspector] public int WaveQuota; 
+        [HideInInspector] public int WaveQuota;
         public float SpawnInterval;
-        [HideInInspector] public int SpawnCount; 
+        [HideInInspector] public int SpawnCount;
     }
 
     [System.Serializable]
@@ -25,7 +25,14 @@ public class EnemySpawner : Singleton<EnemySpawner>, IUpdater
         public GameObject EnemyPrefab;
     }
 
-    private enum SpawnerState { Waiting, Spawning, WaitingForClear, Finished }
+    private enum SpawnerState
+    {
+        Waiting,
+        Spawning,
+        WaitingForClear,
+        Finished
+    }
+
     private SpawnerState _currentState = SpawnerState.Waiting;
 
     public List<Wave> Waves;
@@ -76,10 +83,11 @@ public class EnemySpawner : Singleton<EnemySpawner>, IUpdater
         {
             return;
         }
+
         if (_currentState == SpawnerState.Spawning)
         {
             _spawnTimer += Time.deltaTime;
-            
+
             if (_spawnTimer >= Waves[_currentWaveCount].SpawnInterval)
             {
                 _spawnTimer = 0f;
@@ -107,15 +115,14 @@ public class EnemySpawner : Singleton<EnemySpawner>, IUpdater
                 }
             }
         }
-        
     }
 
     private IEnumerator BeginNextWave()
     {
         _currentState = SpawnerState.Waiting;
-        
+
         yield return new WaitForSeconds(_waveInterval);
-        
+
         _currentState = SpawnerState.Spawning;
         _spawnTimer = Waves[_currentWaveCount].SpawnInterval;
     }
@@ -127,6 +134,7 @@ public class EnemySpawner : Singleton<EnemySpawner>, IUpdater
         {
             currentWaveQuota += enemyGroup.EnemyCount;
         }
+
         Waves[_currentWaveCount].WaveQuota = currentWaveQuota;
     }
 
@@ -148,8 +156,9 @@ public class EnemySpawner : Singleton<EnemySpawner>, IUpdater
 
     private void SpawnSingleEnemy()
     {
-        if (_enemiesAlive >= _maxEnemiesAllowed) return; 
+        if (_enemiesAlive >= _maxEnemiesAllowed) return;
 
+        
         Wave currentWave = Waves[_currentWaveCount];
 
         List<EnemyGroup> validGroups = new List<EnemyGroup>();
@@ -161,19 +170,23 @@ public class EnemySpawner : Singleton<EnemySpawner>, IUpdater
             }
         }
 
-        if (validGroups.Count == 0) return; 
+        if (validGroups.Count == 0) return;
 
         EnemyGroup groupToSpawn = validGroups[Random.Range(0, validGroups.Count)];
 
         UpdateAvailableSpawnPoints();
-        if (_availSpawnPoints.Count == 0) return; 
+        if (_availSpawnPoints.Count == 0) return;
 
         Vector3 spawnPos = GetRandomAvailableSpawnPoint();
-        GameObject spawnedEnemy =  PoolManager.Instance.Spawn(groupToSpawn.EnemyPrefab, spawnPos, Quaternion.identity);
+        GameObject spawnedEnemy = PoolManager.Instance.Spawn(groupToSpawn.EnemyPrefab, spawnPos, Quaternion.identity);
 
         if (spawnedEnemy.TryGetComponent(out MobController mob))
         {
             mob.Init(_playerTransform, spawnPos);
+        }
+        else if (spawnedEnemy.TryGetComponent(out MobControllerSP mobSP))
+        {
+            mobSP.Init(_playerTransform, spawnPos);
         }
 
         groupToSpawn.SpawnCount++;

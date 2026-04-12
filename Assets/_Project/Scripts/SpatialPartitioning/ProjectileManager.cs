@@ -11,6 +11,7 @@ public class ProjectileManager : Singleton<ProjectileManager>, IUpdater
     {
         UpdateManager.Instance.OnAssignUpdater(this);
     }
+
     void OnDisable()
     {
         if (UpdateManager.Instance != null)
@@ -70,7 +71,7 @@ public class ProjectileManager : Singleton<ProjectileManager>, IUpdater
 
             for (int j = 0; j < proj.NearbyEnemies.Count; j++)
             {
-                MobController victim = proj.NearbyEnemies[j];
+                MobControllerSP victim = proj.NearbyEnemies[j];
 
                 if (proj.HitTargets.Contains(victim)) continue;
 
@@ -83,6 +84,9 @@ public class ProjectileManager : Singleton<ProjectileManager>, IUpdater
                     Vector2 finalKnockback = (Vector2)proj.Direction * proj.KnockbackForce;
 
                     victim.TakeDamage(proj.Damage, finalKnockback);
+                    
+                    if (victim == null)
+                        Debug.Log("aaa");
 
                     if (proj.PierceCount > 0)
                     {
@@ -103,6 +107,5 @@ public class ProjectileManager : Singleton<ProjectileManager>, IUpdater
                 proj.CurrentPos = myPos;
             }
         }
-
     }
 }

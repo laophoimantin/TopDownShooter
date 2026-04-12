@@ -213,8 +213,8 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -222,7 +222,7 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_enableWordWrapping: 0
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
@@ -543,7 +543,8 @@ MonoBehaviour:
   _dontDestroyOnLoad: 0
   activeMobs: []
   _player: {fileID: 6555912984063460405}
-  _separationRadius: 1.5
+  _playerController: {fileID: 1081128940522618320}
+  _separationRadius: 3
   _separationWeight: 3
 --- !u!1 &361946546
 GameObject:
@@ -667,8 +668,8 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -676,7 +677,7 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_enableWordWrapping: 0
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
@@ -1854,11 +1855,11 @@ MonoBehaviour:
   - WaveName: 300
     EnemyGroups:
     - EnemyName: Com
-      EnemyCount: 800
+      EnemyCount: 1000
       SpawnCount: 0
       EnemyPrefab: {fileID: 7236144005313761043, guid: cbea358624bd15b4ea828a67aa47edb2, type: 3}
     WaveQuota: 0
-    SpawnInterval: 0.1
+    SpawnInterval: 0.001
     SpawnCount: 0
   _maxEnemiesAllowed: 10000
   _waveInterval: 1
@@ -3049,7 +3050,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Padding:
     m_Left: 0
-    m_Right: 0
+    m_Right: 81
     m_Top: 101
     m_Bottom: 0
   m_ChildAlignment: 2
@@ -3073,6 +3074,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4987b4250a084c642bd47a9b11999c0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _dontDestroyOnLoad: 0
   _fpsText: {fileID: 91901839}
   _msText: {fileID: 378672397}
   _entityCountText: {fileID: 2011744720}
@@ -3301,8 +3303,8 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -3310,7 +3312,7 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_enableWordWrapping: 0
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
@@ -3442,8 +3444,8 @@ MonoBehaviour:
   _rb: {fileID: 8841885845181837733}
   _moveSpeed: 5
   _maxSpeed: 15
-  _fixedKnockbackForce: 2
-  _forceDamping: 1.2
+  _fixedKnockbackForce: 30
+  _forceDamping: 7.5
 --- !u!1 &832387043280651667
 GameObject:
   m_ObjectHideFlags: 0

@@ -46,13 +46,19 @@ public class PlayerMovement : MonoBehaviour, IUpdater, IFixedUpdater
     {
         _forceToApply = Vector2.Lerp(_forceToApply, Vector2.zero, _forceDamping * Time.fixedDeltaTime);
 
-        if (_forceToApply.sqrMagnitude <= 0.01f)
+        if (_forceToApply.sqrMagnitude <= 2f)
         {
             _forceToApply = Vector2.zero;
         }
 
-        Vector2 moveForce = (_playerInput * _moveSpeed) + _forceToApply;
-        _rb.velocity = moveForce;
+        if (_forceToApply != Vector2.zero)
+        {
+            _rb.velocity = _forceToApply;
+        }
+        else 
+        {
+            _rb.velocity = _playerInput * _moveSpeed;
+        }
     }
 
     private void GetInput()

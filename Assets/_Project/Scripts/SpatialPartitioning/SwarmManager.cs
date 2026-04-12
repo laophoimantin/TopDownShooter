@@ -7,9 +7,10 @@ using UnityEngine.Jobs;
 
 public class SwarmManager : Singleton<SwarmManager>, IUpdater
 {
-    public List<MobController> activeMobs = new();
+    public List<MobControllerSP> activeMobs = new();
     [SerializeField] private Transform _player;
-
+    [SerializeField] private PlayerController _playerController;
+    
     [Header("Swarm Settings")]
     [SerializeField] private float _separationRadius = 1.5f;
     [SerializeField] private float _separationWeight = 3f;
@@ -41,18 +42,18 @@ public class SwarmManager : Singleton<SwarmManager>, IUpdater
             UpdateManager.Instance.OnUnassignUpdater(this);
     }
 
-    public void RegisterMob(MobController mob)
+    public void RegisterMob(MobControllerSP mob)
     {
         mob.SwarmIndex = activeMobs.Count;
         activeMobs.Add(mob);
     }
 
-    public void UnregisterMob(MobController mob)
+    public void UnregisterMob(MobControllerSP mob)
     {
         int index = mob.SwarmIndex;
         if (index < 0 || index >= activeMobs.Count || activeMobs[index] != mob) return;
         int lastIndex = activeMobs.Count - 1;
-        MobController lastMob = activeMobs[lastIndex];
+        MobControllerSP lastMob = activeMobs[lastIndex];
         activeMobs[index] = lastMob;
         lastMob.SwarmIndex = index;
         activeMobs.RemoveAt(lastIndex);
@@ -63,22 +64,31 @@ public class SwarmManager : Singleton<SwarmManager>, IUpdater
     {
         if (activeMobs.Count == 0 || _player == null) return;
 
+        if (PerformanceMonitor.Instance != null)
+        {
+            PerformanceMonitor.Instance.StartLogicTimer();
+        }
+        
         SpatialGrid.Instance.ClearGrid();
         Vector2 playerPos = _player.position;
-
+        float dt = Time.deltaTime;
+        
         for (int i = 0; i < activeMobs.Count; i++)
         {
-            MobController mob = activeMobs[i];
+            MobControllerSP mob = activeMobs[i];
             mob.MovementSP.CurrentPos = mob.transform.position; 
             SpatialGrid.Instance.Register(mob);
         }
 
         for (int i = 0; i < activeMobs.Count; i++)
         {
-            MobController mob = activeMobs[i];
+            MobControllerSP mob = activeMobs[i];
             MobMovementSP moveComp = mob.MovementSP;
 
             Vector3 myPos = moveComp.CurrentPos;
+            
+            
+            mob.TickMelee(dt);
 
             moveComp.ForceToApply /= 1.2f;
             if (moveComp.ForceToApply.sqrMagnitude <= 0.01f) moveComp.ForceToApply = Vector2.zero;
@@ -89,7 +99,7 @@ public class SwarmManager : Singleton<SwarmManager>, IUpdater
 
             for (int j = 0; j < mob.NearbyNeighbors.Count; j++)
             {
-                MobController neighbor = mob.NearbyNeighbors[j];
+                MobControllerSP neighbor = mob.NearbyNeighbors[j];
                 if (neighbor == mob) continue;
 
                 Vector2 offset = (Vector2)myPos - (Vector2)neighbor.MovementSP.CurrentPos;
@@ -108,14 +118,33 @@ public class SwarmManager : Singleton<SwarmManager>, IUpdater
                 }
             }
 
-            Vector2 direction = (playerPos - (Vector2)myPos).normalized;
-            Vector2 walkVelocity = direction * mob.MobData.mobSpeed;
+            float sqrDistToPlayer = (playerPos - (Vector2)myPos).sqrMagnitude;
+            float attackRange = mob.MobData.attackRange; 
+            float sqrAttackRange = attackRange * attackRange;
+            
+            Vector2 walkVelocity = Vector2.zero;
+            
+            if (sqrDistToPlayer <= sqrAttackRange)
+            {
+                mob.TryMeleeAttack(_playerController, myPos);
+            }
+            else
+            {
+                Vector2 direction = (playerPos - (Vector2)myPos).normalized;
+                walkVelocity = direction * mob.MobData.mobSpeed;
+            }
 
             Vector2 finalVelocity = walkVelocity + moveComp.ForceToApply + moveComp.SeparationForce;
 
             Vector3 finalPos = myPos + (Vector3)finalVelocity * Time.deltaTime;
             mob.transform.position = finalPos;
             mob.MovementSP.CurrentPos = finalPos;
+            
+            if (PerformanceMonitor.Instance != null)
+            {
+                PerformanceMonitor.Instance.StopLogicTimer(activeMobs.Count);
+            }
+            
         }
     }
 }

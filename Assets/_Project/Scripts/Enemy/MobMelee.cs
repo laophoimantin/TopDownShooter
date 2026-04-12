@@ -28,9 +28,8 @@ public class MobMelee : MonoBehaviour
         if (other.TryGetComponent(out IDamageable victim))
         {
             Vector2 knockbackDir = (other.transform.position - transform.position).normalized;
-            Vector2 knockback = knockbackDir * _data.KnockbackForce;
 
-            victim.TakeDamage(1, knockback);
+            victim.TakeDamage(1, knockbackDir);
             _attackTimer = 0.5f;
         }
     }

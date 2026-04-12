@@ -17,43 +17,13 @@ public class MobController : MonoBehaviour, IDamageable
     [SerializeField] private MobMelee _meleeAttacker;
     private Transform _targetPlayer;
 
-    [Header("Spatial Partitioning")]
-    private bool _isRegistered = false;
-    [SerializeField] private MobMovementSP _movementSP;
-    public MobMovementSP MovementSP => _movementSP;
-    [HideInInspector] public int SwarmIndex = -1;
-    [HideInInspector] public List<MobController> NearbyNeighbors = new();
-
-    void OnEnable()
-    {
-        if (_movementSP !=null && SwarmManager.Instance != null && !_isRegistered)
-        {
-            SwarmManager.Instance.RegisterMob(this);
-            _isRegistered = true;
-        }
-    }
-    void OnDisable()
-    {
-        if (_movementSP !=null && SwarmManager.Instance != null && _isRegistered)
-        {
-            SwarmManager.Instance.UnregisterMob(this);
-            _isRegistered = false;
-        }
-    }
-    
     public void Init(Transform targetPlayer, Vector3 startPos)
     {
         _targetPlayer = targetPlayer;
 
         _health.Init(_mobData);
         if (_movement != null)
-        {
             _movement.Init(_mobData, _targetPlayer);
-        }
-        else
-        {
-            _movementSP.Init(_mobData, startPos);
-        }
 
         if (_visuals != null)
             _visuals.Init(_mobData, _targetPlayer);
@@ -73,7 +43,5 @@ public class MobController : MonoBehaviour, IDamageable
 
         if (_movement != null)
             _movement.TakeKnockback(knockbackVector);
-        else
-            _movementSP.TakeKnockback(knockbackVector);
     }
 }

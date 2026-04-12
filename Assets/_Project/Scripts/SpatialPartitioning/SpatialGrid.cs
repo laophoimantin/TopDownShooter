@@ -5,7 +5,7 @@ public class SpatialGrid : Singleton<SpatialGrid>
 {
     [SerializeField] private float _cellSize = 2f; 
 
-    private Dictionary<Vector2Int, List<MobController>> _grid = new();
+    private Dictionary<Vector2Int, List<MobControllerSP>> _grid = new();
     private HashSet<Vector2Int> _activeCells = new();
     
     public Vector2Int GetCellCoordinate(Vector3 position)
@@ -26,17 +26,17 @@ public class SpatialGrid : Singleton<SpatialGrid>
         _activeCells.Clear();
     }
 
-    public void Register(MobController mob)
+    public void Register(MobControllerSP mob)
     {
         Vector2Int cellCoord = GetCellCoordinate(mob.transform.position);
         if (!_grid.ContainsKey(cellCoord))
-            _grid[cellCoord] = new List<MobController>();
+            _grid[cellCoord] = new List<MobControllerSP>();
     
         _grid[cellCoord].Add(mob);
         _activeCells.Add(cellCoord); 
     }
     
-    public void GetNearbyEntities(Vector3 position, float radius, ref List<MobController> resultList)
+    public void GetNearbyEntities(Vector3 position, float radius, ref List<MobControllerSP> resultList)
     {
         resultList.Clear();
 

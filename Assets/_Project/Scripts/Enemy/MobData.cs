@@ -6,15 +6,10 @@ public class MobData : ScriptableObject
     [Header("BasicMovement")]
     public float mobSpeed;
     public float mobHealth;
-    public bool ranger;
+    public float attackRange;
     public float knockbackResistance;
     public float despawnDistance = 40f;
     public float KnockbackForce;
-
-    [Header("ProjectileHandle")]
-    public GameObject bulletPf;
-    public float bulletSpeed;
-    public float fireRate;
 
     [Header("Visual")]
     public GameObject blood;

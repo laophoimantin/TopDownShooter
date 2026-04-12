@@ -20,8 +20,8 @@ public class ProjectileSP : MonoBehaviour
 
     private bool _isRegistered = false;
 
-    public HashSet<MobController> HitTargets = new HashSet<MobController>();
-    public List<MobController> NearbyEnemies = new List<MobController>();
+    public HashSet<MobControllerSP> HitTargets = new HashSet<MobControllerSP>();
+    public List<MobControllerSP> NearbyEnemies = new List<MobControllerSP>();
 
     void Awake()
     {

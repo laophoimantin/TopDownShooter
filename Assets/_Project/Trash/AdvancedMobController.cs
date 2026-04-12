@@ -38,7 +38,7 @@ public class AdvancedMobController : MonoBehaviour, IDamageable
         {
             if (currentHealth > 0)
             {
-                if (currentHealth > 0 && MobDta.ranger)
+                if (currentHealth > 0 )
                 {
                     fireRateTimer -= Time.deltaTime;
                     Shoot();
@@ -115,14 +115,14 @@ public class AdvancedMobController : MonoBehaviour, IDamageable
 
     private void Shoot()
     {
-        if (fireRateTimer <= 0)
-        {
-            GameObject bullet = Instantiate(MobDta.bulletPf, transform.position, transform.rotation);
-            Rigidbody2D bulletRb = bullet.GetComponent<Rigidbody2D>();
-            Vector2 direction = (player.transform.position - transform.position).normalized;
-            bulletRb.velocity = direction * MobDta.bulletSpeed;
-            fireRateTimer = MobDta.fireRate;
-        }
+        // if (fireRateTimer <= 0)
+        // {
+        //     GameObject bullet = Instantiate(MobDta.bulletPf, transform.position, transform.rotation);
+        //     Rigidbody2D bulletRb = bullet.GetComponent<Rigidbody2D>();
+        //     Vector2 direction = (player.transform.position - transform.position).normalized;
+        //     //bulletRb.velocity = direction * MobDta.bulletSpeed;
+        //     fireRateTimer = MobDta.fireRate;
+        // }
     }
 
     public void TakeDamage(float dmg, Vector2 knockbackVector)

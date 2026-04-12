@@ -2,7 +2,7 @@ using System.Diagnostics;
 using TMPro;
 using UnityEngine;
 
-public class PerformanceMonitor : MonoBehaviour
+public class PerformanceMonitor : Singleton<PerformanceMonitor>
 {
     [Header("UI References")]
     [SerializeField] private TextMeshProUGUI _fpsText;

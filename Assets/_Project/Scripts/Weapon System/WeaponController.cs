@@ -76,11 +76,12 @@ public class WeaponController : MonoBehaviour, IUpdater
             GameObject bullet = PoolManager.Instance.Spawn(_data.bulletPrefab, firePos, firePoint.rotation);
             
             
-            if (bullet.TryGetComponent(out Projectile proj))
-            {
-                proj.Setup(_currentDamage, _data.bulletSpeed, _currentRange, _currentPierceCount, _data.knockbackForce);
-            }
-            else if (bullet.TryGetComponent(out ProjectileSP projSP))
+            // if (bullet.TryGetComponent(out Projectile proj))
+            // {
+            //     proj.Setup(_currentDamage, _data.bulletSpeed, _currentRange, _currentPierceCount, _data.knockbackForce);
+            // }
+            // else
+            if (bullet.TryGetComponent(out ProjectileSP projSP))
             {
                 projSP.Setup(_currentDamage, _data.bulletSpeed, _currentRange, _currentPierceCount, _data.knockbackForce, fireDirection, firePos);
             }
