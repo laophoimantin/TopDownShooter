@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ModControllerSP  : MonoBehaviour, IDamageable
+public class ModControllerSP : MonoBehaviour
 {
     [Header("Data")]
     [SerializeField] private MobData _mobData;
