@@ -17,6 +17,8 @@ public class SwarmManager : Singleton<SwarmManager>, IUpdater
     
     // private TransformAccessArray _transformAccessArray;
     // private NativeArray<Vector3> _separationForces;
+
+    public bool Stop;
     
     private float _radius;
     private float _sqrRadius;
@@ -62,6 +64,8 @@ public class SwarmManager : Singleton<SwarmManager>, IUpdater
 
     public void OnUpdate()
     {
+        if (Stop)
+            return;
         if (activeMobs.Count == 0 || _player == null) return;
 
         if (PerformanceMonitor.Instance != null)
@@ -144,7 +148,6 @@ public class SwarmManager : Singleton<SwarmManager>, IUpdater
             {
                 PerformanceMonitor.Instance.StopLogicTimer(activeMobs.Count);
             }
-            
         }
     }
 }

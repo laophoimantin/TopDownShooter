@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Bullet : MonoBehaviour
+public class BulletOld : MonoBehaviour
 {
     [Header("Settings")]
     [SerializeField] private GameObject hitEffect;
