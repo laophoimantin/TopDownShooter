@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Fire Rate
   m_EditorClassIdentifier: 
   upgradeName: Fire Rate
-  _power: 10
+  _power: 0.2
   UpgradeImage: {fileID: 1696548311, guid: de8bb1db82454724abb442c531fc7471, type: 3}
   HighlightedSprite: {fileID: -475683496, guid: de8bb1db82454724abb442c531fc7471, type: 3}

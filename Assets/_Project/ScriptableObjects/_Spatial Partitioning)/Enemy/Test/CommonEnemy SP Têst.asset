@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8737536a85a094e42821801391f53478, type: 3}
-  m_Name: CommonEnemy SP
+  m_Name: "CommonEnemy SP T\xEAst"
   m_EditorClassIdentifier: 
-  mobHealth: 8
-  attackRange: 1
+  mobHealth: 7.67
+  attackRange: 1.01
   knockbackResistance: 1
   despawnDistance: 35
-  mobSpeed: 2
-  separationRadius: 2
-  separationWeight: 2
+  mobSpeed: 1.95
+  separationRadius: 3.16
+  separationWeight: 6.2
   mass: 10
   blood: {fileID: 1810937755164199950, guid: 2156bca2849190d4ca5c962e224a9364, type: 3}

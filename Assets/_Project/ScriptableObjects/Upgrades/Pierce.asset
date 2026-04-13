@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Pierce
   m_EditorClassIdentifier: 
   upgradeName: Pierce
-  _power: 10
+  _power: 1
   UpgradeImage: {fileID: 1778949064, guid: de8bb1db82454724abb442c531fc7471, type: 3}
   HighlightedSprite: {fileID: -1981193331, guid: de8bb1db82454724abb442c531fc7471, type: 3}

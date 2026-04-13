@@ -12,6 +12,8 @@ public class PlayerWeaponEquipper : MonoBehaviour
     void Start()
     {
         GameObject newWeapon = null;
+        if (_currentLoadout.GetSelectedWeapon() == null || _currentLoadout.GetSelectedWeapon().WeaponPrefab == null)
+        {
 #if UNITY_EDITOR
             if (testIdentity != null)
             {
@@ -20,8 +22,6 @@ public class PlayerWeaponEquipper : MonoBehaviour
                 return;
             }
 #endif
-        if (_currentLoadout.GetSelectedWeapon() == null || _currentLoadout.GetSelectedWeapon().WeaponPrefab == null)
-        {
             return;
         }
 

@@ -17,7 +17,7 @@ public class MobController : MonoBehaviour, IDamageable
     [SerializeField] private MobMelee _meleeAttacker;
     private Transform _targetPlayer;
 
-    public void Init(Transform targetPlayer, Vector3 startPos)
+	public void Init(Transform targetPlayer, Vector3 startPos)
     {
         _targetPlayer = targetPlayer;
 

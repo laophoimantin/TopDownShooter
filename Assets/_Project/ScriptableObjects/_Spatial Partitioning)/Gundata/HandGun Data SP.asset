@@ -15,9 +15,9 @@ MonoBehaviour:
   weaponName: Revolver
   bulletPrefab: {fileID: 639885616717614466, guid: 5d046b37059682144a49f0bd00eb568f, type: 3}
   fireRate: 0.35
-  bulletSpeed: 25
-  damage: 29.82
-  bulletLifeTime: 1
+  bulletSpeed: 30
+  damage: 2.3
+  bulletLifeTime: 0.2
   pierceCount: 0
   knockbackForce: 25
   fireSound: {fileID: 8300000, guid: d3b1a381c4cbe624b8f3ade7492c26bc, type: 3}

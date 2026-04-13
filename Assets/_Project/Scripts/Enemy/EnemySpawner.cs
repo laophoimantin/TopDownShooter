@@ -6,208 +6,230 @@ using Random = UnityEngine.Random;
 
 public class EnemySpawner : Singleton<EnemySpawner>, IUpdater
 {
-    [SerializeField] private Transform _playerTransform;
+	[SerializeField] private Transform _playerTransform;
 
-    // ----------------------------------------------------------------
-    [Serializable]
-    public class Wave
-    {
-        public string WaveName;
-        public List<EnemyGroup> EnemyGroups;
-        [HideInInspector] public int WaveQuota;
-        public float SpawnInterval;
-        [HideInInspector] public int SpawnCount;
-    }
+	[Serializable]
+	public class Wave
+	{
+		public string WaveName;
+		public float WaveDuration;
+		public float SpawnInterval;
+		public List<EnemyGroup> EnemyGroups;
 
-    [Serializable]
-    public class EnemyGroup
-    {
-        public string EnemyName;
-        public int EnemyCount;
-        [HideInInspector] public int SpawnCount;
-        public GameObject EnemyPrefab;
-    }
+		[HideInInspector] public int WaveQuota;
+		[HideInInspector] public int SpawnCount;
+	}
 
-    private enum SpawnerState
-    {
-        Waiting,
-        Spawning,
-        WaitingForClear,
-        Finished
-    }
+	[Serializable]
+	public class EnemyGroup
+	{
+		public string EnemyName;
+		public int EnemyCount;
+		public int SpawnWeight = 10;
+		public GameObject EnemyPrefab;
+		[HideInInspector] public int SpawnCount;
+	}
 
-    // ----------------------------------------------------------------
-    private SpawnerState _currentState = SpawnerState.Waiting;
-    
-    [Header("Wave Settings")]
-    public List<Wave> Waves;
-    private int _currentWaveCount;
+	private enum SpawnerState
+	{
+		Waiting,
+		Spawning,
+		Finished
+	}
 
-    [Header("Spawner Attributes")]
-    [SerializeField] private int _maxEnemiesAllowed = 10;
-    private float _spawnTimer;
-    private int _enemiesAlive;
+	private SpawnerState _currentState = SpawnerState.Waiting;
 
-    [SerializeField] private float _waveInterval = 5f;
+	[Header("Wave Settings")]
+	public List<Wave> Waves;
+	private int _currentWaveCount;
 
-    [Header("Spawn Positions")]
-    [SerializeField] private List<Transform> _spawnPoints;
-    [SerializeField] private Collider2D _validSpawnArea;
-    
-    private List<Transform> _availSpawnPoints;
+	[Header("Spawner Attributes")]
+	[SerializeField] private int _maxEnemiesAllowed = 50; 
+	private float _spawnTimer;
+	private float _waveTimer; 
+	private int _enemiesAlive;
 
-    // ===========================================================================
-    private void OnEnable()
-    {
-        UpdateManager.Instance.OnAssignUpdater(this);
+	[SerializeField] private float _waveInterval = 5f;
 
-        this.Subscribe<OnEnemyKilledEvent>(OnEnemyKilled);
-    }
+	[Header("Spawn Positions")]
+	[SerializeField] private List<Transform> _spawnPoints;
+	[SerializeField] private Collider2D _validSpawnArea;
+	private List<Transform> _availSpawnPoints;
 
-    private void OnDisable()
-    {
-        if (UpdateManager.Instance != null)
-        {
-            UpdateManager.Instance.OnUnassignUpdater(this);
-        }
+	private float _checkPointsTimer;
+	private float _checkPointsInterval = 0.3f;
 
-        if (EventDispatcher.Instance != null)
-        {
-            this.Unsubscribe<OnEnemyKilledEvent>(OnEnemyKilled);
-        }
-    }
+	private void OnEnable()
+	{
+		UpdateManager.Instance.OnAssignUpdater(this);
+		this.Subscribe<OnEnemyKilledEvent>(OnEnemyKilled);
+	}
 
-    void Start()
-    {
-        _availSpawnPoints = new List<Transform>(_spawnPoints);
-        CalculateWaveQuota();
+	private void OnDisable()
+	{
+		if (UpdateManager.Instance != null)
+		{
+			UpdateManager.Instance.OnUnassignUpdater(this);
+		}
 
-        StartCoroutine(BeginNextWave());
-    }
+		if (EventDispatcher.Instance != null)
+		{
+			this.Unsubscribe<OnEnemyKilledEvent>(OnEnemyKilled);
+		}
+	}
 
-    
-    public void OnUpdate()
-    {
-        if (_currentState == SpawnerState.Spawning)
-        {
-            _spawnTimer += Time.deltaTime;
+	void Start()
+	{
+		_availSpawnPoints = new List<Transform>(_spawnPoints);
+		CalculateWaveQuota();
+		StartCoroutine(BeginNextWave());
+	}
 
-            if (_spawnTimer >= Waves[_currentWaveCount].SpawnInterval)
-            {
-                _spawnTimer = 0f;
-                SpawnSingleEnemy();
-            }
+	public void OnUpdate()
+	{
+		if (_currentState != SpawnerState.Spawning) return;
 
-            if (Waves[_currentWaveCount].SpawnCount >= Waves[_currentWaveCount].WaveQuota)
-            {
-                _currentState = SpawnerState.WaitingForClear;
-            }
-        }
-        else if (_currentState == SpawnerState.WaitingForClear)
-        {
-            if (_enemiesAlive <= 0)
-            {
-                if (_currentWaveCount < Waves.Count - 1)
-                {
-                    _currentWaveCount++;
-                    CalculateWaveQuota();
-                    StartCoroutine(BeginNextWave());
-                }
-                else
-                {
-                    _currentState = SpawnerState.Finished;
-                }
-            }
-        }
-    }
+		float dt = Time.deltaTime;
+		_waveTimer += dt;
+		_spawnTimer += dt;
 
-    
-    private IEnumerator BeginNextWave()
-    {
-        _currentState = SpawnerState.Waiting;
+		_checkPointsTimer -= dt;
+		if (_checkPointsTimer <= 0)
+		{
+			UpdateAvailableSpawnPoints();
+			_checkPointsTimer = _checkPointsInterval;
+		}
 
-        yield return new WaitForSeconds(_waveInterval);
+		if (_spawnTimer >= Waves[_currentWaveCount].SpawnInterval)
+		{
+			_spawnTimer = 0f;
+			if (Waves[_currentWaveCount].SpawnCount < Waves[_currentWaveCount].WaveQuota)
+			{
+				SpawnSingleEnemy();
+			}
+		}
 
-        _currentState = SpawnerState.Spawning;
-        _spawnTimer = Waves[_currentWaveCount].SpawnInterval;
-    }
+		if (_waveTimer >= Waves[_currentWaveCount].WaveDuration)
+		{
+			MoveToNextWave();
+		}
+	}
 
-    
-    private void CalculateWaveQuota()
-    {
-        int currentWaveQuota = 0;
-        foreach (var enemyGroup in Waves[_currentWaveCount].EnemyGroups)
-        {
-            currentWaveQuota += enemyGroup.EnemyCount;
-        }
+	private void MoveToNextWave()
+	{
+		if (_currentWaveCount < Waves.Count - 1)
+		{
+			_currentWaveCount++;
+			CalculateWaveQuota();
+			StartCoroutine(BeginNextWave());
+		}
+		else
+		{
+			_currentState = SpawnerState.Finished;
+		}
+	}
 
-        Waves[_currentWaveCount].WaveQuota = currentWaveQuota;
-    }
+	private IEnumerator BeginNextWave()
+	{
+		_currentState = SpawnerState.Waiting;
 
-    
-    public void UpdateAvailableSpawnPoints()
-    {
-        _availSpawnPoints.Clear();
-        foreach (Transform point in _spawnPoints)
-        {
-            if (_validSpawnArea != null && _validSpawnArea.OverlapPoint(point.position))
-            {
-                _availSpawnPoints.Add(point);
-            }
-        }
-    }
+		yield return new WaitForSeconds(_waveInterval);
 
-    
-    private void SpawnSingleEnemy()
-    {
-        if (_enemiesAlive >= _maxEnemiesAllowed) return;
+		_currentState = SpawnerState.Spawning;
+
+		_waveTimer = 0f;
+		_spawnTimer = Waves[_currentWaveCount].SpawnInterval;
+	}
+
+	private void CalculateWaveQuota()
+	{
+		int currentWaveQuota = 0;
+		foreach (var enemyGroup in Waves[_currentWaveCount].EnemyGroups)
+		{
+			currentWaveQuota += enemyGroup.EnemyCount;
+		}
+		Waves[_currentWaveCount].WaveQuota = currentWaveQuota;
+	}
+
+	private void UpdateAvailableSpawnPoints()
+	{
+		_availSpawnPoints.Clear();
+		foreach (Transform point in _spawnPoints)
+		{
+			if (_validSpawnArea != null && _validSpawnArea.OverlapPoint(point.position))
+			{
+				_availSpawnPoints.Add(point);
+			}
+		}
+	}
+
+	private void SpawnSingleEnemy()
+	{
+		if (_enemiesAlive >= _maxEnemiesAllowed) return;
+
+		Wave currentWave = Waves[_currentWaveCount];
+		List<EnemyGroup> validGroups = new List<EnemyGroup>();
+
+		foreach (var enemyGroup in currentWave.EnemyGroups)
+		{
+			if (enemyGroup.SpawnCount < enemyGroup.EnemyCount && enemyGroup.SpawnWeight > 0)
+			{
+				validGroups.Add(enemyGroup);
+			}
+		}
+
+		if (validGroups.Count == 0) return;
+
+		// GACHA TIME!
+		int totalWeight = 0;
+		foreach (var group in validGroups)
+		{
+			totalWeight += group.SpawnWeight;
+		}
+
+		int randomTicket = Random.Range(0, totalWeight);
+		EnemyGroup groupToSpawn = null;
+
+		foreach (var group in validGroups)
+		{
+			randomTicket -= group.SpawnWeight;
+			if (randomTicket < 0)
+			{
+				groupToSpawn = group;
+				break;
+			}
+		}
+
+		if (groupToSpawn == null) groupToSpawn = validGroups[^1];
 
 
-        Wave currentWave = Waves[_currentWaveCount];
+		if (_availSpawnPoints.Count == 0) return;
 
-        List<EnemyGroup> validGroups = new List<EnemyGroup>();
-        foreach (var enemyGroup in currentWave.EnemyGroups)
-        {
-            if (enemyGroup.SpawnCount < enemyGroup.EnemyCount)
-            {
-                validGroups.Add(enemyGroup);
-            }
-        }
+		Vector3 spawnPos = GetRandomAvailableSpawnPoint();
+		GameObject spawnedEnemy = PoolManager.Instance.Spawn(groupToSpawn.EnemyPrefab, spawnPos, Quaternion.identity);
 
-        if (validGroups.Count == 0) return;
+		if (spawnedEnemy.TryGetComponent(out MobController mob))
+		{
+			mob.Init(_playerTransform, spawnPos);
+		}
+		else if (spawnedEnemy.TryGetComponent(out MobControllerSP mobSP))
+		{
+			mobSP.Init(_playerTransform, spawnPos);
+		}
 
-        EnemyGroup groupToSpawn = validGroups[Random.Range(0, validGroups.Count)];
+		groupToSpawn.SpawnCount++;
+		currentWave.SpawnCount++;
+		_enemiesAlive++;
+	}
 
-        UpdateAvailableSpawnPoints();
-        if (_availSpawnPoints.Count == 0) return;
+	private void OnEnemyKilled(OnEnemyKilledEvent eventData)
+	{
+		_enemiesAlive--;
+	}
 
-        Vector3 spawnPos = GetRandomAvailableSpawnPoint();
-        GameObject spawnedEnemy = PoolManager.Instance.Spawn(groupToSpawn.EnemyPrefab, spawnPos, Quaternion.identity);
-
-        if (spawnedEnemy.TryGetComponent(out MobController mob))
-        {
-            mob.Init(_playerTransform, spawnPos);
-        }
-        else if (spawnedEnemy.TryGetComponent(out MobControllerSP mobSP))
-        {
-            mobSP.Init(_playerTransform, spawnPos);
-        }
-
-        groupToSpawn.SpawnCount++;
-        currentWave.SpawnCount++;
-        _enemiesAlive++;
-    }
-
-    
-    private void OnEnemyKilled(OnEnemyKilledEvent eventData)
-    {
-        _enemiesAlive--;
-    }
-
-    
-    public Vector3 GetRandomAvailableSpawnPoint()
-    {
-        int index = Random.Range(0, _availSpawnPoints.Count);
-        return _availSpawnPoints[index].position;
-    }
+	public Vector3 GetRandomAvailableSpawnPoint()
+	{
+		int index = Random.Range(0, _availSpawnPoints.Count);
+		return _availSpawnPoints[index].position;
+	}
 }

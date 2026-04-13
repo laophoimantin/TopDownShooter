@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8737536a85a094e42821801391f53478, type: 3}
   m_Name: SmallEnemy SP
   m_EditorClassIdentifier: 
-  mobHealth: 8
-  attackRange: 1.01
-  knockbackResistance: 1
+  mobHealth: 5
+  attackRange: 0.7
+  knockbackResistance: 1.2
   despawnDistance: 35
-  mobSpeed: 3.2
+  mobSpeed: 2.5
   separationRadius: 1.5
   separationWeight: 0.5
   mass: 5

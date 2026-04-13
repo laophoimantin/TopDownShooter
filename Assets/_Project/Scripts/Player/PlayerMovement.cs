@@ -108,5 +108,7 @@ public class PlayerMovement : MonoBehaviour, IUpdater, IFixedUpdater
     private void OnStateChange(GameManager.GameState newState)
     {
         _canMove = (newState == GameManager.GameState.Gameplay);
-    }
+		_playerInput = Vector2.zero;
+		_rb.velocity = Vector2.zero;
+	}
 }

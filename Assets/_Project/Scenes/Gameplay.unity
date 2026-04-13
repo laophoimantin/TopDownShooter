@@ -587,7 +587,7 @@ Transform:
   m_GameObject: {fileID: 210964457}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 26.809, y: 9.338, z: 22.304775}
+  m_LocalPosition: {x: -9.707823, y: 46.802162, z: 22.304775}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -44045,7 +44045,7 @@ Transform:
   m_GameObject: {fileID: 240096670}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 61.82, y: 9.338, z: 22.304775}
+  m_LocalPosition: {x: 77.292175, y: 45.802162, z: 22.304775}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -45435,7 +45435,7 @@ Transform:
   m_GameObject: {fileID: 537179879}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 75.82, y: 9.338, z: 22.304775}
+  m_LocalPosition: {x: 112.292175, y: 46.802162, z: 22.304775}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -48092,7 +48092,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 6555912984063460405}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &941796387
 MonoBehaviour:
@@ -48109,11 +48109,17 @@ MonoBehaviour:
   _dontDestroyOnLoad: 0
   _levelRanges:
   - StartLevel: 1
-    EndLevel: 4
-    ExperienceCapIncrease: 10
-  - StartLevel: 5
-    EndLevel: 900
-    ExperienceCapIncrease: 10
+    EndLevel: 5
+    ExperienceCapIncrease: 8
+  - StartLevel: 4
+    EndLevel: 15
+    ExperienceCapIncrease: 15
+  - StartLevel: 15
+    EndLevel: 30
+    ExperienceCapIncrease: 20
+  - StartLevel: 30
+    EndLevel: 50
+    ExperienceCapIncrease: 25
 --- !u!1 &969740206
 GameObject:
   m_ObjectHideFlags: 0
@@ -49782,7 +49788,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1279402943
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -49798,24 +49804,154 @@ MonoBehaviour:
   _dontDestroyOnLoad: 0
   _playerTransform: {fileID: 6555912984063460405}
   Waves:
-  - WaveName: 300
+  - WaveName: 1
+    WaveDuration: 30
+    SpawnInterval: 1.5
+    EnemyGroups:
+    - EnemyName: Com
+      EnemyCount: 200
+      SpawnWeight: 100
+      EnemyPrefab: {fileID: 7594564447756688967, guid: c0a8270cc6951d945a14c8cee11e8ad6, type: 3}
+      SpawnCount: 0
+    - EnemyName: Small
+      EnemyCount: 0
+      SpawnWeight: 0
+      EnemyPrefab: {fileID: 7594564447756688967, guid: b49c710201c5481459520fdd35d2aec3, type: 3}
+      SpawnCount: 0
+    - EnemyName: Big
+      EnemyCount: 0
+      SpawnWeight: 0
+      EnemyPrefab: {fileID: 7594564447756688967, guid: 15b20210d62f1f1488f914e1bfc4f44b, type: 3}
+      SpawnCount: 0
+    WaveQuota: 0
+    SpawnCount: 0
+  - WaveName: 2
+    WaveDuration: 30
+    SpawnInterval: 1.3
+    EnemyGroups:
+    - EnemyName: Com
+      EnemyCount: 200
+      SpawnWeight: 20
+      EnemyPrefab: {fileID: 7594564447756688967, guid: c0a8270cc6951d945a14c8cee11e8ad6, type: 3}
+      SpawnCount: 0
+    - EnemyName: Small
+      EnemyCount: 200
+      SpawnWeight: 10
+      EnemyPrefab: {fileID: 7594564447756688967, guid: b49c710201c5481459520fdd35d2aec3, type: 3}
+      SpawnCount: 0
+    - EnemyName: Big
+      EnemyCount: 0
+      SpawnWeight: 0
+      EnemyPrefab: {fileID: 7594564447756688967, guid: 15b20210d62f1f1488f914e1bfc4f44b, type: 3}
+      SpawnCount: 0
+    WaveQuota: 0
+    SpawnCount: 0
+  - WaveName: 3
+    WaveDuration: 60
+    SpawnInterval: 1.3
+    EnemyGroups:
+    - EnemyName: Com
+      EnemyCount: 150
+      SpawnWeight: 80
+      EnemyPrefab: {fileID: 7594564447756688967, guid: c0a8270cc6951d945a14c8cee11e8ad6, type: 3}
+      SpawnCount: 0
+    - EnemyName: Small
+      EnemyCount: 60
+      SpawnWeight: 45
+      EnemyPrefab: {fileID: 7594564447756688967, guid: b49c710201c5481459520fdd35d2aec3, type: 3}
+      SpawnCount: 0
+    - EnemyName: Big
+      EnemyCount: 10
+      SpawnWeight: 35
+      EnemyPrefab: {fileID: 7594564447756688967, guid: 15b20210d62f1f1488f914e1bfc4f44b, type: 3}
+      SpawnCount: 0
+    WaveQuota: 0
+    SpawnCount: 0
+  - WaveName: 4
+    WaveDuration: 30
+    SpawnInterval: 1.5
     EnemyGroups:
     - EnemyName: Com
       EnemyCount: 100
-      SpawnCount: 0
+      SpawnWeight: 50
       EnemyPrefab: {fileID: 7594564447756688967, guid: c0a8270cc6951d945a14c8cee11e8ad6, type: 3}
+      SpawnCount: 0
+    - EnemyName: Small
+      EnemyCount: 70
+      SpawnWeight: 35
+      EnemyPrefab: {fileID: 7594564447756688967, guid: b49c710201c5481459520fdd35d2aec3, type: 3}
+      SpawnCount: 0
+    - EnemyName: Big
+      EnemyCount: 10
+      SpawnWeight: 70
+      EnemyPrefab: {fileID: 7594564447756688967, guid: 15b20210d62f1f1488f914e1bfc4f44b, type: 3}
+      SpawnCount: 0
+    WaveQuota: 0
+    SpawnCount: 0
+  - WaveName: 5
+    WaveDuration: 60
+    SpawnInterval: 1.5
+    EnemyGroups:
+    - EnemyName: Com
+      EnemyCount: 200
+      SpawnWeight: 40
+      EnemyPrefab: {fileID: 7594564447756688967, guid: c0a8270cc6951d945a14c8cee11e8ad6, type: 3}
+      SpawnCount: 0
     - EnemyName: Small
       EnemyCount: 100
-      SpawnCount: 0
+      SpawnWeight: 20
       EnemyPrefab: {fileID: 7594564447756688967, guid: b49c710201c5481459520fdd35d2aec3, type: 3}
+      SpawnCount: 0
+    - EnemyName: Big
+      EnemyCount: 30
+      SpawnWeight: 10
+      EnemyPrefab: {fileID: 7594564447756688967, guid: 15b20210d62f1f1488f914e1bfc4f44b, type: 3}
+      SpawnCount: 0
+    WaveQuota: 0
+    SpawnCount: 0
+  - WaveName: 6
+    WaveDuration: 30
+    SpawnInterval: 1.5
+    EnemyGroups:
+    - EnemyName: Com
+      EnemyCount: 200
+      SpawnWeight: 50
+      EnemyPrefab: {fileID: 7594564447756688967, guid: c0a8270cc6951d945a14c8cee11e8ad6, type: 3}
+      SpawnCount: 0
+    - EnemyName: Small
+      EnemyCount: 200
+      SpawnWeight: 50
+      EnemyPrefab: {fileID: 7594564447756688967, guid: b49c710201c5481459520fdd35d2aec3, type: 3}
+      SpawnCount: 0
+    - EnemyName: Big
+      EnemyCount: 200
+      SpawnWeight: 25
+      EnemyPrefab: {fileID: 7594564447756688967, guid: 15b20210d62f1f1488f914e1bfc4f44b, type: 3}
+      SpawnCount: 0
+    WaveQuota: 0
+    SpawnCount: 0
+  - WaveName: 7
+    WaveDuration: 60
+    SpawnInterval: 1.5
+    EnemyGroups:
+    - EnemyName: Com
+      EnemyCount: 200
+      SpawnWeight: 50
+      EnemyPrefab: {fileID: 7594564447756688967, guid: c0a8270cc6951d945a14c8cee11e8ad6, type: 3}
+      SpawnCount: 0
+    - EnemyName: Small
+      EnemyCount: 100
+      SpawnWeight: 25
+      EnemyPrefab: {fileID: 7594564447756688967, guid: b49c710201c5481459520fdd35d2aec3, type: 3}
+      SpawnCount: 0
     - EnemyName: Big
       EnemyCount: 100
-      SpawnCount: 0
+      SpawnWeight: 10
       EnemyPrefab: {fileID: 7594564447756688967, guid: 15b20210d62f1f1488f914e1bfc4f44b, type: 3}
+      SpawnCount: 0
     WaveQuota: 0
-    SpawnInterval: 0.01
     SpawnCount: 0
-  _maxEnemiesAllowed: 10000
+  _maxEnemiesAllowed: 800
   _waveInterval: 1
   _spawnPoints:
   - {fileID: 1683818310}
@@ -51038,7 +51174,7 @@ Transform:
   m_GameObject: {fileID: 1630095466}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 41.85, y: 9.338, z: 22.304775}
+  m_LocalPosition: {x: 27.29218, y: 46.802162, z: 22.304775}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -51476,7 +51612,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1772106527}
   m_Layer: 0
-  m_Name: Light ===============
+  m_Name: Map ===============
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -51641,7 +51777,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1841015623
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -51658,13 +51794,15 @@ MonoBehaviour:
   _playerTransform: {fileID: 6555912984063460405}
   Waves:
   - WaveName: 300
+    WaveDuration: 0
+    SpawnInterval: 0.01
     EnemyGroups:
     - EnemyName: Small
       EnemyCount: 300
-      SpawnCount: 0
+      SpawnWeight: 10
       EnemyPrefab: {fileID: 7819686992807784302, guid: 65fa27dfb2bfb054a9fd87e5bd79bff1, type: 3}
+      SpawnCount: 0
     WaveQuota: 0
-    SpawnInterval: 0.01
     SpawnCount: 0
   _maxEnemiesAllowed: 10000
   _waveInterval: 1
@@ -51982,7 +52120,7 @@ GameObject:
   - component: {fileID: 1913685006}
   - component: {fileID: 1913685007}
   m_Layer: 0
-  m_Name: Cam Controller
+  m_Name: Camera Controller
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -51996,13 +52134,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1913685005}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 414516638}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 6555912984063460405}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1913685007
 MonoBehaviour:
@@ -127076,7 +127214,7 @@ GameObject:
   - component: {fileID: 7773348266457533281}
   - component: {fileID: 8053876600226047780}
   m_Layer: 0
-  m_Name: Shadown (1)
+  m_Name: Shadown
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -127239,7 +127377,7 @@ Transform:
   m_GameObject: {fileID: 4301287953322564276}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.8, y: 0, z: -1.83}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -127247,6 +127385,8 @@ Transform:
   - {fileID: 7081762676713908420}
   - {fileID: 7773348266457533281}
   - {fileID: 6170816878472584275}
+  - {fileID: 1913685006}
+  - {fileID: 941796386}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6858114217367089775
@@ -127356,7 +127496,7 @@ HingeJoint2D:
   m_BreakAction: 3
   m_AutoConfigureConnectedAnchor: 1
   m_Anchor: {x: 0.0013588667, y: 0.24213652}
-  m_ConnectedAnchor: {x: -4.798641, y: 0.24213652}
+  m_ConnectedAnchor: {x: 0.0013588667, y: 0.24213652}
   m_UseMotor: 0
   m_Motor:
     m_MotorSpeed: 0
@@ -127592,9 +127732,8 @@ GameObject:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 1913685006}
-  - {fileID: 1145869192}
   - {fileID: 1772106527}
+  - {fileID: 1145869192}
   - {fileID: 1060312198}
   - {fileID: 628035990}
   - {fileID: 969740208}
@@ -127603,13 +127742,12 @@ SceneRoots:
   - {fileID: 616143291}
   - {fileID: 1303386050}
   - {fileID: 231916477}
-  - {fileID: 941796386}
   - {fileID: 1233443447}
   - {fileID: 1157403407}
-  - {fileID: 1623488299}
   - {fileID: 361946547}
   - {fileID: 1293552217}
   - {fileID: 240100553}
   - {fileID: 1349240415}
   - {fileID: 679246956}
   - {fileID: 6555912984063460405}
+  - {fileID: 1623488299}

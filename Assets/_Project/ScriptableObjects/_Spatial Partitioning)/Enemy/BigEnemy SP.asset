@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8737536a85a094e42821801391f53478, type: 3}
   m_Name: BigEnemy SP
   m_EditorClassIdentifier: 
-  mobHealth: 8
-  attackRange: 1.01
-  knockbackResistance: 1
+  mobHealth: 15
+  attackRange: 1.3
+  knockbackResistance: 0.7
   despawnDistance: 35
-  mobSpeed: 1
+  mobSpeed: 1.7
   separationRadius: 3.5
   separationWeight: 1
   mass: 50

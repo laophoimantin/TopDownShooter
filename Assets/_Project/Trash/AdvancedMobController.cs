@@ -64,7 +64,7 @@ public class AdvancedMobController : MonoBehaviour, IDamageable
         if (player != null)
         {
             EnemySpawner enemySpawner = FindObjectOfType<EnemySpawner>();
-            enemySpawner.UpdateAvailableSpawnPoints();
+            //enemySpawner.UpdateAvailableSpawnPoints();
             //transform.position = enemySpawner._availSpawnPoints[Random.Range(0, enemySpawner._availSpawnPoints.Count)].position;
         }
     }

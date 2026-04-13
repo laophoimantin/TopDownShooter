@@ -28,7 +28,7 @@ public class MobControllerSP : MonoBehaviour, IDamageable
     // =================================================================================================================
     void OnEnable()
     {
-        if (_movementSP != null && SwarmManager.Instance != null && !_isRegistered)
+        if (SwarmManager.Instance != null && !_isRegistered)
         {
             SwarmManager.Instance.RegisterMob(this);
             _isRegistered = true;
@@ -37,7 +37,7 @@ public class MobControllerSP : MonoBehaviour, IDamageable
 
     void OnDisable()
     {
-        if (_movementSP != null && SwarmManager.Instance != null && _isRegistered)
+        if (SwarmManager.Instance != null && _isRegistered)
         {
             SwarmManager.Instance.UnregisterMob(this);
             _isRegistered = false;

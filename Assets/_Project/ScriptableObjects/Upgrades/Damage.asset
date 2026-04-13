@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Damage
   m_EditorClassIdentifier: 
   upgradeName: Damage
-  _power: 10
+  _power: 0.7
   UpgradeImage: {fileID: -1354613608, guid: de8bb1db82454724abb442c531fc7471, type: 3}
   HighlightedSprite: {fileID: -1773096963, guid: de8bb1db82454724abb442c531fc7471, type: 3}

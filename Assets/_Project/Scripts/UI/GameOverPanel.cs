@@ -60,5 +60,6 @@ public class GameOverPanel : MonoBehaviour
         _timeText.text = $"TIME: {mins:00}:{secs:00}";
 
         _resultIcon.sprite = isWin ? _winSprite : _loseSprite;
-    }
+        _resultIcon.SetNativeSize();
+	}
 }

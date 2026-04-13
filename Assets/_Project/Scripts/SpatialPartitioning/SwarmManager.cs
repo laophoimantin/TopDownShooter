@@ -77,6 +77,7 @@ public class SwarmManager : Singleton<SwarmManager>, IUpdater
         }
     }
 
+    // Divide the whole list of enemies into small batches
     private void ProcessMobBatch(int startIndex, int endIndex, float dt, Vector2 playerPos)
     {
         for (int i = startIndex; i < endIndex; i++)

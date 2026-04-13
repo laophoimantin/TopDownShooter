@@ -4,97 +4,108 @@ using UnityEngine;
 
 public class PlayerLevelManager : Singleton<PlayerLevelManager>
 {
-    private int _currentLevel = 1;
-    private int _currentXp = 0;
-    private int _xpCap;
+	private int _currentLevel = 1;
+	private int _currentXp = 0;
+	private int _xpCap;
 
-    public int CurrentLevel => _currentLevel;
+	private readonly int _maxLevelToCache = 100;
 
-    // ----------------------------------------------------------------
-    public event Action<int, int> OnXpChange;
-    public event Action<int> OnLevelUIChanged;
-    public event Action OnLevelUp;
+	public int CurrentLevel => _currentLevel;
 
-    // ----------------------------------------------------------------
-    [Serializable]
-    public class LevelRange
-    {
-        public int StartLevel;
-        public int EndLevel;
-        public int ExperienceCapIncrease;
-    }
+	// ----------------------------------------------------------------
+	public event Action<int, int> OnXpChange;
+	public event Action<int> OnLevelUIChanged;
 
-    [SerializeField] private List<LevelRange> _levelRanges = new();
-    private Dictionary<int, int> _xpCapCache = new();
+	public event Action<int> OnLevelUp;
 
-    // =============================================================
-    void Start()
-    {
-        if (!InitializeLevelRanges()) return;
+	// ----------------------------------------------------------------
+	[Serializable]
+	public class LevelRange
+	{
+		public int StartLevel;
+		public int EndLevel;
+		public int ExperienceCapIncrease;
+	}
 
-        _currentLevel = 1;
-        _currentXp = 0;
+	[SerializeField] private List<LevelRange> _levelRanges = new();
 
-        _xpCap = _xpCapCache.TryGetValue(_currentLevel, out int cap) ? cap : _levelRanges[^1].ExperienceCapIncrease;
+	private int[] _xpCapCache;
 
-        OnXpChange?.Invoke(_currentXp, _xpCap);
-        OnLevelUIChanged?.Invoke(_currentLevel);
-    }
+	// =============================================================
+	void Start()
+	{
+		if (!InitializeLevelRanges()) return;
 
-    private bool InitializeLevelRanges()
-    {
-        if (_levelRanges == null || _levelRanges.Count == 0)
-        {
-            return false;
-        }
+		_currentLevel = 1;
+		_currentXp = 0;
+		_xpCap = GetCapIncreaseForLevel(_currentLevel);
 
-        int maxLevelToCache = 100;
-        for (int i = 1; i <= maxLevelToCache; i++)
-        {
-            _xpCapCache[i] = CalculateCapIncreaseForLevel(i);
-        }
+		OnXpChange?.Invoke(_currentXp, _xpCap);
+		OnLevelUIChanged?.Invoke(_currentLevel);
+	}
 
-        return true;
-    }
+	private bool InitializeLevelRanges()
+	{
+		if (_levelRanges == null || _levelRanges.Count == 0) return false;
 
-    private int CalculateCapIncreaseForLevel(int level)
-    {
-        foreach (var range in _levelRanges)
-        {
-            if (level >= range.StartLevel && level <= range.EndLevel)
-                return range.ExperienceCapIncrease;
-        }
+		_xpCapCache = new int[_maxLevelToCache + 1];
 
-        return _levelRanges[^1].ExperienceCapIncrease;
-    }
+		for (int i = 1; i <= _maxLevelToCache; i++)
+		{
+			_xpCapCache[i] = CalculateCapIncreaseForLevel(i);
+		}
 
-    public void IncreaseExperience(int amount)
-    {
-        if (amount <= 0) return;
+		return true;
+	}
 
-        _currentXp += amount;
-        OnXpChange?.Invoke(_currentXp, _xpCap);
-        LevelUpChecker();
-    }
+	private int CalculateCapIncreaseForLevel(int level)
+	{
+		foreach (var range in _levelRanges)
+		{
+			if (level >= range.StartLevel && level <= range.EndLevel)
+				return range.ExperienceCapIncrease;
+		}
 
-    private void LevelUpChecker()
-    {
-        int levelsGained = 0;
+		return _levelRanges[^1].ExperienceCapIncrease;
+	}
 
-        while (_currentXp >= _xpCap)
-        {
-            _currentXp -= _xpCap;
-            _currentLevel++;
-            levelsGained++;
+	private int GetCapIncreaseForLevel(int level)
+	{
+		if (level <= _maxLevelToCache)
+			return _xpCapCache[level];
 
-            _xpCap += _xpCapCache.TryGetValue(_currentLevel, out int cap) ? cap : _levelRanges[^1].ExperienceCapIncrease;
-        }
+		return _levelRanges[^1].ExperienceCapIncrease;
+	}
 
-        if (levelsGained > 0)
-        {
-            OnLevelUIChanged?.Invoke(_currentLevel); 
-            OnLevelUp?.Invoke();
-            OnXpChange?.Invoke(_currentXp, _xpCap);
-        }
-    }
+	public void IncreaseExperience(int amount)
+	{
+		if (amount <= 0) return;
+
+		_currentXp += amount;
+
+		LevelUpChecker();
+	}
+
+	private void LevelUpChecker()
+	{
+		int levelsGained = 0;
+
+		while (_currentXp >= _xpCap)
+		{
+			_currentXp -= _xpCap;
+			_currentLevel++;
+			levelsGained++;
+
+			_xpCap += GetCapIncreaseForLevel(_currentLevel);
+		}
+
+		if (levelsGained > 0)
+		{
+			OnLevelUIChanged?.Invoke(_currentLevel);
+
+			OnLevelUp?.Invoke(levelsGained);
+		}
+
+		OnXpChange?.Invoke(_currentXp, _xpCap);
+	}
 }

@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Speed
   m_EditorClassIdentifier: 
   upgradeName: Speed
-  _power: 10
+  _power: 1.5
   UpgradeImage: {fileID: -1475578792, guid: de8bb1db82454724abb442c531fc7471, type: 3}
   HighlightedSprite: {fileID: 842367033, guid: de8bb1db82454724abb442c531fc7471, type: 3}

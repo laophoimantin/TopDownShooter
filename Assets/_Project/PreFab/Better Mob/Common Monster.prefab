@@ -339,7 +339,6 @@ MonoBehaviour:
   _movement: {fileID: 1721638866278424290}
   _visuals: {fileID: 4549607101713541535}
   _meleeAttacker: {fileID: 4247961697220230595}
-  _shooter: {fileID: 0}
 --- !u!114 &2386852258341971600
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -366,6 +365,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rb: {fileID: 7566584213921465484}
+  _forceDamping: 1.2
 --- !u!114 &4549607101713541535
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -391,13 +391,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b917b924ea17dda4ca28717860a3e9d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  drops:
-  - name: Experience
-    itemPrefab: {fileID: 7341958506029394192, guid: 3a41ce37c9470804db42b0f2ffb4479e, type: 3}
-    droprate: 100
-  - name: Heal Item
-    itemPrefab: {fileID: 4247610485684130058, guid: 73aadaec256e081489e15f5e2a2dd666, type: 3}
-    droprate: 1
+  _health: {fileID: 2386852258341971600}
+  _dropRadius: 0.3
+  _drops: []
 --- !u!50 &7566584213921465484
 Rigidbody2D:
   serializedVersion: 4

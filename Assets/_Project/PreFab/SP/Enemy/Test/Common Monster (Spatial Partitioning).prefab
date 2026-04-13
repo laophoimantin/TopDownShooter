@@ -98,6 +98,7 @@ GameObject:
   - component: {fileID: 7952592160018991769}
   - component: {fileID: 7223943756241768760}
   - component: {fileID: 3158469203580356933}
+  - component: {fileID: 5305927048461978133}
   m_Layer: 0
   m_Name: Common Monster (Spatial Partitioning)
   m_TagString: Mob
@@ -133,11 +134,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33899248dd82ea547b4acfbe078d6965, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mobData: {fileID: 11400000, guid: 52185f62e33476d429bb888080623b11, type: 2}
+  _mobData: {fileID: 11400000, guid: 4078575b05c8d9048bf43ca2142a0df4, type: 2}
   _health: {fileID: 7952592160018991769}
   _movementSP: {fileID: 9059420225637424732}
   _melee: {fileID: 3158469203580356933}
-  _visuals: {fileID: 0}
+  _visuals: {fileID: 5305927048461978133}
   SwarmIndex: -1
   NearbyNeighbors: []
 --- !u!114 &9059420225637424732
@@ -181,6 +182,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _health: {fileID: 7952592160018991769}
+  _dropRadius: 0.3
   _drops:
   - Name: 
     ItemPrefab: {fileID: 9195647199214611624, guid: 864e2f9d190e15f44b7986a8d360741e, type: 3}
@@ -200,3 +202,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 180bf746038159b438a32f1f965c37d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &5305927048461978133
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7236144005313761043}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dca7e01ae4b9467d903ed4127d1aaa58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _visual: {fileID: 6076802233567668415}

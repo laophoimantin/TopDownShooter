@@ -557,8 +557,8 @@ MonoBehaviour:
   _hangunButton: {fileID: 953924266}
   _shotgunButton: {fileID: 433617305}
   _loadout: {fileID: 11400000, guid: 80c39ae34cc83714e9b38c09e7c4ff4e, type: 2}
-  _handgun: {fileID: 11400000, guid: e1b8702cb78d30244bcb63ad776d7b21, type: 2}
-  _shotgun: {fileID: 11400000, guid: e7430a6cea9ca9345963d49eb9d2409f, type: 2}
+  _handgun: {fileID: 11400000, guid: 43696e92d2a0c89468b3456d595825ca, type: 2}
+  _shotgun: {fileID: 11400000, guid: 4bfc0d0935f8e8343baa67fbc9c48566, type: 2}
 --- !u!1 &692140657
 GameObject:
   m_ObjectHideFlags: 0
@@ -1093,7 +1093,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1382516006
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1133,7 +1133,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: d4a179b8675829544af6b13dec813a0a, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
