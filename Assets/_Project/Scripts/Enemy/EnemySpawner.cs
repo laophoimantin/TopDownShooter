@@ -88,12 +88,6 @@ public class EnemySpawner : Singleton<EnemySpawner>, IUpdater
     
     public void OnUpdate()
     {
-        if (GameManager.Instance.CurrentState == GameManager.GameState.GameOver ||
-            GameManager.Instance.CurrentState == GameManager.GameState.Paused)
-        {
-            return;
-        }
-
         if (_currentState == SpawnerState.Spawning)
         {
             _spawnTimer += Time.deltaTime;

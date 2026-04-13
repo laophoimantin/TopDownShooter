@@ -14,6 +14,9 @@ public class MobData : ScriptableObject
     public float separationRadius = 0.6f;
     public float separationWeight = 10f;
     
+    [Header("Physics")]
+    public float mass = 1f;
+    
     [Header("Visual")]
     public GameObject blood;
 }

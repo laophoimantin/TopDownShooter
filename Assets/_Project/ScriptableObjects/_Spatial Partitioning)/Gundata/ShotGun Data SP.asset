@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e97aa7ed90742994cbcd09aa3319fb66, type: 3}
   m_Name: ShotGun Data SP
   m_EditorClassIdentifier: 
-  weaponName: 
-  bulletPrefab: {fileID: 4184344801754311580, guid: 77d0b8b6287ed7b448bff051b3088cb7, type: 3}
+  weaponName: Shotgun
+  bulletPrefab: {fileID: 5554457399675189366, guid: e73d66cd41e2c0044a63527fabc0bbc0, type: 3}
   fireRate: 0.5
   bulletSpeed: 16
   damage: 1.6
   bulletLifeTime: 0.2
   pierceCount: 1
   knockbackForce: 35
-  fireSound: {fileID: 0}
+  fireSound: {fileID: 8300000, guid: 96b4035ed45fa5949b8a3d158eff7d60, type: 3}

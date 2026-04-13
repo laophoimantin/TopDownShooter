@@ -9,7 +9,24 @@ public class UpdateManager : Singleton<UpdateManager>
     private List<IFixedUpdater> _listFixedUpdater = new List<IFixedUpdater>();
     private List<IFixedUpdater> _tmpListFixedUpdater = new List<IFixedUpdater>();
 
+    private bool _canUpdate = true;
+    
+    void OnEnable()
+    {
+        // Nhận loa thông báo từ Sếp
+        GameManager.OnGameStateChanged += HandleGameStateChanged;
+    }
 
+    void OnDisable()
+    {
+        GameManager.OnGameStateChanged -= HandleGameStateChanged;
+    }
+    
+    private void HandleGameStateChanged(GameManager.GameState newState)
+    {
+        _canUpdate = (newState == GameManager.GameState.Gameplay);
+    }
+    
     public void OnAssignUpdater(IUpdater update)
     {
         if (!_listUpdater.Contains(update))
@@ -38,7 +55,7 @@ public class UpdateManager : Singleton<UpdateManager>
 
     private void Update()
     {
-        if (GameManager.Instance.CurrentState != GameManager.GameState.Gameplay) return;
+        if (!_canUpdate) return;
         if (_listUpdater.Count == 0) return;
 
         for (int i = _listUpdater.Count - 1; i >= 0; i--)
@@ -49,8 +66,9 @@ public class UpdateManager : Singleton<UpdateManager>
 
     private void FixedUpdate()
     {
-        if (GameManager.Instance.CurrentState != GameManager.GameState.Gameplay) return;
+        if (!_canUpdate) return;
         if (_listFixedUpdater.Count == 0) return;
+        
         for (int i = _listFixedUpdater.Count - 1; i >= 0; i--)
         {
             _listFixedUpdater[i].OnFixedUpdate();

@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour, IDamageable
 {
+    [Space(10)]
     [SerializeField] private PlayerMovement _movement;
     [SerializeField] private PlayerHealth _health;
     [SerializeField] private PlayerVisual _visual;
@@ -15,17 +16,19 @@ public class PlayerController : MonoBehaviour, IDamageable
     [Header("Test")]
     [SerializeField] private bool _isInvincible;
 
-    private void OnDisable()
+  
+    void OnDisable()
     {
         if (_visual != null)
         {
             _health.OnDeathStarted -= _visual.PlayDeathAnim;
             _health.OnInvincibilityChanged -= _visual.SetGetHitState;
         }
+
         _health.OnDeathStarted -= _movement.StopMovement;
     }
 
-    
+
     private void Start()
     {
         if (_visual != null)
@@ -33,10 +36,11 @@ public class PlayerController : MonoBehaviour, IDamageable
             _health.OnDeathStarted += _visual.PlayDeathAnim;
             _health.OnInvincibilityChanged += _visual.SetGetHitState;
         }
+
         _health.OnDeathStarted += _movement.StopMovement;
     }
 
-  
+
     public void EquipWeapon(WeaponController newWeapon)
     {
         _weapon = newWeapon;

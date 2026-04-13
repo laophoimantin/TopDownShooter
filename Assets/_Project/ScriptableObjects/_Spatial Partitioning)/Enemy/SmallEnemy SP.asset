@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8737536a85a094e42821801391f53478, type: 3}
-  m_Name: CommonMonster
+  m_Name: SmallEnemy SP
   m_EditorClassIdentifier: 
   mobHealth: 8
-  attackRange: 0
+  attackRange: 1.01
   knockbackResistance: 1
   despawnDistance: 35
-  mobSpeed: 1.5
-  separationRadius: 0.6
-  separationWeight: 10
-  mass: 3
-  blood: {fileID: 1810937755164199950, guid: 7d43514d62ba82a43ab639bc205bf6a8, type: 3}
+  mobSpeed: 3.2
+  separationRadius: 1.5
+  separationWeight: 0.5
+  mass: 5
+  blood: {fileID: 1810937755164199950, guid: 2156bca2849190d4ca5c962e224a9364, type: 3}

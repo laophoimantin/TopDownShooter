@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3291738150853550873}
   - component: {fileID: 11993815438183623}
   m_Layer: 7
-  m_Name: Experience SP
+  m_Name: Xp Drop SP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

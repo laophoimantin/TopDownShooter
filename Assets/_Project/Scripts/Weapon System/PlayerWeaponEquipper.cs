@@ -12,15 +12,16 @@ public class PlayerWeaponEquipper : MonoBehaviour
     void Start()
     {
         GameObject newWeapon = null;
-        if (_currentLoadout.GetSelectedWeapon() == null || _currentLoadout.GetSelectedWeapon().WeaponPrefab == null)
-        {
 #if UNITY_EDITOR
             if (testIdentity != null)
             {
                 newWeapon = Instantiate(testIdentity.WeaponPrefab, _weaponHoldPoint.position, _weaponHoldPoint.rotation, _weaponHoldPoint);
                 EquipWeapon(newWeapon);
+                return;
             }
 #endif
+        if (_currentLoadout.GetSelectedWeapon() == null || _currentLoadout.GetSelectedWeapon().WeaponPrefab == null)
+        {
             return;
         }
 

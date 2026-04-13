@@ -10,14 +10,17 @@ public class XpUI : MonoBehaviour
 
     void OnEnable()
     {
-        PlayerLevelManager.OnXpChange += UpdateBarFill;
-        PlayerLevelManager.OnLevelUp += AssignLevelReached;
+        PlayerLevelManager.Instance.OnXpChange += UpdateBarFill;
+        PlayerLevelManager.Instance.OnLevelUIChanged += AssignLevelReached;
     }
 
     void OnDisable()
     {
-        PlayerLevelManager.OnXpChange -= UpdateBarFill;
-        PlayerLevelManager.OnLevelUp -= AssignLevelReached; 
+        if (PlayerLevelManager.Instance != null)
+        {
+        PlayerLevelManager.Instance.OnXpChange -= UpdateBarFill;
+        PlayerLevelManager.Instance.OnLevelUIChanged -= AssignLevelReached; 
+        }
     }
 
     private void AssignLevelReached(int levelReachedData)

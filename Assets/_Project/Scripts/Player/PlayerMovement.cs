@@ -16,11 +16,15 @@ public class PlayerMovement : MonoBehaviour, IUpdater, IFixedUpdater
     private Vector2 _playerInput;
     private Vector2 _forceToApply;
 
+    private bool _canMove = true;
+
     void OnEnable()
     {
         UpdateManager.Instance.OnAssignUpdater(this);
         UpdateManager.Instance.OnAssignFixedUpdater(this);
+        GameManager.OnGameStateChanged += OnStateChange;
     }
+
 
     void OnDisable()
     {
@@ -29,11 +33,18 @@ public class PlayerMovement : MonoBehaviour, IUpdater, IFixedUpdater
             UpdateManager.Instance.OnUnassignUpdater(this);
             UpdateManager.Instance.OnUnassignFixedUpdater(this);
         }
+
+        GameManager.OnGameStateChanged -= OnStateChange;
     }
 
 
     public void OnUpdate()
     {
+        if (!_canMove)
+        {
+            _playerInput = Vector2.zero; 
+            return;
+        }
         GetInput();
     }
 
@@ -44,18 +55,25 @@ public class PlayerMovement : MonoBehaviour, IUpdater, IFixedUpdater
 
     private void Move()
     {
+    
         _forceToApply = Vector2.Lerp(_forceToApply, Vector2.zero, _forceDamping * Time.fixedDeltaTime);
 
         if (_forceToApply.sqrMagnitude <= 2f)
         {
             _forceToApply = Vector2.zero;
         }
+        
+        if (!_canMove)
+        {
+            _rb.velocity = Vector2.zero;
+            return;
+        }
 
         if (_forceToApply != Vector2.zero)
         {
             _rb.velocity = _forceToApply;
         }
-        else 
+        else
         {
             _rb.velocity = _playerInput * _moveSpeed;
         }
@@ -65,7 +83,7 @@ public class PlayerMovement : MonoBehaviour, IUpdater, IFixedUpdater
     {
         _rb.velocity = Vector2.zero;
     }
-    
+
     private void GetInput()
     {
         float horizontalInput = Input.GetAxisRaw("Horizontal");
@@ -75,7 +93,7 @@ public class PlayerMovement : MonoBehaviour, IUpdater, IFixedUpdater
 
     public void TakeKnockback(Vector2 knockbackDirection)
     {
-        _forceToApply = knockbackDirection.normalized * _fixedKnockbackForce;
+        _forceToApply += knockbackDirection.normalized * _fixedKnockbackForce; 
     }
 
     public void AddSpeed(float speed)
@@ -85,5 +103,10 @@ public class PlayerMovement : MonoBehaviour, IUpdater, IFixedUpdater
         {
             _moveSpeed = _maxSpeed;
         }
+    }
+
+    private void OnStateChange(GameManager.GameState newState)
+    {
+        _canMove = (newState == GameManager.GameState.Gameplay);
     }
 }

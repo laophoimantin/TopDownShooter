@@ -1,35 +1,14 @@
 using UnityEngine;
 
-public class MobVisuals : MonoBehaviour , IUpdater
+public class MobVisuals : MonoBehaviour
 {
-    
     [SerializeField] private SpriteRenderer _visual;
-    private MobData _data;
-    private Transform _target;
 
-    public void Init(MobData data, Transform target)
+    public void SetFacingLeft(bool isLeft)
     {
-        _data = data;
-        _target = target;
-    }
-
-    void OnEnable()
-    {
-        UpdateManager.Instance.OnAssignUpdater(this);
-    }
-
-    void OnDisable()
-    {
-        if (UpdateManager.Instance != null)
+        if (_visual.flipX != isLeft)
         {
-            UpdateManager.Instance. OnUnassignUpdater(this);
+            _visual.flipX = isLeft;
         }
-    }
-    
-    // ===============================================================================
-    public void OnUpdate()
-    {
-        if (_target == null) return;
-        _visual.flipX = _target.position.x < transform.position.x;
     }
 }

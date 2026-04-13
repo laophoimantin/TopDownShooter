@@ -9,13 +9,14 @@ public class GameManager : Singleton<GameManager>
     {
         Gameplay,
         Paused,
-        GameOver
+        Victory, 
+        Defeat
     }
 
     private GameState _currentState = GameState.Gameplay;
     private GameState _previousState;
 
-    public GameState CurrentState => _currentState;
+    public static event Action<GameState> OnGameStateChanged;
     
     void OnEnable()
     {
@@ -38,6 +39,8 @@ public class GameManager : Singleton<GameManager>
 
         _previousState = _currentState;
         _currentState = newState;
+        
+        OnGameStateChanged?.Invoke(_currentState);
     }
 
     public void PauseGame()
@@ -58,11 +61,11 @@ public class GameManager : Singleton<GameManager>
 
     private void LoseGameOver(OnPlayerDeathStarted eventData)
     {
-        ChangeState(GameState.GameOver);
+        ChangeState(GameState.Defeat);
     }
 
     private void WinGameOver(OnTimeOut eventData)
     {
-        ChangeState(GameState.GameOver);
+        ChangeState(GameState.Victory);
     }
 }

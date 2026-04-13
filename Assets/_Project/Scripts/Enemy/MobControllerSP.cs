@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class MobControllerSP : MonoBehaviour, IDamageable
 {
-    private Transform _targetPlayer;
-    
     // ------------------------------------------------------------
     [Header("Data")]
     [SerializeField] private MobData _mobData;
@@ -19,6 +17,7 @@ public class MobControllerSP : MonoBehaviour, IDamageable
     [SerializeField] private MobVisuals _visuals;
     
     public MobMovementSP MovementSP => _movementSP;
+    public MobVisuals Visuals => _visuals;
 
     // ------------------------------------------------------------
     [Header("Spatial Partitioning")]
@@ -47,12 +46,8 @@ public class MobControllerSP : MonoBehaviour, IDamageable
 
     public void Init(Transform targetPlayer, Vector3 startPos)
     {
-        _targetPlayer = targetPlayer;
-        
         _health.Init(_mobData);
         _movementSP.Init(_mobData, startPos);
-        if (_visuals != null)
-            _visuals.Init(_mobData, _targetPlayer);
         if (_melee != null)
             _melee.Init(_mobData);
     }

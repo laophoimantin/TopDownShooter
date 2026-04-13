@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7172907039897566184}
   - component: {fileID: 1922981190940981290}
   m_Layer: 7
-  m_Name: Health SP
+  m_Name: Health Drop SP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

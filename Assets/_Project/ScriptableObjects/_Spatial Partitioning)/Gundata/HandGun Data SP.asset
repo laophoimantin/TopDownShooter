@@ -20,4 +20,4 @@ MonoBehaviour:
   bulletLifeTime: 1
   pierceCount: 0
   knockbackForce: 25
-  fireSound: {fileID: 0}
+  fireSound: {fileID: 8300000, guid: d3b1a381c4cbe624b8f3ade7492c26bc, type: 3}

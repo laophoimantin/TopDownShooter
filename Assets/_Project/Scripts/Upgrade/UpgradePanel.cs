@@ -8,12 +8,15 @@ public class UpgradePanel : MonoBehaviour
 
     private void OnEnable()
     {
-        PlayerLevelManager.OnLevelUp += DisplayRandomUpgrades;
+        PlayerLevelManager.Instance.OnLevelUp += DisplayRandomUpgrades;
     }
 
     private void OnDisable()
     {
-        PlayerLevelManager.OnLevelUp -= DisplayRandomUpgrades;
+        if (PlayerLevelManager.Instance != null)
+        {
+            PlayerLevelManager.Instance.OnLevelUp -= DisplayRandomUpgrades;
+        }
     }
 
     void Start()
@@ -21,7 +24,7 @@ public class UpgradePanel : MonoBehaviour
         HidePanel();
     }
     
-    private void DisplayRandomUpgrades(int level)
+    private void DisplayRandomUpgrades()
     {
         GameManager.Instance.PauseGame();
         _uiContainer.SetActive(true);

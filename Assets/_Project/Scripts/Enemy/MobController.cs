@@ -25,9 +25,6 @@ public class MobController : MonoBehaviour, IDamageable
         if (_movement != null)
             _movement.Init(_mobData, _targetPlayer);
 
-        if (_visuals != null)
-            _visuals.Init(_mobData, _targetPlayer);
-
         if (_meleeAttacker != null)
             _meleeAttacker.Init(_mobData);
     }
