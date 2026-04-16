@@ -186,7 +186,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b917b924ea17dda4ca28717860a3e9d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _health: {fileID: 0}
+  _health: {fileID: 239755439078977233}
   _dropRadius: 0.3
   _drops: []
 --- !u!50 &8031793176558918813

@@ -44,7 +44,7 @@ public class MobControllerSP : MonoBehaviour, IDamageable
         }
     }
 
-    public void Init(Transform targetPlayer, Vector3 startPos)
+    public void Init(Vector3 startPos)
     {
         _health.Init(_mobData);
         _movementSP.Init(_mobData, startPos);

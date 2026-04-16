@@ -214,7 +214,7 @@ public class EnemySpawner : Singleton<EnemySpawner>, IUpdater
 		}
 		else if (spawnedEnemy.TryGetComponent(out MobControllerSP mobSP))
 		{
-			mobSP.Init(_playerTransform, spawnPos);
+			mobSP.Init(spawnPos);
 		}
 
 		groupToSpawn.SpawnCount++;

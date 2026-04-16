@@ -24,7 +24,7 @@ public class SoundManager : Singleton<SoundManager>
         if (backgroundMusicClip != null)
         {
             _backGroundAudioSource.clip = backgroundMusicClip;
-            _audioSource.Play();
+            _backGroundAudioSource.Play();
         }
         StartCoroutine(PlayRandomSfx());
     }

@@ -16,7 +16,7 @@ MonoBehaviour:
   attackRange: 0
   knockbackResistance: 1
   despawnDistance: 35
-  mobSpeed: 1.5
+  mobSpeed: 5
   separationRadius: 0.6
   separationWeight: 10
   mass: 3

@@ -19,5 +19,5 @@ MonoBehaviour:
   mobSpeed: 2.5
   separationRadius: 1.5
   separationWeight: 0.5
-  mass: 5
+  mass: 1
   blood: {fileID: 1810937755164199950, guid: 2156bca2849190d4ca5c962e224a9364, type: 3}

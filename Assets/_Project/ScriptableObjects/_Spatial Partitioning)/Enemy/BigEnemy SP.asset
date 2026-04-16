@@ -17,7 +17,7 @@ MonoBehaviour:
   knockbackResistance: 0.7
   despawnDistance: 35
   mobSpeed: 1.7
-  separationRadius: 3.5
+  separationRadius: 7.39
   separationWeight: 1
   mass: 50
   blood: {fileID: 1810937755164199950, guid: 2156bca2849190d4ca5c962e224a9364, type: 3}

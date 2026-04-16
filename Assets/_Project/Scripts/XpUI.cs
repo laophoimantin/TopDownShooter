@@ -18,8 +18,8 @@ public class XpUI : MonoBehaviour
     {
         if (PlayerLevelManager.Instance != null)
         {
-        PlayerLevelManager.Instance.OnXpChange -= UpdateBarFill;
-        PlayerLevelManager.Instance.OnLevelUIChanged -= AssignLevelReached; 
+            PlayerLevelManager.Instance.OnXpChange -= UpdateBarFill;
+            PlayerLevelManager.Instance.OnLevelUIChanged -= AssignLevelReached;
         }
     }
 
@@ -27,13 +27,13 @@ public class XpUI : MonoBehaviour
     {
         _levelDisplay.text = levelReachedData.ToString();
     }
-    
+
     private void UpdateBarFill(int currentXp, int targetXp)
     {
         if (targetXp <= 0)
         {
             _experienceFill.fillAmount = 0f;
-            return; 
+            return;
         }
 
         float fillAmount = (float)currentXp / (float)targetXp;

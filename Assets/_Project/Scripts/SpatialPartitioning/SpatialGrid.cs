@@ -8,13 +8,13 @@ public class SpatialGrid : Singleton<SpatialGrid>
     private Dictionary<Vector2Int, List<MobControllerSP>> _grid = new();
     private HashSet<Vector2Int> _activeCells = new();
     
-    public Vector2Int GetCellCoordinate(Vector3 position)
+    // Converts a world space position into a discrete grid cell coordinate.
+    private Vector2Int GetCellCoordinate(Vector3 position)
     {
         int x = Mathf.FloorToInt(position.x / _cellSize);
         int y = Mathf.FloorToInt(position.y / _cellSize);
         return new Vector2Int(x, y);
     }
-
    
     public void ClearGrid()
     {
@@ -36,6 +36,9 @@ public class SpatialGrid : Singleton<SpatialGrid>
         _activeCells.Add(cellCoord); 
     }
     
+    /// <summary>
+    /// Finds all entities within a specified radius around a given position.
+    /// </summary>
     public void GetNearbyEntities(Vector3 position, float radius, ref List<MobControllerSP> resultList)
     {
         resultList.Clear();

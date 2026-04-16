@@ -13,7 +13,6 @@ public class UpdateManager : Singleton<UpdateManager>
     
     void OnEnable()
     {
-        // Nhận loa thông báo từ Sếp
         GameManager.OnGameStateChanged += HandleGameStateChanged;
     }
 
